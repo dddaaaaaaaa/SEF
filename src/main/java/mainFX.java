@@ -12,7 +12,7 @@ public class mainFX extends Application
         Parent root= FXMLLoader.load(getClass().getResource("example.fxml"));
         Scene scene=new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Vand Golf 4");
+        primaryStage.setTitle("Vand Golf 4!");
         primaryStage.show();
     }
 
