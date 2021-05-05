@@ -14,6 +14,7 @@ public class LoginController {
 
     public void loginButtonOnAction(ActionEvent actionEvent) {
         System.out.println("Login Button On Action!");
+        System.out.println("Still do to !");
     }
 
     public void cancelButtonOnAction(ActionEvent actionEvent) {
