@@ -20,11 +20,11 @@ test {
     useJUnitPlatform()
 }
 
-sourceCompatibility = 8
+sourceCompatibility = 11
 
 javafx {
-//    version = "1.8.181"
+    version = "16"
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = 'mainFX'
+mainClassName = 'Main'
