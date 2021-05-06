@@ -14,3 +14,5 @@ domain/User.java
  domain.User
 controller/login/LoginController.java
  controller.login.LoginController
+domain/DatabaseConnection.java
+ domain.DatabaseConnection
