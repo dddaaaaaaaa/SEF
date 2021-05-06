@@ -70,7 +70,7 @@ public class LoginController {
        // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
 
-        String verifyLogin = "SELECT count(1) FROM user WHERE username = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() + "';";
+        String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() + "';";
 
         try {
 
