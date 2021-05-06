@@ -47,7 +47,8 @@ public class LoginController  {
        // System.out.println("Login Button On Action!");
         loginMessageLabel.setText("You tried to login!");
         if(usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false){
-            loginMessageLabel.setText("Username or password does not exist!");
+           // loginMessageLabel.setText("Username or password does not exist!");
+            validateLogin();
         }
         else
         {
