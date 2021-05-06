@@ -4,6 +4,8 @@ domain/Event.java
  domain.Event
 domain/BasicUser.java
  domain.BasicUser
+domain/DatabaseConnection.java
+ domain.DatabaseConnection
 domain/EventOrganizerUser.java
  domain.EventOrganizerUser
 controller/register/RegisterController.java

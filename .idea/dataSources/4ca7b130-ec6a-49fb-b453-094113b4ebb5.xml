@@ -917,6 +917,7 @@ SELECT|sys.sys_config
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="287" parent="285" name="firstName">
       <Position>2</Position>
@@ -933,19 +934,47 @@ SELECT|sys.sys_config
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="290" parent="285" name="idusername_UNIQUE">
+    <column id="290" parent="285" name="username">
+      <Position>5</Position>
+      <DataType>varchar(45)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="291" parent="285" name="password">
+      <Position>6</Position>
+      <DataType>varchar(45)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="292" parent="285" name="idusername_UNIQUE">
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="291" parent="285" name="PRIMARY">
+    <index id="293" parent="285" name="email_UNIQUE">
+      <ColNames>email</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <index id="294" parent="285" name="username_UNIQUE">
+      <ColNames>username</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="295" parent="285" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="292" parent="285" name="idusername_UNIQUE">
+    <key id="296" parent="285" name="idusername_UNIQUE">
       <ColNames>ID</ColNames>
       <UnderlyingIndexName>idusername_UNIQUE</UnderlyingIndexName>
+    </key>
+    <key id="297" parent="285" name="email_UNIQUE">
+      <ColNames>email</ColNames>
+      <UnderlyingIndexName>email_UNIQUE</UnderlyingIndexName>
+    </key>
+    <key id="298" parent="285" name="username_UNIQUE">
+      <ColNames>username</ColNames>
+      <UnderlyingIndexName>username_UNIQUE</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>
