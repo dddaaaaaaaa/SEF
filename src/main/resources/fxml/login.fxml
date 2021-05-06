@@ -14,7 +14,7 @@
    <left>
       <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="221.0" fitWidth="234.0" layoutX="4.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="brandingImageView" fitHeight="221.0" fitWidth="234.0" layoutX="4.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/sigla.png" />
                </image>
@@ -25,7 +25,7 @@
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="332.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="96.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="lockImageView" fitHeight="100.0" fitWidth="100.0" layoutX="96.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/lacat.png" />
                </image>
@@ -41,7 +41,11 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="enterPasswordField" layoutX="81.0" layoutY="206.0" prefHeight="25.0" prefWidth="166.0" promptText="Password" />
+            <TextField fx:id="enterPasswordField" layoutX="81.0" layoutY="206.0" prefHeight="25.0" prefWidth="166.0" promptText="Password">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextField>
             <Button fx:id="loginButton" layoutX="26.0" layoutY="291.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="29.0" prefWidth="227.0" text="Login">
                <font>
                   <Font size="14.0" />
@@ -52,7 +56,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="246.0" prefHeight="19.0" prefWidth="227.0" text="Invalid login.Please try again.">
+            <Label fx:id="loginMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="246.0" prefHeight="19.0" prefWidth="227.0" textFill="#e23737">
                <font>
                   <Font size="13.0" />
                </font>
