@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.pbkdf2.SHA256Digest;
 
 import java.io.File;
 import java.net.URL;
@@ -19,6 +20,10 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 
 //import java.sql.SQLOutput;
+
+//crypto
+import crypto.sha256manager;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginController {
     @FXML
@@ -70,6 +75,17 @@ public class LoginController {
        // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
 
+        try
+        {
+            String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
+            System.out.println("SHA256 of password is: " + hashedPassword);
+        }
+
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+            loginMessageLabel.setText("Internal error! Unable to hash password!");
+        }
         String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() + "';";
 
         try {
