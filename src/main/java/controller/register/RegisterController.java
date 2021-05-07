@@ -1,6 +1,6 @@
 package controller.register;
 
-import domain.DatabaseConnection;
+import domain.*;
 import javafx.application.Platform;
 import javafx.scene.control.*;
 
@@ -16,6 +16,7 @@ import java.io.File; //image view
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+import java.lang.reflect.Field;
 
 public class RegisterController implements Initializable {
 
@@ -53,6 +54,7 @@ public class RegisterController implements Initializable {
         registerImageView.setImage(registerImage);
 
     }
+
     String userType = "";
     boolean userTypeSelected;
 
@@ -67,14 +69,19 @@ public class RegisterController implements Initializable {
         }
         if (setPasswordField.getText().equals(confirmPasswordField.getText()) && setPasswordField.getText().isBlank() == false) {
             if (userTypeSelected) {
-                registerUser();
-                confirmPasswordLabel.setText("Passwords match!");
+               // Register registration = new Register();
+              //  registration.registerUser();
+                User user = CreateUser();
+                if (user != null) {
+                    Connection connectDB = InitializeDatabaseConnection();
+                    InsertNewRecord(connectDB, user);
+                    confirmPasswordLabel.setText("Passwords match!");
+                }
             }
         } else {
             confirmPasswordLabel.setText("Passwords do not match!");
             registrationMessageLabel.setText("");
         }
-        registerUser();
     }
 
     public void setEventOrganizerUserCheckboxOnAction(ActionEvent actionEvent) {
@@ -104,32 +111,47 @@ public class RegisterController implements Initializable {
         Platform.exit();
     }
 
-    public void registerUser() {
-        DatabaseConnection connectNow = new DatabaseConnection();
-        Connection connectDB = connectNow.getConnection();
+    public User CreateUser() {
 
-        String firstName = firstNameTextField.getText();
-        String lastName = lastNameTextField.getText();
-        String email = emailTextField.getText();
-        String username = usernameTextField.getText();
-        String password = setPasswordField.getText();
-        String UserType = userType;
+        switch (userType) {
+            case "Basic User":
+                return new BasicUser(firstNameTextField.getText(), lastNameTextField.getText(),
+                        emailTextField.getText(), usernameTextField.getText(),
+                        setPasswordField.getText());
+            case "Event Organizer User":
+                return new EventOrganizerUser(firstNameTextField.getText(), lastNameTextField.getText(),
+                        emailTextField.getText(), usernameTextField.getText(),
+                        setPasswordField.getText());
+            default:
+                registrationMessageLabel.setText(userType + "is not recognized!");
+                return null;
+        }
+    }
 
+    public void InsertNewRecord(Connection connection, User user) {
 
-
+        //System.out.println("user type : " + user.getClass().getTypeName());
         String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
-        String insertValues =  firstName + "','" + lastName + "','" + email + "','" + username + "','" + password + "','" + UserType + "')";
+        String insertValues = user.firstName + "','" + user.lastName + "','" + user.email + "','" + user.username + "','" + user.password + "','" + userType + "')";
         String insertToRegister = insertFields + insertValues;
 
+
         try {
-            Statement statement = connectDB.createStatement();
+            Statement statement = connection.createStatement();
             statement.executeUpdate(insertToRegister);
             registrationMessageLabel.setText("                        User registered successfully!");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
+
+    }
+
+    public Connection InitializeDatabaseConnection() {
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        return connectDB;
 
     }
 }
