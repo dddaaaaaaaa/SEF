@@ -115,7 +115,7 @@ public class RegisterController implements Initializable {
     public void closeButtonOnAction(ActionEvent actionEvent) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
-        Platform.exit();
+        //Platform.exit();
     }
 
     public User CreateUser() {
