@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 
 //import java.sql.SQLOutput;
 
-public class LoginController {
+public class LoginController implements Initializable {
     @FXML
     private Button loginButton;
     @FXML
@@ -41,17 +41,18 @@ public class LoginController {
     @FXML
     private PasswordField enterPasswordField;
 
-    // @Override
-    /*public void initialize(URL url, ResourceBundle resourceBundle) {
-        File brandingFile = new File("resources/images/sigla.png");
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        File brandingFile = new File("C:\\Users\\Admin\\Desktop\\SEF\\remind-me-app\\src\\main\\resources\\images\\sigla.png");
         Image brandingImage = new Image(brandingFile.toURI().toString());
         brandingImageView.setImage(brandingImage);
 
 
-        File lockFile = new File("resources/images/lacat.png");
+        File lockFile = new File("C:\\Users\\Admin\\Desktop\\SEF\\remind-me-app\\src\\main\\resources\\images\\lacat.png");
         Image lockImage = new Image(lockFile.toURI().toString());
         lockImageView.setImage(lockImage);
-    }*/
+    }
+
     public void loginButtonOnAction(ActionEvent actionEvent) {
         // System.out.println("Login Button On Action!");
         loginMessageLabel.setText("You tried to login!");
@@ -98,15 +99,14 @@ public class LoginController {
     }
 
     public void createAccountStageForm() {
-        try{
+        try {
             Stage registerStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/register.fxml"));
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/registration.fxml"));
             registerStage.setResizable(false);
             registerStage.initStyle(StageStyle.DECORATED);
-            registerStage.setScene(new Scene(root,553,551));
+            registerStage.setScene(new Scene(root, 553, 591));
             registerStage.show();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }

@@ -12,6 +12,7 @@
 
 <AnchorPane prefHeight="591.0" prefWidth="553.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register.RegisterController">
    <children>
+      <TextField fx:id="lastNameTextField" layoutX="116.0" layoutY="216.0" prefHeight="25.0" prefWidth="374.0" promptText="Enter your second name" />
       <AnchorPane layoutY="-1.0" prefHeight="122.0" prefWidth="575.0" style="-fx-background-color: #000000;">
          <children>
             <ImageView fx:id="registerImageView" fitHeight="135.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
@@ -28,35 +29,44 @@
       </AnchorPane>
       <Label layoutX="36.0" layoutY="173.0" text="FirstName" />
       <TextField fx:id="firstNameTextField" layoutX="117.0" layoutY="169.0" prefHeight="25.0" prefWidth="374.0" promptText="Enter your first name" />
-      <Label layoutX="39.0" layoutY="233.0" prefHeight="17.0" prefWidth="64.0" text="LastName" />
-      <TextField fx:id="secondNameTextField" layoutX="117.0" layoutY="229.0" prefHeight="25.0" prefWidth="374.0" promptText="Enter your second name" />
-      <Label layoutX="44.0" layoutY="277.0" prefHeight="17.0" prefWidth="54.0" text="Email" />
-      <TextField fx:id="emailTextField" layoutX="117.0" layoutY="273.0" prefHeight="25.0" prefWidth="374.0" promptText="Email Address" />
-      <Label layoutX="36.0" layoutY="326.0" prefHeight="17.0" prefWidth="54.0" text="Username" />
-      <TextField fx:id="usernameTextField" layoutX="117.0" layoutY="322.0" prefHeight="25.0" prefWidth="374.0" promptText="Choose an username" />
-      <Label layoutX="36.0" layoutY="381.0" prefHeight="17.0" prefWidth="54.0" text="Password" />
-      <PasswordField fx:id="setPasswordField" layoutX="115.0" layoutY="377.0" prefHeight="25.0" prefWidth="374.0" promptText="Enter your password" />
-      <Label layoutX="10.0" layoutY="436.0" prefHeight="17.0" prefWidth="105.0" text="Confirm Password" />
-      <PasswordField fx:id="confirmPasswordField" layoutX="115.0" layoutY="432.0" prefHeight="25.0" prefWidth="374.0" promptText="Confirm password" />
-      <CheckBox fx:id="eventOrganizerCheckbox" layoutX="128.0" layoutY="130.0" mnemonicParsing="false" text="Event Organizer">
+      <Label layoutX="39.0" layoutY="220.0" prefHeight="17.0" prefWidth="64.0" text="LastName" />
+      <Label layoutX="44.0" layoutY="264.0" prefHeight="17.0" prefWidth="54.0" text="Email" />
+      <TextField fx:id="emailTextField" layoutX="115.0" layoutY="260.0" prefHeight="25.0" prefWidth="374.0" promptText="Email Address" />
+      <Label layoutX="36.0" layoutY="317.0" prefHeight="17.0" prefWidth="54.0" text="Username" />
+      <TextField fx:id="usernameTextField" layoutX="117.0" layoutY="313.0" prefHeight="25.0" prefWidth="374.0" promptText="Choose an username" />
+      <Label layoutX="36.0" layoutY="368.0" prefHeight="17.0" prefWidth="54.0" text="Password" />
+      <PasswordField fx:id="setPasswordField" layoutX="115.0" layoutY="364.0" prefHeight="25.0" prefWidth="374.0" promptText="Enter your password" />
+      <Label layoutX="10.0" layoutY="414.0" prefHeight="17.0" prefWidth="105.0" text="Confirm Password" />
+      <PasswordField fx:id="confirmPasswordField" layoutX="115.0" layoutY="410.0" prefHeight="25.0" prefWidth="374.0" promptText="Confirm password" />
+      <CheckBox fx:id="eventOrganizerUserCheckbox" layoutX="128.0" layoutY="130.0" mnemonicParsing="false" onAction="#setEventOrganizerUserCheckboxOnAction" text="Event Organizer">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="basicUserCheckBox" layoutX="326.0" layoutY="130.0" mnemonicParsing="false" text="Basic User">
+      <CheckBox fx:id="basicUserCheckbox" layoutX="326.0" layoutY="130.0" mnemonicParsing="false" onAction="#setBasicUserCheckboxOnAction" text="Basic User">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
       </CheckBox>
-      <Button fx:id="registerButton" layoutX="116.0" layoutY="484.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="374.0" style="-fx-background-color: #000000;" text="Register" textFill="WHITE">
+      <Button fx:id="registerButton" layoutX="116.0" layoutY="484.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="25.0" prefWidth="374.0" style="-fx-background-color: #000000;" text="Register" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="closeButton" layoutX="117.0" layoutY="530.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="374.0" style="-fx-background-color: #000000;" text="Close" textFill="WHITE">
+      <Button fx:id="closeButton" layoutX="117.0" layoutY="530.0" mnemonicParsing="false" onAction="#closeButtonOnAction" prefHeight="17.0" prefWidth="374.0" style="-fx-background-color: #000000;" text="Close" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
+      <Label fx:id="confirmPasswordLabel" layoutX="114.0" layoutY="450.0" prefHeight="17.0" prefWidth="374.0" textFill="#f61b1b">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="registrationMessageLabel" layoutX="117.0" layoutY="149.0" prefHeight="19.0" prefWidth="374.0" textAlignment="CENTER" textFill="#18803e">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

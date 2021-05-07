@@ -1,20 +1,20 @@
-Main.java
- Main
+domain/ID.java
+ domain.ID
 domain/Event.java
  domain.Event
 domain/BasicUser.java
  domain.BasicUser
-domain/User.java
- domain.User
-domain/EventOrganizerUser.java
- domain.EventOrganizerUser
-controller/register/RegisterController.java
- controller.register.RegisterController
-domain/DatabaseCredentials.java
- domain.DatabaseCredentials
-domain/ID.java
- domain.ID
 domain/DatabaseConnection.java
  domain.DatabaseConnection
+domain/EventOrganizerUser.java
+ domain.EventOrganizerUser
+domain/User.java
+ domain.User
+domain/DatabaseCredentials.java
+ domain.DatabaseCredentials
+Main.java
+ Main
 controller/login/LoginController.java
  controller.login.LoginController
+controller/register/RegisterController.java
+ controller.register.RegisterController
