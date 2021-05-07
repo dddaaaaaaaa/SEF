@@ -1,5 +1,6 @@
 package controller.login;
 
+import crypto.sha256manager;
 import domain.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -91,9 +93,14 @@ public class LoginController implements Initializable {
         // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
 
-        String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() + "';";
+        try
+        {
+            //hash password
+            String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
+            System.out.println("Pass is : " + enterPasswordField.getText() + ", SHA256 of password is: " + hashedPassword);
 
-        try {
+            //do query
+            String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + hashedPassword + "';";
 
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
@@ -106,7 +113,13 @@ public class LoginController implements Initializable {
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+            loginMessageLabel.setText("Internal error! Unable to hash password!");
+        }
+        catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
@@ -119,7 +132,7 @@ public class LoginController implements Initializable {
             registerStage.setResizable(false);
             registerStage.initStyle(StageStyle.DECORATED);
             registerStage.setScene(new Scene(root, 553, 591));
-            registerStage.show();
+            registerStage.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
