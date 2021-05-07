@@ -130,7 +130,7 @@ public class LoginController implements Initializable {
             registerStage.setResizable(false);
             registerStage.initStyle(StageStyle.DECORATED);
             registerStage.setScene(new Scene(root, 553, 591));
-            registerStage.show();
+            registerStage.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
