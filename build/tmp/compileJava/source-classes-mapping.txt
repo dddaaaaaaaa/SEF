@@ -16,5 +16,7 @@ domain/BasicUser.java
  domain.BasicUser
 domain/User.java
  domain.User
+domain/Register.java
+ domain.Register
 controller/register/RegisterController.java
  controller.register.RegisterController

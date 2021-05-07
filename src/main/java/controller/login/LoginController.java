@@ -45,12 +45,12 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        File brandingFile = new File("C:\\Users\\Admin\\Desktop\\SEF\\remind-me-app\\src\\main\\resources\\images\\sigla.png");
+        File brandingFile = new File("src\\main\\resources\\images\\sigla.png");
         Image brandingImage = new Image(brandingFile.toURI().toString());
         brandingImageView.setImage(brandingImage);
 
 
-        File lockFile = new File("C:\\Users\\Admin\\Desktop\\SEF\\remind-me-app\\src\\main\\resources\\images\\lacat.png");
+        File lockFile = new File("src\\main\\resources\\images\\lacat.png");
         Image lockImage = new Image(lockFile.toURI().toString());
         lockImageView.setImage(lockImage);
     }
