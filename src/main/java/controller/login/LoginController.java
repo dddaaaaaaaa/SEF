@@ -1,5 +1,6 @@
 package controller.login;
 
+import crypto.sha256manager;
 import domain.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -89,9 +91,14 @@ public class LoginController implements Initializable {
         // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
 
-        String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() + "';";
+        try
+        {
+            //hash password
+            String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
+            System.out.println("SHA256 of password is: " + hashedPassword);
 
-        try {
+            //do query
+            String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + hashedPassword + "';";
 
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
@@ -104,7 +111,13 @@ public class LoginController implements Initializable {
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+            loginMessageLabel.setText("Internal error! Unable to hash password!");
+        }
+        catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
