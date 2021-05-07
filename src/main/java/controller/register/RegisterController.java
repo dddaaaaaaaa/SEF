@@ -120,15 +120,11 @@ public class RegisterController implements Initializable {
     }
 
     public User CreateUser() {
-
-        System.out.println("Setting user password: " + setPasswordField.getText());
         switch (userType) {
             case "Basic User":
-                System.out.println("Selecting basic user: " + usernameTextField.getText() + " " + setPasswordField.getText());
                 return new BasicUser(usernameTextField.getText(), setPasswordField.getText(),
                         firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText());
             case "Event Organizer User":
-                System.out.println("Selecting super user: " + usernameTextField.getText() + " " + setPasswordField.getText());
                 return new EventOrganizerUser(usernameTextField.getText(), setPasswordField.getText(),
                         firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText());
             default:
@@ -142,7 +138,6 @@ public class RegisterController implements Initializable {
         //System.out.println("user type : " + user.getClass().getTypeName());
 
         try {
-            System.out.println("Inserting user password: " + user.password);
             //insert fields needs no special treatment
             String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
 
