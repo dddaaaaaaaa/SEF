@@ -7,10 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -25,7 +22,10 @@ import java.util.ResourceBundle;
 
 //import java.sql.SQLOutput;
 
-public class LoginController {
+public class LoginController implements Initializable {
+
+    boolean registrationRequired = false;
+
     @FXML
     private Button loginButton;
     @FXML
@@ -40,24 +40,30 @@ public class LoginController {
     private TextField usernameTextField;
     @FXML
     private PasswordField enterPasswordField;
+    @FXML
+    private Hyperlink registerHyperlink;
 
-    // @Override
-    /*public void initialize(URL url, ResourceBundle resourceBundle) {
-        File brandingFile = new File("resources/images/sigla.png");
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        File brandingFile = new File("src\\main\\resources\\images\\sigla.png");
         Image brandingImage = new Image(brandingFile.toURI().toString());
         brandingImageView.setImage(brandingImage);
 
 
-        File lockFile = new File("resources/images/lacat.png");
+        File lockFile = new File("src\\main\\resources\\images\\lacat.png");
         Image lockImage = new Image(lockFile.toURI().toString());
         lockImageView.setImage(lockImage);
-    }*/
+    }
+
     public void loginButtonOnAction(ActionEvent actionEvent) {
-        // System.out.println("Login Button On Action!");
+        //System.out.println("Login Button On Action!");
         loginMessageLabel.setText("You tried to login!");
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
             // loginMessageLabel.setText("Username or password does not exist!");
-            validateLogin();
+            /*if (registrationRequired == true)
+                createAccountStageForm();*/
+            //else
+                validateLogin();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
@@ -68,6 +74,14 @@ public class LoginController {
         System.out.println("Cancel Button On Action!");
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
+    }
+
+    public void registerHyperlinkOnAction(ActionEvent actionEvent) {
+        if (registerHyperlink.isVisited())
+            registrationRequired = true;
+        if (registrationRequired == true)
+            createAccountStageForm();
+
     }
 
     public void validateLogin() {
@@ -85,7 +99,6 @@ public class LoginController {
             while (queryResult.next()) {
                 if (queryResult.getInt(1) == 1) {
                     loginMessageLabel.setText("You logged in successfully!");
-                    createAccountStageForm();
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
                 }
@@ -98,17 +111,17 @@ public class LoginController {
     }
 
     public void createAccountStageForm() {
-        try{
+        try {
             Stage registerStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/register.fxml"));
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/registration.fxml"));
             registerStage.setResizable(false);
             registerStage.initStyle(StageStyle.DECORATED);
-            registerStage.setScene(new Scene(root,553,551));
+            registerStage.setScene(new Scene(root, 553, 591));
             registerStage.show();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
     }
+
 }
