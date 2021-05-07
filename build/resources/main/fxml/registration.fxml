@@ -9,10 +9,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="591.0" prefWidth="553.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.register.RegisterController">
    <children>
-      <TextField fx:id="lastNameTextField" layoutX="116.0" layoutY="216.0" prefHeight="25.0" prefWidth="374.0" promptText="Enter your second name" />
       <AnchorPane layoutY="-1.0" prefHeight="122.0" prefWidth="575.0" style="-fx-background-color: #000000;">
          <children>
             <ImageView fx:id="registerImageView" fitHeight="135.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
@@ -30,6 +30,7 @@
       <Label layoutX="36.0" layoutY="173.0" text="FirstName" />
       <TextField fx:id="firstNameTextField" layoutX="117.0" layoutY="169.0" prefHeight="25.0" prefWidth="374.0" promptText="Enter your first name" />
       <Label layoutX="39.0" layoutY="220.0" prefHeight="17.0" prefWidth="64.0" text="LastName" />
+      <TextField fx:id="lastNameTextField" layoutX="116.0" layoutY="216.0" prefHeight="25.0" prefWidth="374.0" promptText="Enter your second name" />
       <Label layoutX="44.0" layoutY="264.0" prefHeight="17.0" prefWidth="54.0" text="Email" />
       <TextField fx:id="emailTextField" layoutX="115.0" layoutY="260.0" prefHeight="25.0" prefWidth="374.0" promptText="Email Address" />
       <Label layoutX="36.0" layoutY="317.0" prefHeight="17.0" prefWidth="54.0" text="Username" />
@@ -68,5 +69,6 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
+      <Text layoutX="79.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
    </children>
 </AnchorPane>

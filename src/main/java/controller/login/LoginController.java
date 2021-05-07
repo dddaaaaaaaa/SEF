@@ -7,10 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -26,6 +23,9 @@ import java.util.ResourceBundle;
 //import java.sql.SQLOutput;
 
 public class LoginController implements Initializable {
+
+    boolean registrationRequired = false;
+
     @FXML
     private Button loginButton;
     @FXML
@@ -40,6 +40,8 @@ public class LoginController implements Initializable {
     private TextField usernameTextField;
     @FXML
     private PasswordField enterPasswordField;
+    @FXML
+    private Hyperlink registerHyperlink;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,11 +56,14 @@ public class LoginController implements Initializable {
     }
 
     public void loginButtonOnAction(ActionEvent actionEvent) {
-        // System.out.println("Login Button On Action!");
+        //System.out.println("Login Button On Action!");
         loginMessageLabel.setText("You tried to login!");
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
             // loginMessageLabel.setText("Username or password does not exist!");
-            validateLogin();
+            /*if (registrationRequired == true)
+                createAccountStageForm();*/
+            //else
+                validateLogin();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
@@ -69,6 +74,14 @@ public class LoginController implements Initializable {
         System.out.println("Cancel Button On Action!");
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
+    }
+
+    public void registerHyperlinkOnAction(ActionEvent actionEvent) {
+        if (registerHyperlink.isVisited())
+            registrationRequired = true;
+        if (registrationRequired == true)
+            createAccountStageForm();
+
     }
 
     public void validateLogin() {
@@ -86,7 +99,6 @@ public class LoginController implements Initializable {
             while (queryResult.next()) {
                 if (queryResult.getInt(1) == 1) {
                     loginMessageLabel.setText("You logged in successfully!");
-                    createAccountStageForm();
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
                 }
@@ -111,4 +123,5 @@ public class LoginController implements Initializable {
             e.getCause();
         }
     }
+
 }

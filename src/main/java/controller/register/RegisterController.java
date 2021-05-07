@@ -18,8 +18,6 @@ import java.sql.*;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
-    String userType;
-    boolean userTypeSelected;
 
     @FXML
     private ImageView registerImageView;
@@ -55,15 +53,22 @@ public class RegisterController implements Initializable {
         registerImageView.setImage(registerImage);
 
     }
+    String userType = "";
+    boolean userTypeSelected;
 
     public void registerButtonOnAction(ActionEvent actionEvent) {
-        if (setPasswordField.getText().equals(confirmPasswordField.getText())) {
+        if (setPasswordField.getText().isBlank()) {
+            registrationMessageLabel.setText("");
+            confirmPasswordLabel.setText("Password required!");
+        }
+        if (userTypeSelected == false) {
+            registrationMessageLabel.setText("Please chose a user type!");
+            confirmPasswordLabel.setText("");
+        }
+        if (setPasswordField.getText().equals(confirmPasswordField.getText()) && setPasswordField.getText().isBlank() == false) {
             if (userTypeSelected) {
                 registerUser();
                 confirmPasswordLabel.setText("Passwords match!");
-                registrationMessageLabel.setText("                        User registered successfully!");
-            } else {
-                registrationMessageLabel.setText("Please chose a user type!");
             }
         } else {
             confirmPasswordLabel.setText("Passwords do not match!");
@@ -108,10 +113,23 @@ public class RegisterController implements Initializable {
         String email = emailTextField.getText();
         String username = usernameTextField.getText();
         String password = setPasswordField.getText();
+        String UserType = userType;
 
-        String insertFields = "";
-        String insertValues = "";
+
+
+        String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
+        String insertValues =  firstName + "','" + lastName + "','" + email + "','" + username + "','" + password + "','" + UserType + "')";
         String insertToRegister = insertFields + insertValues;
+
+        try {
+            Statement statement = connectDB.createStatement();
+            statement.executeUpdate(insertToRegister);
+            registrationMessageLabel.setText("                        User registered successfully!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
 
     }
 }
