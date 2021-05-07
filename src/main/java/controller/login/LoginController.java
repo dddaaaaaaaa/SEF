@@ -3,14 +3,15 @@ package controller.login;
 import domain.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.pbkdf2.SHA256Digest;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.net.URL;
@@ -21,11 +22,10 @@ import java.util.ResourceBundle;
 
 //import java.sql.SQLOutput;
 
-//crypto
-import crypto.sha256manager;
-import java.security.NoSuchAlgorithmException;
+public class LoginController implements Initializable {
 
-public class LoginController {
+    boolean registrationRequired = false;
+
     @FXML
     private Button loginButton;
     @FXML
@@ -39,25 +39,31 @@ public class LoginController {
     @FXML
     private TextField usernameTextField;
     @FXML
-    private TextField enterPasswordField;
+    private PasswordField enterPasswordField;
+    @FXML
+    private Hyperlink registerHyperlink;
 
-    // @Override
-    /*public void initialize(URL url, ResourceBundle resourceBundle) {
-        File brandingFile = new File("resources/images/sigla.png");
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        File brandingFile = new File("src\\main\\resources\\images\\sigla.png");
         Image brandingImage = new Image(brandingFile.toURI().toString());
         brandingImageView.setImage(brandingImage);
 
 
-        File lockFile = new File("resources/images/lacat.png");
+        File lockFile = new File("src\\main\\resources\\images\\lacat.png");
         Image lockImage = new Image(lockFile.toURI().toString());
         lockImageView.setImage(lockImage);
-    }*/
+    }
+
     public void loginButtonOnAction(ActionEvent actionEvent) {
-        // System.out.println("Login Button On Action!");
+        //System.out.println("Login Button On Action!");
         loginMessageLabel.setText("You tried to login!");
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
             // loginMessageLabel.setText("Username or password does not exist!");
-            validateLogin();
+            /*if (registrationRequired == true)
+                createAccountStageForm();*/
+            //else
+                validateLogin();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
@@ -70,22 +76,19 @@ public class LoginController {
         stage.close();
     }
 
+    public void registerHyperlinkOnAction(ActionEvent actionEvent) {
+        if (registerHyperlink.isVisited())
+            registrationRequired = true;
+        if (registrationRequired == true)
+            createAccountStageForm();
+
+    }
+
     public void validateLogin() {
         DatabaseConnection connectNow = new DatabaseConnection();
-       // Connection connectDB = connectNow.getConnection();
+        // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
 
-        try
-        {
-            String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
-            System.out.println("SHA256 of password is: " + hashedPassword);
-        }
-
-        catch (NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
-            loginMessageLabel.setText("Internal error! Unable to hash password!");
-        }
         String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() + "';";
 
         try {
@@ -106,4 +109,19 @@ public class LoginController {
             e.getCause();
         }
     }
+
+    public void createAccountStageForm() {
+        try {
+            Stage registerStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/registration.fxml"));
+            registerStage.setResizable(false);
+            registerStage.initStyle(StageStyle.DECORATED);
+            registerStage.setScene(new Scene(root, 553, 591));
+            registerStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
 }
