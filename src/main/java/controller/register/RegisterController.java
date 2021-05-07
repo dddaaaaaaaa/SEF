@@ -93,8 +93,9 @@ public class RegisterController implements Initializable {
 
     public void setEventOrganizerUserCheckboxOnAction(ActionEvent actionEvent) {
         if (eventOrganizerUserCheckbox.isSelected()) {
-            userType = userType + "Event Organizer User";
+            userType = "Event Organizer User";
             userTypeSelected = true;
+            basicUserCheckbox.setSelected(false);
         } else {
             registrationMessageLabel.setText("Please choose a user type");
             userTypeSelected = false;
@@ -103,8 +104,9 @@ public class RegisterController implements Initializable {
 
     public void setBasicUserCheckboxOnAction(ActionEvent actionEvent) {
         if (basicUserCheckbox.isSelected()) {
-            userType = userType + "Basic User";
+            userType = "Basic User";
             userTypeSelected = true;
+            eventOrganizerUserCheckbox.setSelected(false);
         } else {
             registrationMessageLabel.setText("Please choose a user type");
             userTypeSelected = false;
@@ -115,20 +117,20 @@ public class RegisterController implements Initializable {
     public void closeButtonOnAction(ActionEvent actionEvent) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
-        //Platform.exit();
     }
 
     public User CreateUser() {
 
+        System.out.println("Setting user password: " + setPasswordField.getText());
         switch (userType) {
             case "Basic User":
-                return new BasicUser(firstNameTextField.getText(), lastNameTextField.getText(),
-                        emailTextField.getText(), usernameTextField.getText(),
-                        setPasswordField.getText());
+                System.out.println("Selecting basic user: " + usernameTextField.getText() + " " + setPasswordField.getText());
+                return new BasicUser(usernameTextField.getText(), setPasswordField.getText(),
+                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText());
             case "Event Organizer User":
-                return new EventOrganizerUser(firstNameTextField.getText(), lastNameTextField.getText(),
-                        emailTextField.getText(), usernameTextField.getText(),
-                        setPasswordField.getText());
+                System.out.println("Selecting super user: " + usernameTextField.getText() + " " + setPasswordField.getText());
+                return new EventOrganizerUser(usernameTextField.getText(), setPasswordField.getText(),
+                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText());
             default:
                 registrationMessageLabel.setText(userType + "is not recognized!");
                 return null;
@@ -140,12 +142,13 @@ public class RegisterController implements Initializable {
         //System.out.println("user type : " + user.getClass().getTypeName());
 
         try {
+            System.out.println("Inserting user password: " + user.password);
             //insert fields needs no special treatment
             String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
 
             //hash the password
             String hashedPassword = sha256manager.SHA256(user.password);
-            System.out.println("SHA256 of password is: " + hashedPassword);
+            System.out.println("Pass is : " + user.password + ",SHA256 of password is: " + hashedPassword);
 
             //generate queries
             String insertValues = user.firstName + "','" + user.lastName + "','" + user.email + "','" + user.username + "','" + hashedPassword + "','" + userType + "')";

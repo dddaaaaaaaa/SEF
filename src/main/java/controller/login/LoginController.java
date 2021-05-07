@@ -95,7 +95,7 @@ public class LoginController implements Initializable {
         {
             //hash password
             String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
-            System.out.println("SHA256 of password is: " + hashedPassword);
+            System.out.println("Pass is : " + enterPasswordField.getText() + ", SHA256 of password is: " + hashedPassword);
 
             //do query
             String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + hashedPassword + "';";
