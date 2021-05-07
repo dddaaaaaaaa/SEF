@@ -1,6 +1,7 @@
 package controller.login;
 
 import domain.DatabaseConnection;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -61,7 +62,7 @@ public class LoginController implements Initializable {
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
             // loginMessageLabel.setText("Username or password does not exist!");
             /*if (registrationRequired == true)
-                createAccountStageForm();*/
+                createRegistrationStage();*/
             //else
                 validateLogin();
         } else {
@@ -74,13 +75,14 @@ public class LoginController implements Initializable {
         System.out.println("Cancel Button On Action!");
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
+        Platform.exit();
     }
 
     public void registerHyperlinkOnAction(ActionEvent actionEvent) {
         if (registerHyperlink.isVisited())
             registrationRequired = true;
         if (registrationRequired == true)
-            createAccountStageForm();
+            createRegistrationStage();
 
     }
 
@@ -110,7 +112,7 @@ public class LoginController implements Initializable {
         }
     }
 
-    public void createAccountStageForm() {
+    public void createRegistrationStage() {
         try {
             Stage registerStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/registration.fxml"));
