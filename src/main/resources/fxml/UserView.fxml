@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="547.0" prefWidth="594.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.UserViewController">
+   <children>
+      <GridPane layoutX="1.0" prefHeight="547.0" prefWidth="593.0" style="-fx-background-color: #ffffff;">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="290.33331298828125" minWidth="10.0" prefWidth="185.66668701171875" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.3333435058594" minWidth="10.0" prefWidth="408.33331298828125" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="241.66668701171875" minHeight="10.0" prefHeight="101.00000508626302" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="418.99999237060547" minHeight="10.0" prefHeight="391.6666615804036" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fitHeight="186.0" fitWidth="196.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/sigla.png" />
+               </image>
+            </ImageView>
+            <ListView fx:id="UserListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

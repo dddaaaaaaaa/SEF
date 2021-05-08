@@ -67,6 +67,7 @@ public class LoginController implements Initializable {
                 createRegistrationStage();*/
             //else
                 validateLogin();
+                createUserViewStage();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
@@ -106,12 +107,14 @@ public class LoginController implements Initializable {
             ResultSet queryResult = statement.executeQuery(verifyLogin);
 
             while (queryResult.next()) {
+                System.out.println(queryResult.getInt(1));
                 if (queryResult.getInt(1) == 1) {
                     loginMessageLabel.setText("You logged in successfully!");
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
                 }
             }
+
 
         }
         catch (NoSuchAlgorithmException e)
@@ -133,6 +136,21 @@ public class LoginController implements Initializable {
             registerStage.initStyle(StageStyle.DECORATED);
             registerStage.setScene(new Scene(root, 553, 591));
             registerStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+    public void createUserViewStage() {
+        try {
+            Stage UserViewStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
+            UserViewStage.setResizable(false);
+
+            UserViewStage.initStyle(StageStyle.DECORATED);
+            Scene scene = new Scene(root, 553, 591);
+            UserViewStage.setScene(scene);
+            UserViewStage.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
