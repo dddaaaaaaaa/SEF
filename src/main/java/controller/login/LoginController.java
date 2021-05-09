@@ -66,8 +66,8 @@ public class LoginController implements Initializable {
             /*if (registrationRequired == true)
                 createRegistrationStage();*/
             //else
-                validateLogin();
-                createUserViewStage();
+                if(validateLogin())
+                    createUserViewStage();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
@@ -89,7 +89,8 @@ public class LoginController implements Initializable {
 
     }
 
-    public void validateLogin() {
+    public boolean validateLogin() {
+        boolean isSuccess = false;
         DatabaseConnection connectNow = new DatabaseConnection();
         // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
@@ -110,6 +111,7 @@ public class LoginController implements Initializable {
                 System.out.println(queryResult.getInt(1));
                 if (queryResult.getInt(1) == 1) {
                     loginMessageLabel.setText("You logged in successfully!");
+                    isSuccess = true;
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
                 }
@@ -126,6 +128,8 @@ public class LoginController implements Initializable {
             e.printStackTrace();
             e.getCause();
         }
+
+        return isSuccess;
     }
 
     public void createRegistrationStage() {
