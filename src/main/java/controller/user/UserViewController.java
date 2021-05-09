@@ -6,9 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,6 +31,18 @@ public class UserViewController implements Initializable {
         System.out.println("DEBUG (uview controller line 25) - button press, adding new event");
 
         //spawn new scene
+        try {
+            Stage addEventStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
+            addEventStage.setResizable(false);
+            addEventStage.initStyle(StageStyle.DECORATED);
+            //addEventStage.setScene(new Scene(root, 500, 400));
+            addEventStage.setScene(new Scene(root));
+            addEventStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     ObservableList<String> List = FXCollections.observableArrayList();
