@@ -1,5 +1,6 @@
 package controller.event;
 
+import domain.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +10,9 @@ import javafx.scene.control.TextField;
 
 import static javafx.scene.paint.Color.color;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.*;
 
 public class AddEventController {
@@ -123,6 +127,22 @@ public class AddEventController {
         System.out.println("Target time is " + timeOffset + " seconds from now.");
         System.out.println("That is " + (epochTime + timeOffset) + " unix time, or " + Instant.ofEpochSecond(epochTime + timeOffset));
 
+        //database
+        String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\") VALUES ('";
+        String insertValues = "testname','" + nameTextField.getText() + "','" + (epochTime + timeOffset) + "')";
+        String insertToEvents = insertFields + insertValues;
+
+        try {
+            Connection connectDB = new DatabaseConnection().getConnection();
+            Statement statement = connectDB.createStatement();
+            statement.executeUpdate(insertToEvents);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            return false;
+        }
 
         return true;
     }
