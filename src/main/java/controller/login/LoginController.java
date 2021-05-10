@@ -156,7 +156,13 @@ public class LoginController implements Initializable {
             UserViewStage.initStyle(StageStyle.DECORATED);
             Scene scene = new Scene(root, 553, 591);
             UserViewStage.setScene(scene);
-            UserViewStage.showAndWait();
+            //UserViewStage.showAndWait();
+            UserViewStage.show();
+
+            //now logged in, close login window
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
+
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
