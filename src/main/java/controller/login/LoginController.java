@@ -56,6 +56,8 @@ public class LoginController implements Initializable {
         File lockFile = new File("src\\main\\resources\\images\\lacat.png");
         Image lockImage = new Image(lockFile.toURI().toString());
         lockImageView.setImage(lockImage);
+
+        loginButton.setDefaultButton(true);
     }
 
     public void loginButtonOnAction(ActionEvent actionEvent) {
