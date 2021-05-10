@@ -122,6 +122,8 @@ public class AddEventController {
 
         System.out.println("Target time is " + timeOffset + " seconds from now.");
         System.out.println("That is " + (epochTime + timeOffset) + " unix time, or " + Instant.ofEpochSecond(epochTime + timeOffset));
+
+
         return true;
     }
 
@@ -130,7 +132,151 @@ public class AddEventController {
         //Debug
         System.out.println("Create absolute event called!");
 
-        return false;
+        int year = 1970;
+        int month = 1;
+        int day = 1;
+
+        int h = 0;
+        int m = 0;
+        int s = 0;
+
+        //process year
+        try {
+            year = Integer.parseInt(yearTextField.getText());
+            if(year < 1970)
+                return false;
+        } catch (NumberFormatException nfe) {
+            //empty or not a number
+            return false;
+        }
+
+        //process month
+        try {
+            month = Integer.parseInt(monthTextField.getText());
+            if(month < 0 || month > 12)
+                return false;
+        } catch (NumberFormatException nfe) {
+            //empty or not a number
+            return false;
+        }
+
+        //process day
+        try {
+            day = Integer.parseInt(dayTextField.getText());
+            if (day < 1)
+                return false;
+
+            //determine max day in month
+            int maxDay = 28;
+            switch (month)
+            {
+                case 1:
+                    maxDay = 31;
+                    break;
+
+                case 2:
+                    if(year % 4 == 0)
+                        maxDay = 29;
+                    else
+                        maxDay = 28;
+                    break;
+
+                case 3:
+                    maxDay = 31;
+                    break;
+
+                case 4:
+                    maxDay = 30;
+                    break;
+
+                case 5:
+                    maxDay = 31;
+                    break;
+
+                case 6:
+                    maxDay = 30;
+                    break;
+
+                case 7:
+                    maxDay = 31;
+                    break;
+
+                case 8:
+                    maxDay = 31;
+                    break;
+
+                case 9:
+                    maxDay = 30;
+                    break;
+
+                case 10:
+                    maxDay = 31;
+                    break;
+
+                case 11:
+                    maxDay = 30;
+                    break;
+
+                case 12:
+                    maxDay = 31;
+                    break;
+
+                default:    //should not reach here
+                    return false;
+            }
+
+            if(day > maxDay)
+                return false;
+
+        } catch (NumberFormatException nfe) {
+            //empty or not a number
+            return false;
+        }
+
+        //process hour
+        try {
+            h = Integer.parseInt(hourTextField.getText());
+
+            if(h < 0 || h > 24)
+                return false;
+        } catch (NumberFormatException nfe) {
+            //empty or not a number
+            return false;
+        }
+
+        //process minute
+        try {
+            m = Integer.parseInt(minuteTextField.getText());
+            if(m < 0 || m > 60)
+                return false;
+        } catch (NumberFormatException nfe) {
+            //empty or not a number
+            return false;
+        }
+
+        //process second
+        try {
+            s = Integer.parseInt(secondTextField.getText());
+            if(s < 0 || s > 60)
+                return false;
+        } catch (NumberFormatException nfe) {
+            //empty or not a number
+            return false;
+        }
+
+        //if we reach here, we have a valid input
+        LocalDateTime eventDateTime = LocalDateTime.of(year, month, day, h, m, s);
+        System.out.println("Date and time of event: " + eventDateTime);
+
+        //get system time zone
+        Instant tempInstant = Instant.now();
+        ZoneId systemZone = ZoneId.systemDefault();
+        ZoneOffset myTimeZoneOffset = systemZone.getRules().getOffset(tempInstant);
+
+        long epochTime = eventDateTime.toEpochSecond(myTimeZoneOffset);
+        System.out.println("Converted to UNIX time: " + epochTime);
+        System.out.println("UTC unix time: " + Instant.now().getEpochSecond());
+        return true;
     }
 
 }
