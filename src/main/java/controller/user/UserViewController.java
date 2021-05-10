@@ -28,7 +28,7 @@ public class UserViewController implements Initializable {
     public void createNewButtonOnAction(ActionEvent actionEvent)
     {
         //quick debug print
-        System.out.println("DEBUG (uview controller line 25) - button press, adding new event");
+        System.out.println("DEBUG (uview controller line 31) - button press, adding new event");
 
         //spawn new scene
         try {
