@@ -76,6 +76,10 @@ public class AddEventController {
 
         long timeOffset = 0;
 
+        //check name
+        if(nameTextField.getText().isEmpty() || nameTextField.getText().length() > 100)
+            return false;
+
         //process year
         try {
             timeOffset += (long)Integer.parseInt(yearTextField.getText()) * 31557600;
@@ -159,6 +163,10 @@ public class AddEventController {
         int h = 0;
         int m = 0;
         int s = 0;
+
+        //check name
+        if(nameTextField.getText().isEmpty() || nameTextField.getText().length() > 100)
+            return false;
 
         //process year
         try {
@@ -295,7 +303,24 @@ public class AddEventController {
 
         long epochTime = eventDateTime.toEpochSecond(myTimeZoneOffset);
         System.out.println("Converted to UNIX time: " + epochTime);
-        System.out.println("UTC unix time: " + Instant.now().getEpochSecond());
+
+        //database
+        String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\") VALUES ('";
+        String insertValues = "testname','" + nameTextField.getText() + "','" + epochTime + "')";
+        String insertToEvents = insertFields + insertValues;
+
+        try {
+            Connection connectDB = new DatabaseConnection().getConnection();
+            Statement statement = connectDB.createStatement();
+            statement.executeUpdate(insertToEvents);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            return false;
+        }
+
         return true;
     }
 
