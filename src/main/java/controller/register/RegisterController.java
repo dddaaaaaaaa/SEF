@@ -3,6 +3,9 @@ package controller.register;
 import crypto.sha256manager;
 import domain.*;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import javafx.fxml.FXML;
@@ -12,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
+import javafx.stage.StageStyle;
 
 import java.io.File; //image view
 import java.net.URL;
@@ -114,7 +118,7 @@ public class RegisterController implements Initializable {
     }
 
 
-    public void closeButtonOnAction(ActionEvent actionEvent) {
+    public void closeButtonOnAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
@@ -161,6 +165,7 @@ public class RegisterController implements Initializable {
             e.printStackTrace();
             e.getCause();
         }
+        ReturnToLoginStage();
 
     }
 
@@ -170,5 +175,19 @@ public class RegisterController implements Initializable {
 
         return connectDB;
 
+    }
+    public void ReturnToLoginStage() {
+        closeButtonOnAction();
+        try {
+            Stage loginStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/login.fxml"));
+            loginStage.setResizable(false);
+            //loginStage.initStyle(StageStyle.DECORATED);
+            loginStage.setScene(new Scene(root, 520, 400));
+            loginStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 }
