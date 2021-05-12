@@ -109,7 +109,7 @@ public class LoginController implements Initializable {
             while (queryResult.next()) {
                 System.out.println(queryResult.getInt(1));
                 if (queryResult.getInt(1) == 1) {
-                    loginMessageLabel.setText("You logged in successfully!");
+                   // loginMessageLabel.setText("You logged in successfully!");
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
                 }
@@ -148,7 +148,7 @@ public class LoginController implements Initializable {
             UserViewStage.setResizable(false);
 
             UserViewStage.initStyle(StageStyle.DECORATED);
-            Scene scene = new Scene(root, 553, 591);
+            Scene scene = new Scene(root, 639, 570);
             UserViewStage.setScene(scene);
             UserViewStage.showAndWait();
         } catch (Exception e) {
