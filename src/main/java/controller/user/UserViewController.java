@@ -55,7 +55,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
                     default:
                         System.out.println("Fxml loader cannot find file!");
                 }
-                System.out.println("Ceva!");
+
                 mainUserPane.setPrefSize(325,284);
                 mainUserPane.setCenter(view);
                 //mainUserPane.

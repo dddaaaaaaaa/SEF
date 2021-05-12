@@ -4,22 +4,28 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.SettingsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="388.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.SettingsController">
    <children>
       <Label layoutX="14.0" layoutY="32.0" prefHeight="17.0" prefWidth="86.0" text="First Name*" />
-      <TextField layoutX="100.0" layoutY="28.0" prefHeight="25.0" prefWidth="313.0" />
+      <TextField layoutX="100.0" layoutY="28.0" prefHeight="25.0" prefWidth="264.0" />
       <Label layoutX="14.0" layoutY="75.0" prefHeight="17.0" prefWidth="86.0" text="Last Name*" />
-      <TextField layoutX="100.0" layoutY="71.0" prefHeight="25.0" prefWidth="313.0" />
+      <TextField layoutX="100.0" layoutY="71.0" prefHeight="25.0" prefWidth="264.0" />
       <Label layoutX="13.0" layoutY="130.0" prefHeight="17.0" prefWidth="86.0" text="Email Address*" />
-      <TextField layoutX="100.0" layoutY="126.0" prefHeight="25.0" prefWidth="313.0" />
+      <TextField layoutX="100.0" layoutY="126.0" prefHeight="25.0" prefWidth="264.0" />
       <Label layoutX="13.0" layoutY="180.0" prefHeight="17.0" prefWidth="86.0" text="Address" />
-      <TextField layoutX="99.0" layoutY="176.0" prefHeight="25.0" prefWidth="313.0" />
+      <TextField layoutX="99.0" layoutY="176.0" prefHeight="25.0" prefWidth="264.0" />
       <Label layoutX="14.0" layoutY="233.0" prefHeight="17.0" prefWidth="86.0" text="Phone number" />
-      <TextField layoutX="100.0" layoutY="229.0" prefHeight="25.0" prefWidth="313.0" />
-      <DatePicker layoutX="100.0" layoutY="276.0" prefHeight="25.0" prefWidth="313.0" />
+      <TextField layoutX="100.0" layoutY="229.0" prefHeight="25.0" prefWidth="264.0" />
+      <DatePicker layoutX="100.0" layoutY="276.0" prefHeight="25.0" prefWidth="264.0" />
       <Label layoutX="13.0" layoutY="280.0" prefHeight="17.0" prefWidth="86.0" text="Birth" />
       <Label layoutX="14.0" layoutY="328.0" prefHeight="17.0" prefWidth="86.0" text="Ocupation" />
-      <TextField layoutX="100.0" layoutY="324.0" prefHeight="25.0" prefWidth="325.0" />
+      <TextField layoutX="99.0" layoutY="324.0" prefHeight="25.0" prefWidth="264.0" />
+      <Label layoutX="136.0" layoutY="366.0" prefHeight="20.0" prefWidth="148.0" text="Mandatory fields!" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

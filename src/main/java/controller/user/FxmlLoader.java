@@ -15,10 +15,10 @@ public class FxmlLoader {
             System.out.println(fileName + "\n");
             URL fileURL = getClass().getClassLoader().getResource("fxml/" + fileName + ".fxml");
             System.out.println("file url " + fileURL + "\n");
-           // if (fileURL == null) {
-            //    throw new java.io.FileNotFoundException("FXML file can't be found!");
-          //  }
-            loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/Settings.fxml"));
+            if (fileURL == null) {
+                throw new java.io.FileNotFoundException("FXML file can't be found!");
+            }
+            loader = new FXMLLoader(fileURL);
             //view = FXMLLoader(fileURL).load();
             view = loader.load();
         } catch (Exception e) {
