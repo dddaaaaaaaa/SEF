@@ -14,7 +14,10 @@ import java.io.File;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -24,7 +27,7 @@ public class AddEventController extends PersonalEventsListController implements 
     @FXML
     private ImageView imageView;
     @FXML
-    private TextField EventNameTextField, ObservationsTextField;
+    private TextField EventNameTextField, ObservationsTextField, HostTextField, LocationTextField, HourTextField, MinuteTextField;
     @FXML
     private DatePicker DateField;
     @FXML
@@ -44,7 +47,18 @@ public class AddEventController extends PersonalEventsListController implements 
     public void addEventButtonOnAction(javafx.event.ActionEvent actionEvent) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        PersonalEvent personalEvent = new PersonalEvent(formatter.parse("2021-02-02"),EventNameTextField.getText(),ObservationsTextField.getText());
+        LocalDate localDate = DateField.getValue();
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(HourTextField.getText()));
+        cal.set(Calendar.MINUTE, Integer.parseInt(MinuteTextField.getText()));
+        cal.set(Calendar.MILLISECOND, 0);
+        date = cal.getTime();
+
+        PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), HostTextField.getText(), LocationTextField.getText());
 
         if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null) && !(ObservationsTextField).getText().isBlank()) {
             try {
@@ -58,16 +72,14 @@ public class AddEventController extends PersonalEventsListController implements 
     }
 
     public void getPersonalEvent(PersonalEvent personalEvent) throws ParseException {
-        PersonalEventsListController controller = new PersonalEventsListController();
+        // PersonalEventsListController controller = new PersonalEventsListController();
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String date = DateField.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        System.out.println("Date is " + date);
-     //   ObservableList<PersonalEvent> events = FXCollections.observableArrayList();
         events.add(personalEvent);
-        // events.add(new PersonalEvent(formatter.parse("2021-10-02 11-40 am"), "Bday", "Celebration needed!"));
-        //  events.add(new PersonalEvent(formatter.parse("2021-07-01 12-00 pm"), "FDGHJKKJHGFHJKJHGFGHJK", "Celebration needed fghjkgfghjkhg!"));
-       // controller.addTreeTableItem(events);
+        Stage stage = (Stage) AddEventButton.getScene().getWindow();
+        stage.close();
+
     }
 
     public void cancelEventAdditionButtonOnAction(javafx.event.ActionEvent actionEvent) {

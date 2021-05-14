@@ -60,17 +60,20 @@ public class LoginController implements Initializable {
 
     public void loginButtonOnAction(ActionEvent actionEvent) {
         //System.out.println("Login Button On Action!");
-        loginMessageLabel.setText("You tried to login!");
+        //loginMessageLabel.setText("You tried to login!");
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
             // loginMessageLabel.setText("Username or password does not exist!");
             /*if (registrationRequired == true)
                 createRegistrationStage();*/
             //else
                 validateLogin();
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.close();
                 createUserViewStage();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
+
 
     }
 
@@ -145,10 +148,10 @@ public class LoginController implements Initializable {
         try {
             Stage UserViewStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
-            UserViewStage.setResizable(false);
+            //UserViewStage.setResizable(false);
 
             UserViewStage.initStyle(StageStyle.DECORATED);
-            Scene scene = new Scene(root, 679, 650);
+            Scene scene = new Scene(root, 800, 650);
             UserViewStage.setScene(scene);
             UserViewStage.showAndWait();
         } catch (Exception e) {

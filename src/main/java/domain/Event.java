@@ -6,11 +6,16 @@ public abstract class Event {
     Date date;
     String eventName;
     String observations;
+    String host;
+    String location;
 
-    public Event(Date date, String eventName, String observations) {
+
+    public Event(Date date, String eventName, String observations, String host, String location) {
         this.date = date;
         this.eventName = eventName;
         this.observations = observations;
+        this.host = host;
+        this.location = location;
     }
 
     public Date getDate() {
@@ -35,5 +40,21 @@ public abstract class Event {
 
     public void setObservations(String observations) {
         this.observations = observations;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

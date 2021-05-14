@@ -31,12 +31,12 @@ public class PersonalEventsListController implements Initializable {
     @FXML
     private TableColumn<PersonalEvent, Date> DateColumn;
     @FXML
-    private TableColumn<PersonalEvent, String> ObservationsColumn;
+    private TableColumn<PersonalEvent, String> ObservationsColumn, LocationColumn, HostColumn;
     @FXML
     private TableView<PersonalEvent> TableView;
     @FXML
     private Button AddButton, DeleteButton;
-    protected ObservableList<PersonalEvent> events;
+    protected static ObservableList<PersonalEvent> events;
 
 
     @Override
@@ -48,11 +48,10 @@ public class PersonalEventsListController implements Initializable {
         EventColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("eventName"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, Date>("date"));
         ObservationsColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("observations"));
+        HostColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("host"));
+        LocationColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("location"));
 
-        // TableView = new TableView<PersonalEvent>();
-        ObservableList<PersonalEvent> tableItems;
-
-
+        TableView.setEditable(true);
     }
 
     public void setTableEvents(ObservableList<PersonalEvent> events) {
@@ -99,7 +98,6 @@ public class PersonalEventsListController implements Initializable {
         ObservableList<PersonalEvent> eventSelected, allEvents;
         allEvents = TableView.getItems();
         eventSelected = TableView.getSelectionModel().getSelectedItems();
-
         eventSelected.forEach(allEvents::remove);
 
 
