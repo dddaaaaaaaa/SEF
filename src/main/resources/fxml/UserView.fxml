@@ -8,38 +8,38 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="639.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.UserViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="676.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.UserViewController">
    <children>
-      <BorderPane fx:id="mainUserPane" prefHeight="571.0" prefWidth="642.0">
+      <BorderPane fx:id="mainUserPane" prefHeight="596.0" prefWidth="676.0">
          <center>
-            <AnchorPane prefHeight="412.0" prefWidth="307.0" style="-fx-background-color: #8fd700;" BorderPane.alignment="BOTTOM_CENTER" />
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="363.0" style="-fx-background-color: #8fd700;" BorderPane.alignment="BOTTOM_CENTER" />
          </center>
          <left>
-            <AnchorPane maxHeight="425.0" minHeight="-Infinity" prefHeight="425.0" prefWidth="201.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+            <AnchorPane maxHeight="504.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="201.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
                <children>
-                  <ListView fx:id="UserListView" layoutY="1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="415.0" prefWidth="201.0" />
+                  <ListView fx:id="UserListView" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="201.0" />
                </children>
             </AnchorPane>
          </left>
          <right>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="134.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER" />
+            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="112.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER" />
          </right>
          <top>
-            <AnchorPane prefHeight="133.0" prefWidth="642.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="67.0" prefWidth="676.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="147.0" fitWidth="166.0" layoutX="32.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="74.0" fitWidth="80.0" layoutX="32.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/sigla.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="547.0" layoutY="19.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ffffff;" text="Logout" textAlignment="CENTER">
+                  <Button layoutX="570.0" layoutY="19.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ffffff;" text="Logout" textAlignment="CENTER">
                      <font>
                         <Font name="System Italic" size="13.0" />
                      </font>
                   </Button>
-                  <ImageView fitHeight="50.0" fitWidth="70.0" layoutX="497.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="45.0" fitWidth="38.0" layoutX="545.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/user.png" />
+                        <Image url="@../images/logout.png" />
                      </image>
                   </ImageView>
                </children>

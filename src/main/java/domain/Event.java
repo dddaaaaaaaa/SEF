@@ -1,21 +1,23 @@
 package domain;
 
+import java.util.Date;
+
 public abstract class Event {
-    String date;
+    Date date;
     String eventName;
     String observations;
 
-    public Event(String date, String eventName, String observations) {
+    public Event(Date date, String eventName, String observations) {
         this.date = date;
         this.eventName = eventName;
         this.observations = observations;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

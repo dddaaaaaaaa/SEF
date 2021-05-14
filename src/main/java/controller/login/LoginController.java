@@ -148,7 +148,7 @@ public class LoginController implements Initializable {
             UserViewStage.setResizable(false);
 
             UserViewStage.initStyle(StageStyle.DECORATED);
-            Scene scene = new Scene(root, 639, 570);
+            Scene scene = new Scene(root, 679, 650);
             UserViewStage.setScene(scene);
             UserViewStage.showAndWait();
         } catch (Exception e) {

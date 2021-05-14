@@ -1,17 +1,24 @@
-controller/user/FxmlLoader.java
- controller.user.FxmlLoader
+controller/user/GlobalEventsListController.java
+ controller.user.GlobalEventsListController
+crypto/sha256manager.java
+ crypto.sha256manager
+domain/Event.java
+ domain.Event
 controller/login/LoginController.java
  controller.login.LoginController
 domain/DatabaseConnection.java
  domain.DatabaseConnection
 domain/EventOrganizerUser.java
  domain.EventOrganizerUser
+domain/PersonalEvent.java
+ domain.PersonalEvent
 domain/ID.java
  domain.ID
 domain/BasicUser.java
  domain.BasicUser
-crypto/sha256manager.java
- crypto.sha256manager
+controller/user/UserViewController.java
+ controller.user.UserViewController
+ controller.user.UserViewController$1
 Main.java
  Main
 controller/user/SettingsController.java
@@ -20,18 +27,13 @@ domain/Register.java
  domain.Register
 controller/register/RegisterController.java
  controller.register.RegisterController
+controller/user/FxmlLoader.java
+ controller.user.FxmlLoader
 domain/DatabaseCredentials.java
  domain.DatabaseCredentials
 domain/User.java
  domain.User
-controller/user/GlobalEventsListController.java
- controller.user.GlobalEventsListController
-domain/PersonalEvent.java
- domain.PersonalEvent
-domain/Event.java
- domain.Event
-controller/user/UserViewController.java
- controller.user.UserViewController
- controller.user.UserViewController$1
+controller/user/AddEventController.java
+ controller.user.AddEventController
 controller/user/PersonalEventsListController.java
  controller.user.PersonalEventsListController
