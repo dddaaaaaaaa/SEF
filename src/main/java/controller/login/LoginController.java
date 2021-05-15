@@ -56,6 +56,8 @@ public class LoginController implements Initializable {
         File lockFile = new File("src\\main\\resources\\images\\lacat.png");
         Image lockImage = new Image(lockFile.toURI().toString());
         lockImageView.setImage(lockImage);
+
+        loginButton.setDefaultButton(true);
     }
 
     public void loginButtonOnAction(ActionEvent actionEvent) {
@@ -66,10 +68,8 @@ public class LoginController implements Initializable {
             /*if (registrationRequired == true)
                 createRegistrationStage();*/
             //else
-                validateLogin();
-                Stage stage = (Stage) loginButton.getScene().getWindow();
-                stage.close();
-                createUserViewStage();
+                if(validateLogin())
+                    createUserViewStage();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
@@ -92,7 +92,8 @@ public class LoginController implements Initializable {
 
     }
 
-    public void validateLogin() {
+    public boolean validateLogin() {
+        boolean isSuccess = false;
         DatabaseConnection connectNow = new DatabaseConnection();
         // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
@@ -112,7 +113,8 @@ public class LoginController implements Initializable {
             while (queryResult.next()) {
                 System.out.println(queryResult.getInt(1));
                 if (queryResult.getInt(1) == 1) {
-                   // loginMessageLabel.setText("You logged in successfully!");
+                    loginMessageLabel.setText("You logged in successfully!");
+                    isSuccess = true;
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
                 }
@@ -129,6 +131,8 @@ public class LoginController implements Initializable {
             e.printStackTrace();
             e.getCause();
         }
+
+        return isSuccess;
     }
 
     public void createRegistrationStage() {
@@ -153,7 +157,13 @@ public class LoginController implements Initializable {
             UserViewStage.initStyle(StageStyle.DECORATED);
             Scene scene = new Scene(root, 800, 650);
             UserViewStage.setScene(scene);
-            UserViewStage.showAndWait();
+            //UserViewStage.showAndWait();
+            UserViewStage.show();
+
+            //now logged in, close login window
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
+
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
