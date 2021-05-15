@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URL;
 import java.text.ParseException;
@@ -35,7 +36,7 @@ public class PersonalEventsListController implements Initializable {
     @FXML
     private TableView<PersonalEvent> TableView;
     @FXML
-    private Button AddButton, DeleteButton;
+    private Button AddButton, AddRelativeButton, DeleteButton;
     protected static ObservableList<PersonalEvent> events;
 
 
@@ -88,8 +89,27 @@ public class PersonalEventsListController implements Initializable {
 
     }
 
-    public void AddButtonOnAction(javafx.event.ActionEvent actionEvent) {
+    //create button on action
+    public void AddButtonOnAction(javafx.event.ActionEvent actionEvent)
+    {
         createAddEventStage();
+    }
+
+    //create relative button on action
+    public void AddRelativeButtonOnAction(javafx.event.ActionEvent actionEvent)
+    {
+        try {
+            Stage addEventStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddRelativeEvent.fxml"));
+            addEventStage.setResizable(false);
+            addEventStage.initStyle(StageStyle.DECORATED);
+            //addEventStage.setScene(new Scene(root, 500, 400));
+            addEventStage.setScene(new Scene(root));
+            addEventStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     //Delete button on Action
