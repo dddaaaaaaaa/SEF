@@ -1,5 +1,6 @@
 package controller.user;
 
+import domain.DatabaseConnection;
 import domain.PersonalEvent;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,9 +17,12 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -53,6 +57,38 @@ public class PersonalEventsListController implements Initializable {
         LocationColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("location"));
 
         TableView.setEditable(true);
+
+        //query database
+        String queryString = "SELECT * FROM \"personalEvents\"";    //TODO query only my events
+
+        try {
+            Connection connectDB = new DatabaseConnection().getConnection();
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(queryString);
+
+            //data available here
+            while (queryResult.next())
+            {
+                String username = queryResult.getString(2);
+                String eventname = queryResult.getString(3);
+                long duedate = queryResult.getLong(4);
+                String extra = queryResult.getString(5);
+                String eventloc = queryResult.getString(6);
+
+                Date date = new Date();
+                date.setTime(duedate * 1000);
+
+                System.out.println("Adding event " + eventname + " happening at " + duedate);
+                PersonalEvent ev = new PersonalEvent(date, eventname, extra, username, eventloc);
+                TableView.getItems().add(ev);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            System.out.println("Querying user events failed!");
+        }
     }
 
     public void setTableEvents(ObservableList<PersonalEvent> events) {

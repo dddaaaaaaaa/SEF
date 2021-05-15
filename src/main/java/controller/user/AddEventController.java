@@ -84,7 +84,7 @@ public class AddEventController extends PersonalEventsListController implements 
         Date date = cal.getTime();
         PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), HostTextField.getText(), LocationTextField.getText());
 
-        if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null) && !(ObservationsTextField).getText().isBlank()) {
+        if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null) && !(HostTextField).getText().isBlank()) {
             try {
                 getPersonalEvent(personalEvent);
             } catch (ParseException e) {
