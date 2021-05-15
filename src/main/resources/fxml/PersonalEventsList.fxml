@@ -11,27 +11,27 @@
 
 <AnchorPane maxHeight="-Infinity" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.PersonalEventsListController">
    <children>
-      <TextField layoutX="204.0" layoutY="6.0" prefHeight="38.0" prefWidth="171.0" style="-fx-background-color: #ffffff;" text="Personal Events">
+      <TextField layoutX="234.0" layoutY="7.0" prefHeight="39.0" prefWidth="171.0" style="-fx-background-color: #ffffff;" text="Personal Events">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </TextField>
-      <ImageView fx:id="eventImageView" fitHeight="50.0" fitWidth="65.0" layoutX="137.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="eventImageView" fitHeight="50.0" fitWidth="65.0" layoutX="184.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/calendar.png" />
          </image>
       </ImageView>
-      <Button fx:id="AddButton" layoutX="116.0" layoutY="552.0" mnemonicParsing="false" onAction="#AddButtonOnAction" prefHeight="25.0" prefWidth="105.0" text="Add">
+      <Button fx:id="AddButton" layoutX="166.0" layoutY="546.0" mnemonicParsing="false" onAction="#AddButtonOnAction" prefHeight="25.0" prefWidth="105.0" text="Add">
          <font>
             <Font name="System Italic" size="13.0" />
          </font>
       </Button>
-      <Button fx:id="DeleteButton" layoutX="350.0" layoutY="552.0" mnemonicParsing="false" onAction="#DeleteButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Delete">
+      <Button fx:id="DeleteButton" layoutX="362.0" layoutY="546.0" mnemonicParsing="false" onAction="#DeleteButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Delete">
          <font>
             <Font name="System Italic" size="13.0" />
          </font>
       </Button>
-      <TableView fx:id="TableView" layoutX="13.0" layoutY="55.0" maxHeight="-Infinity" prefHeight="490.0" prefWidth="561.0">
+      <TableView fx:id="TableView" layoutX="13.0" layoutY="55.0" maxHeight="-Infinity" prefHeight="477.0" prefWidth="570.0">
          <columns>
             <TableColumn fx:id="EventColumn" prefWidth="130.66665172576904" text="Event" />
             <TableColumn fx:id="DateColumn" prefWidth="94.00003051757812" text="Date" />

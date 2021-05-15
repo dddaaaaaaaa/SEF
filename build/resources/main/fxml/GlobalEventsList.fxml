@@ -11,17 +11,17 @@
 
 <AnchorPane maxHeight="-Infinity" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.GlobalEventsListController">
     <children>
-        <TextField layoutX="234.0" layoutY="5.0" prefHeight="39.0" prefWidth="171.0" style="-fx-background-color: #ffffff;" text="Global Events">
+        <TextField layoutX="234.0" layoutY="7.0" prefHeight="39.0" prefWidth="171.0" style="-fx-background-color: #ffffff;" text="Global Events">
             <font>
                 <Font name="System Bold Italic" size="18.0" />
             </font>
         </TextField>
-        <ImageView fx:id="eventImageView" fitHeight="50.0" fitWidth="65.0" layoutX="184.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="eventImageView" fitHeight="50.0" fitWidth="65.0" layoutX="184.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../images/calendar.png" />
             </image>
         </ImageView>
-        <TableView fx:id="TableView" layoutX="10.0" layoutY="55.0" maxHeight="-Infinity" prefHeight="477.0" prefWidth="570.0">
+        <TableView fx:id="TableView" layoutX="13.0" layoutY="55.0" maxHeight="-Infinity" prefHeight="477.0" prefWidth="570.0">
             <columns>
                 <TableColumn fx:id="EventColumn" prefWidth="130.66665172576904" text="Event" />
                 <TableColumn fx:id="DateColumn" prefWidth="94.00003051757812" text="Date" />
