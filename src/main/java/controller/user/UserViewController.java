@@ -110,9 +110,10 @@ public class UserViewController extends FxmlLoader implements Initializable {
     }
 
     public void LoadIntoUserList() throws InterruptedException {
-        List.add("Global Events");
-        List.add("Personal Events");
         List.add("Settings");
+        List.add("Personal Events");
+        List.add("Global Events");
+
         UserListView.getItems().addAll(List);
     }
 
