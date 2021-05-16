@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static javafx.scene.paint.Color.color;
+
 public class AddEventController extends PersonalEventsListController implements Initializable {
 
     @FXML
@@ -50,6 +52,14 @@ public class AddEventController extends PersonalEventsListController implements 
 
     public void addEventButtonOnAction(javafx.event.ActionEvent actionEvent)
     {
+        if(DateField.getValue() == null)
+        {
+            //date field is empty
+            MandatoryLabelField.setTextFill(color(1, 0, 0));
+            MandatoryLabelField.setText("Date is mandatory!");
+            return;
+        }
+
         //get date
         LocalDate localDate = DateField.getValue();
 

@@ -11,7 +11,11 @@
 
 <AnchorPane prefHeight="413.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.AddEventController">
    <children>
-      <DatePicker fx:id="DateField" layoutX="145.0" layoutY="120.0" prefHeight="25.0" prefWidth="228.0" promptText="Date" />
+      <ImageView fx:id="imageView" fitHeight="47.0" fitWidth="41.0" layoutX="124.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/addEvent.png" />
+         </image>
+      </ImageView>
       <Label layoutX="180.0" layoutY="30.0" prefHeight="17.0" prefWidth="126.0" text="Add your event" textAlignment="CENTER">
          <font>
             <Font name="System Bold Italic" size="14.0" />
@@ -22,55 +26,51 @@
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
+      <TextField fx:id="EventNameTextField" layoutX="143.0" layoutY="84.0" prefHeight="25.0" prefWidth="228.0" promptText="Event name" />
       <Label layoutX="49.0" layoutY="123.0" prefHeight="19.0" prefWidth="60.0" text="Date">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="ObservationsTextField" layoutX="142.0" layoutY="194.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
-      <Label layoutX="33.0" layoutY="197.0" prefHeight="19.0" prefWidth="81.0" text="Observations">
-         <font>
-            <Font name="System Bold Italic" size="13.0" />
-         </font>
-      </Label>
-      <Button fx:id="AddEventButton" layoutX="139.0" layoutY="330.0" mnemonicParsing="false" onAction="#addEventButtonOnAction" prefHeight="25.0" prefWidth="228.0" text="Add" />
-      <Button fx:id="CancelEventAdditionButton" layoutX="139.0" layoutY="373.0" mnemonicParsing="false" onAction="#cancelEventAdditionButtonOnAction" prefHeight="25.0" prefWidth="228.0" text="Cancel" />
-      <ImageView fx:id="imageView" fitHeight="47.0" fitWidth="41.0" layoutX="124.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/addEvent.png" />
-         </image>
-      </ImageView>
-      <TextField fx:id="EventNameTextField" layoutX="143.0" layoutY="84.0" prefHeight="25.0" prefWidth="228.0" promptText="Event name" />
-      <Label fx:id="MandatoryLabelField" layoutX="141.0" layoutY="234.0" prefHeight="17.0" prefWidth="228.0" textAlignment="CENTER" textFill="RED" />
-      <TextField fx:id="LocationTextField" layoutX="143.0" layoutY="238.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
-      <Label layoutX="34.0" layoutY="241.0" prefHeight="19.0" prefWidth="81.0" text="Location">
-         <font>
-            <Font name="System Bold Italic" size="13.0" />
-         </font>
-      </Label>
-      <Label fx:id="MandatoryLabelField1" layoutX="142.0" layoutY="276.0" prefHeight="17.0" prefWidth="228.0" textAlignment="CENTER" textFill="RED" />
-      <TextField fx:id="HostTextField" layoutX="144.0" layoutY="280.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
-      <Label layoutX="35.0" layoutY="283.0" prefHeight="19.0" prefWidth="81.0" text="Host">
-         <font>
-            <Font name="System Bold Italic" size="13.0" />
-         </font>
-      </Label>
+      <DatePicker fx:id="DateField" layoutX="145.0" layoutY="120.0" prefHeight="25.0" prefWidth="228.0" promptText="Date" />
       <Label layoutX="44.0" layoutY="161.0" prefHeight="19.0" prefWidth="60.0" text="Time">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="HourTextField" layoutX="165.0" layoutY="158.0" prefHeight="25.0" prefWidth="30.0" />
-      <TextField fx:id="MinuteTextField" layoutX="253.0" layoutY="158.0" prefHeight="25.0" prefWidth="30.0" />
       <Label layoutX="130.0" layoutY="161.0" prefHeight="19.0" prefWidth="30.0" text="HH">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
+      <TextField fx:id="HourTextField" layoutX="165.0" layoutY="158.0" prefHeight="25.0" prefWidth="30.0" />
       <Label layoutX="213.0" layoutY="161.0" prefHeight="19.0" prefWidth="30.0" text="mm">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
+      <TextField fx:id="MinuteTextField" layoutX="253.0" layoutY="158.0" prefHeight="25.0" prefWidth="30.0" />
+      <Label layoutX="33.0" layoutY="197.0" prefHeight="19.0" prefWidth="81.0" text="Observations">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="ObservationsTextField" layoutX="142.0" layoutY="194.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
+      <Label layoutX="34.0" layoutY="241.0" prefHeight="19.0" prefWidth="81.0" text="Location">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="LocationTextField" layoutX="143.0" layoutY="238.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
+      <Label layoutX="35.0" layoutY="283.0" prefHeight="19.0" prefWidth="81.0" text="Host">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="HostTextField" layoutX="144.0" layoutY="280.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
+      <Button fx:id="AddEventButton" layoutX="139.0" layoutY="340.0" mnemonicParsing="false" onAction="#addEventButtonOnAction" prefHeight="25.0" prefWidth="228.0" text="Add" />
+      <Button fx:id="CancelEventAdditionButton" layoutX="139.0" layoutY="373.0" mnemonicParsing="false" onAction="#cancelEventAdditionButtonOnAction" prefHeight="25.0" prefWidth="228.0" text="Cancel" />
+      <Label fx:id="MandatoryLabelField" layoutX="143.0" layoutY="313.0" prefHeight="17.0" prefWidth="228.0" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="MandatoryLabelField1" layoutX="142.0" layoutY="276.0" prefHeight="17.0" prefWidth="228.0" textAlignment="CENTER" textFill="RED" />
    </children>
 </AnchorPane>
