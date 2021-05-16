@@ -1,5 +1,6 @@
 package controller.register;
 
+import crypto.sha256manager;
 import domain.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import javafx.stage.StageStyle;
 
 import java.io.File; //image view
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ResourceBundle;
 import java.lang.reflect.Field;
@@ -95,8 +97,9 @@ public class RegisterController implements Initializable {
 
     public void setEventOrganizerUserCheckboxOnAction(ActionEvent actionEvent) {
         if (eventOrganizerUserCheckbox.isSelected()) {
-            userType = userType + "Event Organizer User";
+            userType = "Event Organizer User";
             userTypeSelected = true;
+            basicUserCheckbox.setSelected(false);
         } else {
             registrationMessageLabel.setText("Please choose a user type");
             userTypeSelected = false;
@@ -105,8 +108,9 @@ public class RegisterController implements Initializable {
 
     public void setBasicUserCheckboxOnAction(ActionEvent actionEvent) {
         if (basicUserCheckbox.isSelected()) {
-            userType = userType + "Basic User";
+            userType = "Basic User";
             userTypeSelected = true;
+            eventOrganizerUserCheckbox.setSelected(false);
         } else {
             registrationMessageLabel.setText("Please choose a user type");
             userTypeSelected = false;
@@ -117,21 +121,16 @@ public class RegisterController implements Initializable {
     public void closeButtonOnAction() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
-       // Platform.exit();
-
     }
 
     public User CreateUser() {
-
         switch (userType) {
             case "Basic User":
-                return new BasicUser(firstNameTextField.getText(), lastNameTextField.getText(),
-                        emailTextField.getText(), usernameTextField.getText(),
-                        setPasswordField.getText());
+                return new BasicUser(usernameTextField.getText(), setPasswordField.getText(),
+                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText(),userType);
             case "Event Organizer User":
-                return new EventOrganizerUser(firstNameTextField.getText(), lastNameTextField.getText(),
-                        emailTextField.getText(), usernameTextField.getText(),
-                        setPasswordField.getText());
+                return new EventOrganizerUser(usernameTextField.getText(), setPasswordField.getText(),
+                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText(),userType);
             default:
                 registrationMessageLabel.setText(userType + "is not recognized!");
                 return null;
@@ -141,16 +140,28 @@ public class RegisterController implements Initializable {
     public void InsertNewRecord(Connection connection, User user) {
 
         //System.out.println("user type : " + user.getClass().getTypeName());
-        String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
-        String insertValues = user.firstName + "','" + user.lastName + "','" + user.email + "','" + user.username + "','" + user.password + "','" + userType + "')";
-        String insertToRegister = insertFields + insertValues;
-
 
         try {
+            //insert fields needs no special treatment
+            String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
+
+            //hash the password
+            String hashedPassword = sha256manager.SHA256(user.password);
+            System.out.println("Pass is : " + user.password + ",SHA256 of password is: " + hashedPassword);
+
+            //generate queries
+            String insertValues = user.firstName + "','" + user.lastName + "','" + user.email + "','" + user.username + "','" + hashedPassword + "','" + userType + "')";
+            String insertToRegister = insertFields + insertValues;
+
             Statement statement = connection.createStatement();
             statement.executeUpdate(insertToRegister);
             registrationMessageLabel.setText("                        User registered successfully!");
-        } catch (Exception e) {
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+            registrationMessageLabel.setText("                        Internal error! Unable to hash password!");
+        }catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }

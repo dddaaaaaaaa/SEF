@@ -1,5 +1,6 @@
 package controller.login;
 
+import crypto.sha256manager;
 import domain.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -54,20 +56,24 @@ public class LoginController implements Initializable {
         File lockFile = new File("src\\main\\resources\\images\\lacat.png");
         Image lockImage = new Image(lockFile.toURI().toString());
         lockImageView.setImage(lockImage);
+
+        loginButton.setDefaultButton(true);
     }
 
     public void loginButtonOnAction(ActionEvent actionEvent) {
         //System.out.println("Login Button On Action!");
-        loginMessageLabel.setText("You tried to login!");
+        //loginMessageLabel.setText("You tried to login!");
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
             // loginMessageLabel.setText("Username or password does not exist!");
             /*if (registrationRequired == true)
                 createRegistrationStage();*/
             //else
-                validateLogin();
+                if(validateLogin())
+                    createUserViewStage();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
+
 
     }
 
@@ -86,30 +92,47 @@ public class LoginController implements Initializable {
 
     }
 
-    public void validateLogin() {
+    public boolean validateLogin() {
+        boolean isSuccess = false;
         DatabaseConnection connectNow = new DatabaseConnection();
         // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
 
-        String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + enterPasswordField.getText() + "';";
+        try
+        {
+            //hash password
+            String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
+            System.out.println("Pass is : " + enterPasswordField.getText() + ", SHA256 of password is: " + hashedPassword);
 
-        try {
+            //do query
+            String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + hashedPassword + "';";
 
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
 
             while (queryResult.next()) {
+                System.out.println(queryResult.getInt(1));
                 if (queryResult.getInt(1) == 1) {
                     loginMessageLabel.setText("You logged in successfully!");
+                    isSuccess = true;
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
                 }
             }
 
-        } catch (Exception e) {
+
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+            loginMessageLabel.setText("Internal error! Unable to hash password!");
+        }
+        catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
+
+        return isSuccess;
     }
 
     public void createRegistrationStage() {
@@ -119,7 +142,28 @@ public class LoginController implements Initializable {
             registerStage.setResizable(false);
             registerStage.initStyle(StageStyle.DECORATED);
             registerStage.setScene(new Scene(root, 553, 591));
-            registerStage.show();
+            registerStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+    public void createUserViewStage() {
+        try {
+            Stage UserViewStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
+            //UserViewStage.setResizable(false);
+
+            UserViewStage.initStyle(StageStyle.DECORATED);
+            Scene scene = new Scene(root, 800, 650);
+            UserViewStage.setScene(scene);
+            //UserViewStage.showAndWait();
+            UserViewStage.show();
+
+            //now logged in, close login window
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
+
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
