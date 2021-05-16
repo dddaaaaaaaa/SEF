@@ -25,6 +25,9 @@ public class AddRelativeEventController {
     @FXML
     private TextField locationTextField;
 
+    @FXML
+    private TextField extraTextField;
+
     //date and time
     @FXML
     private TextField yearTextField;
@@ -125,8 +128,8 @@ public class AddRelativeEventController {
         System.out.println("That is " + (epochTime + timeOffset) + " unix time, or " + Instant.ofEpochSecond(epochTime + timeOffset));
 
         //database
-        String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\") VALUES ('";
-        String insertValues = "testname','" + nameTextField.getText() + "','" + (epochTime + timeOffset) + "')";
+        String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES ('";
+        String insertValues = "testname','" + nameTextField.getText() + "','" + (epochTime + timeOffset) + "','" + extraTextField.getText() + "','" + locationTextField.getText() + "')";
         String insertToEvents = insertFields + insertValues;
 
         try {
