@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -45,6 +46,29 @@ public class UserViewController extends FxmlLoader implements Initializable {
     private ImageView siglaImageView, clockImageView, logoutImageView;
     @FXML
     private Button logoutButton;
+
+    @FXML
+    private Button createNewButton;
+
+    public void createNewButtonOnAction(ActionEvent actionEvent)
+    {
+        //quick debug print
+        System.out.println("DEBUG (uview controller line 31) - button press, adding new event");
+
+        //spawn new scene
+        try {
+            Stage addEventStage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
+            addEventStage.setResizable(false);
+            addEventStage.initStyle(StageStyle.DECORATED);
+            //addEventStage.setScene(new Scene(root, 500, 400));
+            addEventStage.setScene(new Scene(root));
+            addEventStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
 
     ObservableList<String> List = FXCollections.observableArrayList();
 
