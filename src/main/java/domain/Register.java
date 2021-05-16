@@ -20,11 +20,11 @@ public class Register {
 
             //data available here
             while (queryResult.next()) {
-                String FirstName = queryResult.getString(2);
-                String LastName = queryResult.getString(3);
-                long Email = queryResult.getLong(4);
+                //String FirstName = queryResult.getString(2);
+               // String LastName = queryResult.getString(3);
+                String Email = queryResult.getString(4);
                 String Username = queryResult.getString(5);
-                String Type = queryResult.getString(6);
+              //  String Type = queryResult.getString(6);
 
                 if(email.equals(Email) || username.equals(Username))
                 {

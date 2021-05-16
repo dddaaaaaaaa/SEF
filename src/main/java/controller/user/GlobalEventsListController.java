@@ -1,6 +1,8 @@
 package controller.user;
 
 import domain.PersonalEvent;
+import domain.UserViewInterface;
+import javafx.beans.binding.When;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +24,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-public class GlobalEventsListController implements Initializable {
+public class GlobalEventsListController extends UserViewInterface implements Initializable {
     @FXML
     private ImageView eventImageView;
     @FXML
@@ -51,6 +53,8 @@ public class GlobalEventsListController implements Initializable {
         LocationColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("location"));
 
         TableView.setEditable(true);
+
+
     }
     public void setTableEvents(ObservableList<PersonalEvent> events) {
         this.events = events;
@@ -71,6 +75,14 @@ public class GlobalEventsListController implements Initializable {
             Scene scene = new Scene(root, 400, 400);
             AddEventStage.setScene(scene);
             AddEventStage.showAndWait();
+            AddButton.setOnAction(e -> AddButton.setVisible(!AddButton.isVisible()));
+
+            if(user.user.equals("Basic User"))
+                AddButton.textProperty().bind(
+                        new When(AddButton.visibleProperty()).then("Invisible").otherwise(
+                                "Visible"));
+
+            AddButton.managedProperty().bind(AddButton.visibleProperty());
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();

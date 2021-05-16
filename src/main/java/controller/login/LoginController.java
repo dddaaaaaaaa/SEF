@@ -1,7 +1,12 @@
 package controller.login;
 
+import controller.user.UserViewController;
 import crypto.sha256manager;
+import domain.BasicUser;
 import domain.DatabaseConnection;
+import domain.EventOrganizerUser;
+import domain.User;
+import exceptions.InvalidCredentialsRegistration;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +25,7 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
@@ -68,13 +74,53 @@ public class LoginController implements Initializable {
             /*if (registrationRequired == true)
                 createRegistrationStage();*/
             //else
-                if(validateLogin())
-                    createUserViewStage();
+            if (validateLogin())
+                createUserViewStage();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
 
 
+    }
+
+    public User retrieveUserFromDatabase(String username) throws SQLException {
+        String queryString = "SELECT * FROM \"user\" WHERE username = '" + username + "'";
+        User currentUser=null;
+        try {
+
+            Connection connectDB = new DatabaseConnection().getConnection();
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(queryString);
+
+            //data available here
+            while (queryResult.next()) {
+                String FirstName = queryResult.getString(2);
+                String LastName = queryResult.getString(3);
+                String Email = queryResult.getString(4);
+                String Username = queryResult.getString(5);
+                String Type = queryResult.getString(7);
+                String Password = queryResult.getString(6);
+
+
+                switch (queryResult.getString(7)) {
+                    case "Event Organizer":
+                        // public BasicUser(String username, String password, String firstName, String lastName, String email, String user)
+                        currentUser = new EventOrganizerUser(queryResult.getString("username"), queryResult.getString("password"),
+                                queryResult.getString("firstName"), queryResult.getString("lastName"), queryResult.getString("email"),
+                                queryResult.getString("type"));
+                    case "Basic User":
+                        currentUser = new BasicUser(Username, Password,
+                                FirstName, LastName, Email,
+                                Type);
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getCause();
+            System.out.println("Querying user events failed!");
+        }
+        return currentUser;
     }
 
     public void cancelButtonOnAction(ActionEvent actionEvent) {
@@ -98,8 +144,7 @@ public class LoginController implements Initializable {
         // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
 
-        try
-        {
+        try {
             //hash password
             String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
             System.out.println("Pass is : " + enterPasswordField.getText() + ", SHA256 of password is: " + hashedPassword);
@@ -121,13 +166,10 @@ public class LoginController implements Initializable {
             }
 
 
-        }
-        catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             loginMessageLabel.setText("Internal error! Unable to hash password!");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
@@ -148,21 +190,30 @@ public class LoginController implements Initializable {
             e.getCause();
         }
     }
+
     public void createUserViewStage() {
         try {
-            Stage UserViewStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
-            //UserViewStage.setResizable(false);
 
+            Stage UserViewStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
+            //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
+            //UserViewStage.setResizable(false);
+            Parent root = loader.load();
             UserViewStage.initStyle(StageStyle.DECORATED);
             Scene scene = new Scene(root, 800, 650);
-            UserViewStage.setScene(scene);
-            //UserViewStage.showAndWait();
-            UserViewStage.show();
 
-            //now logged in, close login window
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.close();
+            UserViewController userViewController = loader.getController();
+            User user = retrieveUserFromDatabase(usernameTextField.getText());
+            if (user != null) {
+                userViewController.getUserObject(user);
+                UserViewStage.setScene(scene);
+                //UserViewStage.showAndWait();
+                UserViewStage.show();
+
+                //now logged in, close login window
+                Stage stage = (Stage) cancelButton.getScene().getWindow();
+                stage.close();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

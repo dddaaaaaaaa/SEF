@@ -1,5 +1,7 @@
 package controller.user;
 
+import domain.User;
+import domain.UserViewInterface;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -34,7 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 
-
 public class UserViewController extends FxmlLoader implements Initializable {
     @FXML
     private ListView<String> UserListView;
@@ -49,7 +50,14 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
     ObservableList<String> List = FXCollections.observableArrayList();
 
+    User userObject;
+
+    public void getUserObject(User user) {
+        this.userObject = user;
+    }
+
     @Override
+
     public void initialize(URL location, ResourceBundle resources) {
         File file = new File("src\\main\\resources\\images\\sigla.png");
         Image image = new Image(file.toURI().toString());
@@ -62,7 +70,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
         file = new File("src\\main\\resources\\images\\logout.png");
         image = new Image(file.toURI().toString());
         logoutImageView.setImage(image);
-        showSettingsStage();
+        //showSettingsStage();
 
 
         try {
@@ -79,13 +87,13 @@ public class UserViewController extends FxmlLoader implements Initializable {
                 System.out.println("This is " + newValue + "\n");
                 switch (newValue) {
                     case "Personal Events":
-                        view = object.getPage("PersonalEventsList");
+                        view = object.getPage("PersonalEventsList", userObject);
                         break;
                     case "Settings":
-                        view = object.getPage("Settings");
+                        view = object.getPage("Settings", userObject);
                         break;
                     case "Global Events":
-                        view = object.getPage("GlobalEventsList");
+                        view = object.getPage("GlobalEventsList", userObject);
                         break;
                     default:
                         System.out.println("Fxml loader cannot find file!");
@@ -93,6 +101,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
                 mainUserPane.setPrefSize(620, 650);
                 mainUserPane.setCenter(view);
+
                 //mainUserPane.
             }
         });
@@ -119,7 +128,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
     public void showSettingsStage() {
         FxmlLoader object = new FxmlLoader();
-        Pane view = object.getPage("Settings");
+        Pane view = object.getPage("Settings", userObject);
         try {
             view = loader.load(getClass().getClassLoader().getResource("fxml/Settings.fxml"));
             ;

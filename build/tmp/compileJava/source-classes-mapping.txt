@@ -1,11 +1,11 @@
-controller/user/GlobalEventsListController.java
- controller.user.GlobalEventsListController
-controller/user/AddEventController.java
- controller.user.AddEventController
+controller/user/PersonalEventsListController.java
+ controller.user.PersonalEventsListController
+domain/GlobalEvent.java
+ domain.GlobalEvent
 domain/Event.java
  domain.Event
-controller/login/LoginController.java
- controller.login.LoginController
+crypto/sha256manager.java
+ crypto.sha256manager
 domain/DatabaseConnection.java
  domain.DatabaseConnection
 domain/EventOrganizerUser.java
@@ -16,30 +16,32 @@ domain/ID.java
  domain.ID
 domain/BasicUser.java
  domain.BasicUser
-controller/user/UserViewController.java
- controller.user.UserViewController
- controller.user.UserViewController$1
+controller/login/LoginController.java
+ controller.login.LoginController
 Main.java
  Main
 controller/user/SettingsController.java
  controller.user.SettingsController
 controller/user/AddRelativeEventController.java
  controller.user.AddRelativeEventController
-crypto/sha256manager.java
- crypto.sha256manager
-controller/user/FxmlLoader.java
- controller.user.FxmlLoader
-controller/user/PersonalEventsListController.java
- controller.user.PersonalEventsListController
-domain/DatabaseCredentials.java
- domain.DatabaseCredentials
-domain/User.java
- domain.User
-domain/GlobalEvent.java
- domain.GlobalEvent
+domain/UserViewInterface.java
+ domain.UserViewInterface
 domain/Register.java
  domain.Register
 exceptions/InvalidCredentialsRegistration.java
  exceptions.InvalidCredentialsRegistration
 controller/register/RegisterController.java
  controller.register.RegisterController
+controller/user/UserViewController.java
+ controller.user.UserViewController
+ controller.user.UserViewController$1
+domain/DatabaseCredentials.java
+ domain.DatabaseCredentials
+domain/User.java
+ domain.User
+controller/user/AddEventController.java
+ controller.user.AddEventController
+controller/user/GlobalEventsListController.java
+ controller.user.GlobalEventsListController
+controller/user/FxmlLoader.java
+ controller.user.FxmlLoader

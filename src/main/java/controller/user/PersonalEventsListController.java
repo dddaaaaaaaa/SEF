@@ -2,6 +2,7 @@ package controller.user;
 
 import domain.DatabaseConnection;
 import domain.PersonalEvent;
+import domain.UserViewInterface;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +29,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 
-public class PersonalEventsListController implements Initializable {
+public class PersonalEventsListController extends UserViewInterface implements Initializable {
     @FXML
     private ImageView eventImageView;
     @FXML
@@ -49,7 +50,6 @@ public class PersonalEventsListController implements Initializable {
         File eventFile = new File("src\\main\\resources\\images\\calendar.png");
         Image eventImage = new Image(eventFile.toURI().toString());
         eventImageView.setImage(eventImage);
-
         EventColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("eventName"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, Date>("date"));
         ObservationsColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("observations"));
@@ -58,6 +58,7 @@ public class PersonalEventsListController implements Initializable {
 
         TableView.setEditable(true);
 
+       // System.out.println(user.username);
         //query database
         String queryString = "SELECT * FROM \"personalEvents\"";    //TODO query only my events
 
@@ -96,6 +97,7 @@ public class PersonalEventsListController implements Initializable {
     }
 
     public void createAddEventStage() {
+        System.out.println(user.username);
         try {
             Stage AddEventStage = new Stage();
             /*Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
@@ -130,6 +132,7 @@ public class PersonalEventsListController implements Initializable {
     {
         createAddEventStage();
     }
+
 
     //create relative button on action
     public void AddRelativeButtonOnAction(javafx.event.ActionEvent actionEvent)
