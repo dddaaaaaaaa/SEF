@@ -1,6 +1,8 @@
 package controller.user;
 
 import domain.DatabaseConnection;
+import domain.PersonalEvent;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.*;
+import java.util.Date;
 
 public class AddRelativeEventController {
     @FXML
@@ -45,6 +48,14 @@ public class AddRelativeEventController {
     //status indicator
     @FXML
     private Label statusLabel;
+
+    //reference to event list
+    private ObservableList<PersonalEvent> events;
+
+    public void setTableEvents(ObservableList<PersonalEvent> events)
+    {
+        this.events = events;
+    }
 
     public void createButtonOnAction(ActionEvent actionEvent)
     {
@@ -143,6 +154,12 @@ public class AddRelativeEventController {
             e.getCause();
             return false;
         }
+
+        //creation successful, add to list
+        Date eventDate = new Date();
+        eventDate.setTime((epochTime + timeOffset) * 1000);
+        PersonalEvent pe = new PersonalEvent(eventDate, nameTextField.getText(), extraTextField.getText(), "myself", locationTextField.getText());
+        events.add(pe);
 
         return true;
     }

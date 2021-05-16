@@ -136,7 +136,12 @@ public class PersonalEventsListController implements Initializable {
     {
         try {
             Stage addEventStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddRelativeEvent.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/AddRelativeEvent.fxml"));
+            Parent root = loader.load();
+
+            AddRelativeEventController addRelativeEventController = loader.getController();
+            addRelativeEventController.setTableEvents(TableView.getItems());
+
             addEventStage.setResizable(false);
             addEventStage.initStyle(StageStyle.DECORATED);
             //addEventStage.setScene(new Scene(root, 500, 400));
