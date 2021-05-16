@@ -71,6 +71,6 @@
       <Button fx:id="AddEventButton" layoutX="139.0" layoutY="340.0" mnemonicParsing="false" onAction="#addEventButtonOnAction" prefHeight="25.0" prefWidth="228.0" text="Add" />
       <Button fx:id="CancelEventAdditionButton" layoutX="139.0" layoutY="373.0" mnemonicParsing="false" onAction="#cancelEventAdditionButtonOnAction" prefHeight="25.0" prefWidth="228.0" text="Cancel" />
       <Label fx:id="MandatoryLabelField" layoutX="143.0" layoutY="313.0" prefHeight="17.0" prefWidth="228.0" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="MandatoryLabelField1" layoutX="142.0" layoutY="276.0" prefHeight="17.0" prefWidth="228.0" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="MandatoryLabelField1" layoutX="29.0" layoutY="357.0" prefHeight="17.0" prefWidth="89.0" textAlignment="CENTER" textFill="RED" />
    </children>
 </AnchorPane>

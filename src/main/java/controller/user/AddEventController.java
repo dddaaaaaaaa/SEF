@@ -21,10 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static javafx.scene.paint.Color.color;
 
@@ -72,6 +69,13 @@ public class AddEventController extends PersonalEventsListController implements 
         } catch (NumberFormatException nfe) {
             //empty or not a number
             hour = 0;
+
+            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Hour field is invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
+            if(!result.isPresent())
+                return;
+            else if(result.get() == ButtonType.YES) {}
+            else if(result.get() == ButtonType.NO)
+                return;
         }
 
         //process minute
@@ -79,8 +83,14 @@ public class AddEventController extends PersonalEventsListController implements 
             minute = Integer.parseInt(MinuteTextField.getText());
         } catch (NumberFormatException nfe) {
             //empty or not a number
-            hour = 0;
-            //TODO add warnings!
+            minute = 0;
+
+            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Minute field is invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
+            if(!result.isPresent())
+                return;
+            else if(result.get() == ButtonType.YES) {}
+            else if(result.get() == ButtonType.NO)
+                return;
         }
 
         Calendar cal = Calendar.getInstance();
@@ -88,6 +98,7 @@ public class AddEventController extends PersonalEventsListController implements 
         cal.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth());
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, minute);
+        cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
 
         //calendar complete, create event
