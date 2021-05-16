@@ -127,10 +127,10 @@ public class RegisterController implements Initializable {
         switch (userType) {
             case "Basic User":
                 return new BasicUser(usernameTextField.getText(), setPasswordField.getText(),
-                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText());
+                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText(),userType);
             case "Event Organizer User":
                 return new EventOrganizerUser(usernameTextField.getText(), setPasswordField.getText(),
-                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText());
+                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText(),userType);
             default:
                 registrationMessageLabel.setText(userType + "is not recognized!");
                 return null;
