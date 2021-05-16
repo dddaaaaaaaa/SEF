@@ -47,31 +47,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
     @FXML
     private Button logoutButton;
 
-    @FXML
-    private Button createNewButton;
-
-    public void createNewButtonOnAction(ActionEvent actionEvent)
-    {
-        //quick debug print
-        System.out.println("DEBUG (uview controller line 31) - button press, adding new event");
-
-        //spawn new scene
-        try {
-            Stage addEventStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
-            addEventStage.setResizable(false);
-            addEventStage.initStyle(StageStyle.DECORATED);
-            //addEventStage.setScene(new Scene(root, 500, 400));
-            addEventStage.setScene(new Scene(root));
-            addEventStage.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
-        }
-    }
-
     ObservableList<String> List = FXCollections.observableArrayList();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -134,9 +110,10 @@ public class UserViewController extends FxmlLoader implements Initializable {
     }
 
     public void LoadIntoUserList() throws InterruptedException {
-        List.add("Global Events");
-        List.add("Personal Events");
         List.add("Settings");
+        List.add("Personal Events");
+        List.add("Global Events");
+
         UserListView.getItems().addAll(List);
     }
 
