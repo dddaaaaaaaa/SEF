@@ -25,10 +25,10 @@ controller/user/SettingsController.java
  controller.user.SettingsController
 controller/user/AddRelativeEventController.java
  controller.user.AddRelativeEventController
-domain/Register.java
- domain.Register
-controller/register/RegisterController.java
- controller.register.RegisterController
+crypto/sha256manager.java
+ crypto.sha256manager
+controller/user/FxmlLoader.java
+ controller.user.FxmlLoader
 controller/user/PersonalEventsListController.java
  controller.user.PersonalEventsListController
 domain/DatabaseCredentials.java
@@ -37,7 +37,9 @@ domain/User.java
  domain.User
 domain/GlobalEvent.java
  domain.GlobalEvent
-controller/user/FxmlLoader.java
- controller.user.FxmlLoader
-crypto/sha256manager.java
- crypto.sha256manager
+domain/Register.java
+ domain.Register
+exceptions/InvalidCredentialsRegistration.java
+ exceptions.InvalidCredentialsRegistration
+controller/register/RegisterController.java
+ controller.register.RegisterController
