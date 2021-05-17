@@ -69,11 +69,12 @@ public class UserViewController extends FxmlLoader implements Initializable {
         file = new File("src\\main\\resources\\images\\logout.png");
         image = new Image(file.toURI().toString());
         logoutImageView.setImage(image);
-        //showSettingsStage();
+
         UserHolder userHolder;
         userHolder = UserHolder.getInstance();
         currentUser = userHolder.getUser();
         UsernameLabel.setText(currentUser.getUsername());
+        showSettingsStage();
 
         try {
             LoadIntoUserList();
@@ -88,7 +89,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
                 Pane view = new Pane();
                 System.out.println("This is " + newValue + "\n");
                 switch (newValue) {
-                    case "Personal Events":
+                    case "Personal Events": 
                         view = object.getPage("PersonalEventsList");
                         break;
                     case "Settings":
@@ -109,28 +110,6 @@ public class UserViewController extends FxmlLoader implements Initializable {
         });
         initClock();
     }
-    /*@FXML
-    public void sendData(MouseEvent event)
-    {
-        User u = userObject;
-        Node node = (Node) event.getSource();
-        Stage stage = (Stage) node.getScene().getWindow();
-        stage.close();
-        try {
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PersonalEventsList.fxml"));
-            // Step 2
-            UserHolder holder = UserHolder.getInstance();
-            // Step 3
-            holder.setUser(u);
-            // Step 4
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            System.err.println(String.format("Error: %s", e.getMessage()));
-        }
-    }*/
-
     private void initClock() {
 
         Timeline clock = new Timeline(new KeyFrame(javafx.util.Duration.ZERO, e -> {
