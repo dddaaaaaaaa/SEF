@@ -148,12 +148,13 @@ public class AddEventController extends PersonalEventsListController implements 
         try
         {
             Connection connectDB = new DatabaseConnection().getConnection();
-            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?,?,?,?,?);");
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\", \"host\") VALUES (?,?,?,?,?,?);");
             ps.setString(1, UserHolder.getInstance().getUser().getUsername());
             ps.setString(2, p.getEventName());
             ps.setLong(3, p.getDate().getTime() / 1000);
             ps.setString(4, p.getObservations());
             ps.setString(5, p.getLocation());
+            ps.setString(6, UserHolder.getInstance().getUser().getUsername());
 
             ps.executeUpdate();
 

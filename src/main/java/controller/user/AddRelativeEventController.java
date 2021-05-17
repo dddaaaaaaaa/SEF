@@ -154,12 +154,13 @@ public class AddRelativeEventController {
         try
         {
             Connection connectDB = new DatabaseConnection().getConnection();
-            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?,?,?,?,?);");
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\", \"host\") VALUES (?,?,?,?,?,?);");
             ps.setString(1, currentUser.getUsername());
             ps.setString(2, nameTextField.getText());
             ps.setLong(3, epochTime + timeOffset);
             ps.setString(4, extraTextField.getText());
             ps.setString(5, locationTextField.getText());
+            ps.setString(6, UserHolder.getInstance().getUser().getUsername());
 
             ps.executeUpdate();
         }
@@ -174,7 +175,7 @@ public class AddRelativeEventController {
         //creation successful, add to list
         Date eventDate = new Date();
         eventDate.setTime((epochTime + timeOffset) * 1000);
-        PersonalEvent pe = new PersonalEvent(eventDate, nameTextField.getText(), extraTextField.getText(), "myself", locationTextField.getText());
+        PersonalEvent pe = new PersonalEvent(eventDate, nameTextField.getText(), extraTextField.getText(), currentUser.getUsername(), locationTextField.getText());
         events.add(pe);
 
         return true;
