@@ -52,12 +52,19 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
     User userObject;
 
-    public void getUserObject(User user) {
+    //public void getUserObject(User user) {this.userObject = user;}
+
+    public User getUserObject ()
+    {
+        return this.userObject;
+    }
+
+    public void setUserObject(User user)
+    {
         this.userObject = user;
     }
 
     @Override
-
     public void initialize(URL location, ResourceBundle resources) {
         File file = new File("src\\main\\resources\\images\\sigla.png");
         Image image = new Image(file.toURI().toString());
