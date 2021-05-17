@@ -30,17 +30,17 @@
             <TableColumn fx:id="ObservationsColumn" prefWidth="133.99990844726562" text="Observations" />
             </columns>
         </TableView>
-        <Button fx:id="AddButton" layoutX="174.0" layoutY="546.0" mnemonicParsing="false" onAction="#AddButtonOnAction" prefHeight="25.0" prefWidth="105.0" text="Add">
+        <Button fx:id="AddButton" disable="true" layoutX="93.0" layoutY="546.0" mnemonicParsing="false" onAction="#AddButtonOnAction" prefHeight="25.0" prefWidth="105.0" text="Add">
             <font>
                 <Font name="System Italic" size="13.0" />
             </font>
         </Button>
-        <Button fx:id="DeleteButton" layoutX="300.0" layoutY="546.0" mnemonicParsing="false" onAction="#DeleteButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Delete">
+        <Button fx:id="DeleteButton" disable="true" layoutX="257.0" layoutY="546.0" mnemonicParsing="false" onAction="#DeleteButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Delete">
             <font>
                 <Font name="System Italic" size="13.0" />
             </font>
         </Button>
-      <Button fx:id="AttendButton" layoutX="300.0" layoutY="546.0" mnemonicParsing="false" onAction="#AttendButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Attend">
+      <Button fx:id="AttendButton" layoutX="405.0" layoutY="546.0" mnemonicParsing="false" onAction="#AttendButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Attend">
          <font>
             <Font name="System Italic" size="13.0" />
          </font>
