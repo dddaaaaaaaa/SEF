@@ -3,8 +3,6 @@ package controller.user;
 import domain.DatabaseConnection;
 import domain.PersonalEvent;
 import domain.UserHolder;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -15,13 +13,11 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static javafx.scene.paint.Color.color;
@@ -38,8 +34,6 @@ public class AddEventController extends PersonalEventsListController implements 
     private Label MandatoryLabelField;
     @FXML
     private Button AddEventButton, CancelEventAdditionButton;
-    @FXML
-    private javafx.scene.control.TableView<PersonalEvent> TableView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,8 +54,8 @@ public class AddEventController extends PersonalEventsListController implements 
         LocalDate localDate = DateField.getValue();
 
         //get time
-        int hour = 0;
-        int minute = 0;
+        int hour;
+        int minute;
         //get hour
         try {
             hour = Integer.parseInt(HourTextField.getText());
@@ -70,7 +64,7 @@ public class AddEventController extends PersonalEventsListController implements 
             hour = 0;
 
             Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Hour field is blank/invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
-            if (!result.isPresent())
+            if (result.isEmpty())
                 return;
             else if (result.get() == ButtonType.YES) {
             } else if (result.get() == ButtonType.NO)
@@ -85,7 +79,7 @@ public class AddEventController extends PersonalEventsListController implements 
             minute = 0;
 
             Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Minute field is blank/invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
-            if (!result.isPresent())
+            if (result.isEmpty())
                 return;
             else if (result.get() == ButtonType.YES) {
             } else if (result.get() == ButtonType.NO)
@@ -102,6 +96,15 @@ public class AddEventController extends PersonalEventsListController implements 
 
         //calendar complete, create event
         Date date = cal.getTime();
+
+        //do not create events in the past
+        long epochTime = Instant.now().getEpochSecond();
+        if(date.getTime() / 1000 < epochTime)
+        {
+            MandatoryLabelField.setText("Can't create events in the past!");
+            return;
+        }
+
         PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), UserHolder.getInstance().getUser().getUsername(), LocationTextField.getText());
 
         if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null)) {
@@ -116,10 +119,6 @@ public class AddEventController extends PersonalEventsListController implements 
     }
 
     public void getPersonalEvent(PersonalEvent personalEvent) throws ParseException {
-        // PersonalEventsListController controller = new PersonalEventsListController();
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String date = DateField.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         //this line adds the event to the GUI list
         events.add(personalEvent);
@@ -135,27 +134,32 @@ public class AddEventController extends PersonalEventsListController implements 
 
     private void dbinsert(PersonalEvent p) {
         if (p == null) {
-            System.out.println("Fatal error! Undefined reference to personal event!");
+            //System.out.println("Fatal error! Undefined reference to personal event!");
             MandatoryLabelField.setText("Fatal error! Undefined reference to personal event!");
             return;
         }
 
-        String username = UserHolder.getInstance().getUser().getUsername();
-        String eventname = p.getEventName();
-        long duedate = (p.getDate().getTime() / 1000);
-        String extra = p.getObservations();
-        String location = p.getLocation();
+        if(UserHolder.getInstance().getUser().getUsername() == null)
+        {
+            MandatoryLabelField.setText("Fatal error! Undefined reference to logged in user!");
+            return;
+        }
 
-        //database
-        String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES ('";
-        String insertValues = username + "','" + eventname + "','" + duedate + "','" + extra + "','" + location + "')";
-        String insertToEvents = insertFields + insertValues;
-
-        try {
+        try
+        {
             Connection connectDB = new DatabaseConnection().getConnection();
-            Statement statement = connectDB.createStatement();
-            statement.executeUpdate(insertToEvents);
-        } catch (SQLException e) {
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?,?,?,?,?);");
+            ps.setString(1, UserHolder.getInstance().getUser().getUsername());
+            ps.setString(2, p.getEventName());
+            ps.setLong(3, p.getDate().getTime() / 1000);
+            ps.setString(4, p.getObservations());
+            ps.setString(5, p.getLocation());
+
+            ps.executeUpdate();
+
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
             e.getCause();
             MandatoryLabelField.setText("SQL Error! Unable to create event!");
