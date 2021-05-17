@@ -1,7 +1,7 @@
-controller/user/GlobalEventsListController.java
- controller.user.GlobalEventsListController
-controller/user/AddEventController.java
- controller.user.AddEventController
+crypto/sha256manager.java
+ crypto.sha256manager
+controller/user/FxmlLoader.java
+ controller.user.FxmlLoader
 domain/Event.java
  domain.Event
 controller/login/LoginController.java
@@ -18,32 +18,34 @@ domain/BasicUser.java
  domain.BasicUser
 domain/UserHolder.java
  domain.UserHolder
-controller/user/UserViewController.java
- controller.user.UserViewController
- controller.user.UserViewController$1
+controller/user/PersonalEventsListController.java
+ controller.user.PersonalEventsListController
 Main.java
  Main
-controller/user/SettingsController.java
- controller.user.SettingsController
-controller/user/AddRelativeEventController.java
- controller.user.AddRelativeEventController
-domain/UserViewInterface.java
- domain.UserViewInterface
+domain/GlobalEvent.java
+ domain.GlobalEvent
+domain/User.java
+ domain.User
+domain/DatabaseCredentials.java
+ domain.DatabaseCredentials
 domain/Register.java
  domain.Register
 exceptions/InvalidCredentialsRegistration.java
  exceptions.InvalidCredentialsRegistration
 controller/register/RegisterController.java
  controller.register.RegisterController
-controller/user/PersonalEventsListController.java
- controller.user.PersonalEventsListController
-domain/DatabaseCredentials.java
- domain.DatabaseCredentials
-domain/User.java
- domain.User
-domain/GlobalEvent.java
- domain.GlobalEvent
-controller/user/FxmlLoader.java
- controller.user.FxmlLoader
-crypto/sha256manager.java
- crypto.sha256manager
+controller/user/GlobalEventsListController.java
+ controller.user.GlobalEventsListController
+controller/user/AddEventController.java
+ controller.user.AddEventController
+controller/user/SettingsController.java
+ controller.user.SettingsController
+controller/user/AddRelativeEventController.java
+ controller.user.AddRelativeEventController
+domain/UserViewInterface.java
+ domain.UserViewInterface
+controller/user/AddGlobalEventController.java
+ controller.user.AddGlobalEventController
+controller/user/UserViewController.java
+ controller.user.UserViewController
+ controller.user.UserViewController$1
