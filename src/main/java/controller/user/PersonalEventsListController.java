@@ -126,7 +126,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
 
             AddEventStage.initStyle(StageStyle.DECORATED);
-            Scene scene = new Scene(root, 400, 400);
+            Scene scene = new Scene(root, 400, 420);
             AddEventStage.setScene(scene);
             AddEventStage.showAndWait();
         } catch (Exception e) {

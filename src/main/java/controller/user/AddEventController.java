@@ -69,7 +69,7 @@ public class AddEventController extends PersonalEventsListController implements 
             //empty or not a number
             hour = 0;
 
-            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Hour field is invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
+            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Hour field is blank/invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
             if (!result.isPresent())
                 return;
             else if (result.get() == ButtonType.YES) {
@@ -84,7 +84,7 @@ public class AddEventController extends PersonalEventsListController implements 
             //empty or not a number
             minute = 0;
 
-            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Minute field is invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
+            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Minute field is blank/invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
             if (!result.isPresent())
                 return;
             else if (result.get() == ButtonType.YES) {
@@ -102,7 +102,7 @@ public class AddEventController extends PersonalEventsListController implements 
 
         //calendar complete, create event
         Date date = cal.getTime();
-        PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), HostTextField.getText(), LocationTextField.getText());
+        PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), UserHolder.getInstance().getUser().getUsername(), LocationTextField.getText());
 
         if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null)) {
             try {
