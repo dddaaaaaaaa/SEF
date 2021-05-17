@@ -23,12 +23,20 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.color;
 
-public class AddEventController implements Initializable {
+public class AddGlobalEventController implements Initializable {
 
     @FXML
     private ImageView imageView;
     @FXML
-    private TextField EventNameTextField, ObservationsTextField, HostTextField, LocationTextField, HourTextField, MinuteTextField;
+    private TextField EventNameTextField;
+    @FXML
+    private TextField ObservationsTextField;
+    @FXML
+    private TextField LocationTextField;
+    @FXML
+    private TextField HourTextField;
+    @FXML
+    private TextField MinuteTextField;
     @FXML
     private DatePicker DateField;
     @FXML
@@ -45,14 +53,16 @@ public class AddEventController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources)
+    {
         File file = new File("src\\main\\resources\\images\\sigla\\event.png");
         Image image = new Image(file.toURI().toString());
         imageView.setImage(image);
     }
 
     public void addEventButtonOnAction(javafx.event.ActionEvent actionEvent) {
-        if (DateField.getValue() == null) {
+        if (DateField.getValue() == null)
+        {
             //date field is empty
             MandatoryLabelField.setTextFill(color(1, 0, 0));
             MandatoryLabelField.setText("Date is mandatory!");
@@ -96,7 +106,6 @@ public class AddEventController implements Initializable {
         }
 
         Calendar cal = Calendar.getInstance();
-        //cal.setTime(date);
         cal.set(localDate.getYear(), localDate.getMonthValue() - 1, localDate.getDayOfMonth());
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, minute);
@@ -157,13 +166,12 @@ public class AddEventController implements Initializable {
         try
         {
             Connection connectDB = new DatabaseConnection().getConnection();
-            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\", \"host\") VALUES (?,?,?,?,?,?);");
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"globalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?,?,?,?,?);");
             ps.setString(1, UserHolder.getInstance().getUser().getUsername());
             ps.setString(2, p.getEventName());
             ps.setLong(3, p.getDate().getTime() / 1000);
             ps.setString(4, p.getObservations());
             ps.setString(5, p.getLocation());
-            ps.setString(6, UserHolder.getInstance().getUser().getUsername());
 
             ps.executeUpdate();
 

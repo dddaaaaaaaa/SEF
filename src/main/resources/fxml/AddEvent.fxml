@@ -43,31 +43,31 @@
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="HourTextField" layoutX="165.0" layoutY="158.0" prefHeight="25.0" prefWidth="30.0" />
+      <TextField fx:id="HourTextField" layoutX="165.0" layoutY="158.0" prefHeight="25.0" prefWidth="30.0" promptText="00" text="00" />
       <Label layoutX="213.0" layoutY="161.0" prefHeight="19.0" prefWidth="30.0" text="mm">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="MinuteTextField" layoutX="253.0" layoutY="158.0" prefHeight="25.0" prefWidth="30.0" />
+      <TextField fx:id="MinuteTextField" layoutX="253.0" layoutY="158.0" prefHeight="25.0" prefWidth="30.0" promptText="00" text="00" />
       <Label layoutX="33.0" layoutY="197.0" prefHeight="19.0" prefWidth="81.0" text="Observations">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="ObservationsTextField" layoutX="142.0" layoutY="194.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
+      <TextField fx:id="ObservationsTextField" layoutX="142.0" layoutY="194.0" prefHeight="25.0" prefWidth="228.0" promptText="Extra" />
       <Label layoutX="34.0" layoutY="241.0" prefHeight="19.0" prefWidth="81.0" text="Location">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="LocationTextField" layoutX="143.0" layoutY="238.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
+      <TextField fx:id="LocationTextField" layoutX="143.0" layoutY="238.0" prefHeight="25.0" prefWidth="228.0" promptText="No location specified" />
       <Label layoutX="35.0" layoutY="283.0" prefHeight="19.0" prefWidth="81.0" text="Host">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="HostTextField" layoutX="144.0" layoutY="280.0" prefHeight="25.0" prefWidth="228.0" promptText="Observations" />
+      <TextField fx:id="HostTextField" disable="true" layoutX="144.0" layoutY="280.0" prefHeight="25.0" prefWidth="228.0" promptText="Myself" />
       <Button fx:id="AddEventButton" layoutX="139.0" layoutY="340.0" mnemonicParsing="false" onAction="#addEventButtonOnAction" prefHeight="25.0" prefWidth="228.0" text="Add" />
       <Button fx:id="CancelEventAdditionButton" layoutX="139.0" layoutY="373.0" mnemonicParsing="false" onAction="#cancelEventAdditionButtonOnAction" prefHeight="25.0" prefWidth="228.0" text="Cancel" />
       <Label fx:id="MandatoryLabelField" layoutX="143.0" layoutY="313.0" prefHeight="17.0" prefWidth="228.0" textAlignment="CENTER" textFill="RED" />

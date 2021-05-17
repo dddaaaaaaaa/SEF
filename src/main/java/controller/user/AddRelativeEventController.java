@@ -2,6 +2,8 @@ package controller.user;
 
 import domain.DatabaseConnection;
 import domain.PersonalEvent;
+import domain.User;
+import domain.UserHolder;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,8 +14,8 @@ import javafx.scene.control.TextField;
 import static javafx.scene.paint.Color.color;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.*;
 import java.util.Date;
 
@@ -59,8 +61,6 @@ public class AddRelativeEventController {
 
     public void createButtonOnAction(ActionEvent actionEvent)
     {
-        System.out.println("Add event button clicked!");
-
         boolean isSuccess = createNewRelativeEvent();
 
         if(isSuccess)
@@ -72,20 +72,19 @@ public class AddRelativeEventController {
         else
         {
             statusLabel.setTextFill(color(1, 0, 0));
-            statusLabel.setText("Failed to create event. Check input and try again.");
         }
     }
 
     private boolean createNewRelativeEvent()
     {
-        //Debug
-        System.out.println("Create relative event called!");
-
         long timeOffset = 0;
 
         //check name
         if(nameTextField.getText().isEmpty() || nameTextField.getText().length() > 100)
+        {
+            statusLabel.setText("Failed to create event. Check name input and try again.");
             return false;
+        }
 
         //process year
         try {
@@ -129,36 +128,51 @@ public class AddRelativeEventController {
             //empty or not a number
         }
 
-        System.out.println("Time offset: " + timeOffset);
+        //System.out.println("Time offset: " + timeOffset);
         if(timeOffset < 5) //too short failsafe
+        {
+            statusLabel.setText("Failed to create event. Time difference too low.");
             return false;
+        }
 
         long epochTime = Instant.now().getEpochSecond();
 
-        System.out.println("Target time is " + timeOffset + " seconds from now.");
-        System.out.println("That is " + (epochTime + timeOffset) + " unix time, or " + Instant.ofEpochSecond(epochTime + timeOffset));
+        //System.out.println("Target time is " + timeOffset + " seconds from now.");
+        //System.out.println("That is " + (epochTime + timeOffset) + " unix time, or " + Instant.ofEpochSecond(epochTime + timeOffset));
 
         //database
-        String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES ('";
-        String insertValues = "testname','" + nameTextField.getText() + "','" + (epochTime + timeOffset) + "','" + extraTextField.getText() + "','" + locationTextField.getText() + "')";
-        String insertToEvents = insertFields + insertValues;
+        User currentUser = UserHolder.getInstance().getUser();
+        if(currentUser == null)
+        {
+            statusLabel.setText("Fatal error! Undefined reference to logged in user!.");
+            return false;
+        }
 
-        try {
+        try
+        {
             Connection connectDB = new DatabaseConnection().getConnection();
-            Statement statement = connectDB.createStatement();
-            statement.executeUpdate(insertToEvents);
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\", \"host\") VALUES (?,?,?,?,?,?);");
+            ps.setString(1, currentUser.getUsername());
+            ps.setString(2, nameTextField.getText());
+            ps.setLong(3, epochTime + timeOffset);
+            ps.setString(4, extraTextField.getText());
+            ps.setString(5, locationTextField.getText());
+            ps.setString(6, UserHolder.getInstance().getUser().getUsername());
+
+            ps.executeUpdate();
         }
         catch (SQLException e)
         {
             e.printStackTrace();
             e.getCause();
+            statusLabel.setText("SQL Error! Unable to create event!");
             return false;
         }
 
         //creation successful, add to list
         Date eventDate = new Date();
         eventDate.setTime((epochTime + timeOffset) * 1000);
-        PersonalEvent pe = new PersonalEvent(eventDate, nameTextField.getText(), extraTextField.getText(), "myself", locationTextField.getText());
+        PersonalEvent pe = new PersonalEvent(eventDate, nameTextField.getText(), extraTextField.getText(), currentUser.getUsername(), locationTextField.getText());
         events.add(pe);
 
         return true;
