@@ -104,14 +104,14 @@ public class AddEventController extends PersonalEventsListController implements 
         Date date = cal.getTime();
         PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), HostTextField.getText(), LocationTextField.getText());
 
-        if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null) && !(HostTextField).getText().isBlank()) {
+        if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null)) {
             try {
                 getPersonalEvent(personalEvent);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
-            MandatoryLabelField.setText("All fields are mandatory!");
+            MandatoryLabelField.setText("Name and date are mandatory!");
         }
     }
 
