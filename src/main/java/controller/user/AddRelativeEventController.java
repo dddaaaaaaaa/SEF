@@ -77,9 +77,6 @@ public class AddRelativeEventController {
 
     private boolean createNewRelativeEvent()
     {
-        //Debug
-        System.out.println("Create relative event called!");
-
         long timeOffset = 0;
 
         //check name
@@ -131,7 +128,7 @@ public class AddRelativeEventController {
             //empty or not a number
         }
 
-        System.out.println("Time offset: " + timeOffset);
+        //System.out.println("Time offset: " + timeOffset);
         if(timeOffset < 5) //too short failsafe
         {
             statusLabel.setText("Failed to create event. Time difference too low.");

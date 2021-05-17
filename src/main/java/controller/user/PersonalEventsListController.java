@@ -210,7 +210,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
             for (PersonalEvent pe : eventSelected)
             {
-                ps.setString(1, pe.getHost());
+                ps.setString(1, currentUser.getUsername());
                 ps.setString(2, pe.getEventName());
                 ps.setLong(3, pe.getDate().getTime() / 1000);
                 ps.setString(4, pe.getObservations());
