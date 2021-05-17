@@ -1,6 +1,8 @@
 package controller.user;
 
+import domain.BasicUser;
 import domain.User;
+import domain.UserHolder;
 import domain.UserViewInterface;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -13,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,6 +31,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -42,27 +46,15 @@ public class UserViewController extends FxmlLoader implements Initializable {
     @FXML
     private BorderPane mainUserPane;
     @FXML
-    private Label dateTimeLabel;
+    private Label dateTimeLabel, UsernameLabel;
     @FXML
     private ImageView siglaImageView, clockImageView, logoutImageView;
     @FXML
     private Button logoutButton;
 
     ObservableList<String> List = FXCollections.observableArrayList();
+    private User currentUser;
 
-    User userObject;
-
-    //public void getUserObject(User user) {this.userObject = user;}
-
-    public User getUserObject ()
-    {
-        return this.userObject;
-    }
-
-    public void setUserObject(User user)
-    {
-        this.userObject = user;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -78,7 +70,10 @@ public class UserViewController extends FxmlLoader implements Initializable {
         image = new Image(file.toURI().toString());
         logoutImageView.setImage(image);
         //showSettingsStage();
-
+        UserHolder userHolder;
+        userHolder = UserHolder.getInstance();
+        currentUser = userHolder.getUser();
+        UsernameLabel.setText(currentUser.getUsername());
 
         try {
             LoadIntoUserList();
@@ -94,13 +89,13 @@ public class UserViewController extends FxmlLoader implements Initializable {
                 System.out.println("This is " + newValue + "\n");
                 switch (newValue) {
                     case "Personal Events":
-                        view = object.getPage("PersonalEventsList", userObject);
+                        view = object.getPage("PersonalEventsList");
                         break;
                     case "Settings":
-                        view = object.getPage("Settings", userObject);
+                        view = object.getPage("Settings");
                         break;
                     case "Global Events":
-                        view = object.getPage("GlobalEventsList", userObject);
+                        view = object.getPage("GlobalEventsList");
                         break;
                     default:
                         System.out.println("Fxml loader cannot find file!");
@@ -114,6 +109,27 @@ public class UserViewController extends FxmlLoader implements Initializable {
         });
         initClock();
     }
+    /*@FXML
+    public void sendData(MouseEvent event)
+    {
+        User u = userObject;
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        try {
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PersonalEventsList.fxml"));
+            // Step 2
+            UserHolder holder = UserHolder.getInstance();
+            // Step 3
+            holder.setUser(u);
+            // Step 4
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.err.println(String.format("Error: %s", e.getMessage()));
+        }
+    }*/
 
     private void initClock() {
 
@@ -135,7 +151,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
     public void showSettingsStage() {
         FxmlLoader object = new FxmlLoader();
-        Pane view = object.getPage("Settings", userObject);
+        Pane view = object.getPage("Settings");
         try {
             view = loader.load(getClass().getClassLoader().getResource("fxml/Settings.fxml"));
             ;

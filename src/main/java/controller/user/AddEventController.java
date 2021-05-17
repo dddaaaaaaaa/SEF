@@ -2,6 +2,7 @@ package controller.user;
 
 import domain.DatabaseConnection;
 import domain.PersonalEvent;
+import domain.UserHolder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -47,10 +48,8 @@ public class AddEventController extends PersonalEventsListController implements 
         imageView.setImage(image);
     }
 
-    public void addEventButtonOnAction(javafx.event.ActionEvent actionEvent)
-    {
-        if(DateField.getValue() == null)
-        {
+    public void addEventButtonOnAction(javafx.event.ActionEvent actionEvent) {
+        if (DateField.getValue() == null) {
             //date field is empty
             MandatoryLabelField.setTextFill(color(1, 0, 0));
             MandatoryLabelField.setText("Date is mandatory!");
@@ -65,16 +64,16 @@ public class AddEventController extends PersonalEventsListController implements 
         int minute = 0;
         //get hour
         try {
-            hour= Integer.parseInt(HourTextField.getText());
+            hour = Integer.parseInt(HourTextField.getText());
         } catch (NumberFormatException nfe) {
             //empty or not a number
             hour = 0;
 
-            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Hour field is invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
-            if(!result.isPresent())
+            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Hour field is blank/invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
+            if (!result.isPresent())
                 return;
-            else if(result.get() == ButtonType.YES) {}
-            else if(result.get() == ButtonType.NO)
+            else if (result.get() == ButtonType.YES) {
+            } else if (result.get() == ButtonType.NO)
                 return;
         }
 
@@ -85,11 +84,11 @@ public class AddEventController extends PersonalEventsListController implements 
             //empty or not a number
             minute = 0;
 
-            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Minute field is invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
-            if(!result.isPresent())
+            Optional<ButtonType> result = new Alert(Alert.AlertType.WARNING, "Minute field is blank/invalid! Continue?", ButtonType.NO, ButtonType.YES).showAndWait();
+            if (!result.isPresent())
                 return;
-            else if(result.get() == ButtonType.YES) {}
-            else if(result.get() == ButtonType.NO)
+            else if (result.get() == ButtonType.YES) {
+            } else if (result.get() == ButtonType.NO)
                 return;
         }
 
@@ -103,16 +102,16 @@ public class AddEventController extends PersonalEventsListController implements 
 
         //calendar complete, create event
         Date date = cal.getTime();
-        PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), HostTextField.getText(), LocationTextField.getText());
+        PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), UserHolder.getInstance().getUser().getUsername(), LocationTextField.getText());
 
-        if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null) && !(HostTextField).getText().isBlank()) {
+        if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null)) {
             try {
                 getPersonalEvent(personalEvent);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
-            MandatoryLabelField.setText("All fields are mandatory!");
+            MandatoryLabelField.setText("Name and date are mandatory!");
         }
     }
 
@@ -134,16 +133,14 @@ public class AddEventController extends PersonalEventsListController implements 
 
     }
 
-    private void dbinsert(PersonalEvent p)
-    {
-        if(p == null)
-        {
+    private void dbinsert(PersonalEvent p) {
+        if (p == null) {
             System.out.println("Fatal error! Undefined reference to personal event!");
             MandatoryLabelField.setText("Fatal error! Undefined reference to personal event!");
             return;
         }
 
-        String username = p.getHost();  //TODO get actual username
+        String username = UserHolder.getInstance().getUser().getUsername();
         String eventname = p.getEventName();
         long duedate = (p.getDate().getTime() / 1000);
         String extra = p.getObservations();
@@ -151,21 +148,20 @@ public class AddEventController extends PersonalEventsListController implements 
 
         //database
         String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES ('";
-        String insertValues = username + "','" + eventname + "','" + duedate + "','" + extra +"','" + location + "')";
+        String insertValues = username + "','" + eventname + "','" + duedate + "','" + extra + "','" + location + "')";
         String insertToEvents = insertFields + insertValues;
 
         try {
             Connection connectDB = new DatabaseConnection().getConnection();
             Statement statement = connectDB.createStatement();
             statement.executeUpdate(insertToEvents);
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
             MandatoryLabelField.setText("SQL Error! Unable to create event!");
         }
     }
+
     public void cancelEventAdditionButtonOnAction(javafx.event.ActionEvent actionEvent) {
         Stage stage = (Stage) CancelEventAdditionButton.getScene().getWindow();
         stage.close();

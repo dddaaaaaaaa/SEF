@@ -21,16 +21,6 @@
             <Image url="@../images/calendar.png" />
          </image>
       </ImageView>
-      <Button fx:id="AddButton" layoutX="100.0" layoutY="546.0" mnemonicParsing="false" onAction="#AddButtonOnAction" prefHeight="25.0" prefWidth="105.0" text="Add">
-         <font>
-            <Font name="System Italic" size="13.0" />
-         </font>
-      </Button>
-      <Button fx:id="DeleteButton" layoutX="400.0" layoutY="546.0" mnemonicParsing="false" onAction="#DeleteButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Delete">
-         <font>
-            <Font name="System Italic" size="13.0" />
-         </font>
-      </Button>
       <TableView fx:id="TableView" layoutX="13.0" layoutY="55.0" maxHeight="-Infinity" prefHeight="477.0" prefWidth="570.0">
          <columns>
             <TableColumn fx:id="EventColumn" prefWidth="130.66665172576904" text="Event" />
@@ -40,7 +30,22 @@
             <TableColumn fx:id="ObservationsColumn" prefWidth="133.99990844726562" text="Observations" />
          </columns>
       </TableView>
-      <Button fx:id="AddRelativeButton" layoutX="260.0" layoutY="547.0" mnemonicParsing="false" onAction="#AddRelativeButtonOnAction" text="Add relative">
+      <Button fx:id="AddButton" defaultButton="true" layoutX="63.0" layoutY="546.0" mnemonicParsing="false" onAction="#AddButtonOnAction" prefHeight="25.0" prefWidth="105.0" text="Add">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="DeleteButton" layoutX="351.0" layoutY="546.0" mnemonicParsing="false" onAction="#DeleteButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Delete">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="AddRelativeButton" layoutX="214.0" layoutY="546.0" mnemonicParsing="false" onAction="#AddRelativeButtonOnAction" text="Add relative">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="PushButton" disable="true" layoutX="481.0" layoutY="546.0" mnemonicParsing="false" onAction="#PushButtonOnAction" text="Push">
          <font>
             <Font name="System Italic" size="13.0" />
          </font>

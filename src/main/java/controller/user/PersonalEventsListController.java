@@ -1,17 +1,13 @@
 package controller.user;
 
-import domain.DatabaseConnection;
-import domain.PersonalEvent;
-import domain.UserViewInterface;
+import domain.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -41,8 +38,9 @@ public class PersonalEventsListController extends UserViewInterface implements I
     @FXML
     private TableView<PersonalEvent> TableView;
     @FXML
-    private Button AddButton, AddRelativeButton, DeleteButton;
+    private Button AddButton, AddRelativeButton, DeleteButton, PushButton;
     protected static ObservableList<PersonalEvent> events;
+    private User currentUser;
 
 
     @Override
@@ -56,11 +54,20 @@ public class PersonalEventsListController extends UserViewInterface implements I
         HostColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("host"));
         LocationColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("location"));
 
-        TableView.setEditable(true);
+        //get ref to user
+        UserHolder userHolder;
+        userHolder = UserHolder.getInstance();
+        currentUser = userHolder.getUser();
 
-       // System.out.println(user.username);
-        //query database
-        String queryString = "SELECT * FROM \"personalEvents\"";    //TODO query only my events
+        if(currentUser instanceof EventOrganizerUser)
+        {
+            System.out.println("User is event organizer!");
+            PushButton.setDisable(false);
+        }
+
+        //query database;
+        String myusername = currentUser.getUsername();
+        String queryString = "SELECT * FROM \"personalEvents\" WHERE username = '" + myusername + "';";
 
         try {
             Connection connectDB = new DatabaseConnection().getConnection();
@@ -79,7 +86,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
                 Date date = new Date();
                 date.setTime(duedate * 1000);
 
-                System.out.println("Adding event " + eventname + " happening at " + duedate);
+                //System.out.println("Adding event " + eventname + " happening at " + duedate);
                 PersonalEvent ev = new PersonalEvent(date, eventname, extra, username, eventloc);
                 TableView.getItems().add(ev);
             }
@@ -96,8 +103,16 @@ public class PersonalEventsListController extends UserViewInterface implements I
         this.events = events;
     }
 
+
+    public void ImportGlobalEvents() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/GlobalListEvents.fxml"));
+        Parent root = loader.load();
+
+        GlobalEventsListController globalEventsListController = loader.getController();
+        globalEventsListController.setTableEvents(TableView.getItems());
+    }
     public void createAddEventStage() {
-        System.out.println(user.username);
+
         try {
             Stage AddEventStage = new Stage();
             /*Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
@@ -111,7 +126,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
 
             AddEventStage.initStyle(StageStyle.DECORATED);
-            Scene scene = new Scene(root, 400, 400);
+            Scene scene = new Scene(root, 400, 420);
             AddEventStage.setScene(scene);
             AddEventStage.showAndWait();
         } catch (Exception e) {
@@ -144,6 +159,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
             AddRelativeEventController addRelativeEventController = loader.getController();
             addRelativeEventController.setTableEvents(TableView.getItems());
+            //addRelativeEventController.setCurrentUser(user);
 
             addEventStage.setResizable(false);
             addEventStage.initStyle(StageStyle.DECORATED);
@@ -164,6 +180,37 @@ public class PersonalEventsListController extends UserViewInterface implements I
         eventSelected = TableView.getSelectionModel().getSelectedItems();
         eventSelected.forEach(allEvents::remove);
 
+        if(eventSelected.isEmpty())
+        {
+            new Alert(Alert.AlertType.ERROR, "Please select events to delete!", ButtonType.OK).showAndWait();
+            return;
+        }
+
+        //delete from the database also
+        try {
+
+            Connection connectDB = new DatabaseConnection().getConnection();
+            for(PersonalEvent ev : eventSelected) {
+                String dbStatement = "DELETE from \"personalEvents\" WHERE username = '" + currentUser.getUsername() +
+                        "' AND eventname = '" + ev.getEventName() + "' AND duedate = '" + ev.getDate().getTime() / 1000 +
+                        "' AND extra = '" + ev.getObservations() + "' AND location = '" + ev.getLocation() + "';";
+
+
+                Statement statement = connectDB.createStatement();
+                statement.executeUpdate(dbStatement);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            new Alert(Alert.AlertType.ERROR, "Delete failed - database error!", ButtonType.OK).showAndWait();
+        }
+    }
+
+    //push button on action - only for event organizers!
+    public void PushButtonOnAction(javafx.event.ActionEvent actionEvent)
+    {
 
     }
 }
