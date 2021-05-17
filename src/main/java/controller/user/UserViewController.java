@@ -54,7 +54,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
     //public void getUserObject(User user) {this.userObject = user;}
 
-    public User getUserObject (User user)
+    public User getUserObject ()
     {
         return this.userObject;
     }
