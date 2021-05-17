@@ -12,7 +12,7 @@ public class Register {
     public String firstName, lastName, email, username;
 
     public boolean registerUser(User user) throws InvalidCredentialsRegistration {
-    String queryString = "SELECT * FROM \"user\"";    //TODO query only my events
+    String queryString = "SELECT * FROM \"user\"";
         try {
             Connection connectDB = new DatabaseConnection().getConnection();
             Statement statement = connectDB.createStatement();
@@ -26,9 +26,11 @@ public class Register {
                 String Username = queryResult.getString(5);
               //  String Type = queryResult.getString(6);
 
-                if(email.equals(Email) || username.equals(Username))
+                if(user.email.equals(Email) || user.username.equals(Username))
                 {
-                    throw  new InvalidCredentialsRegistration("User already exists");
+                    //throw  new InvalidCredentialsRegistration("User already exists");
+                    System.out.println("Invalid credentials!");
+                    return false;
 
                 }
             }

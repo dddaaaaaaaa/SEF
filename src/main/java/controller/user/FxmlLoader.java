@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 
 import java.net.URL;
 
-public class FxmlLoader{
+public class FxmlLoader {
     FXMLLoader loader = new FXMLLoader();
     public Pane view = new Pane();
 
@@ -25,11 +25,13 @@ public class FxmlLoader{
             //view = FXMLLoader(fileURL).load();
             view = loader.load();
             PersonalEventsListController personalEventsListController = loader.getController();
-           // UserViewInterface controller = loader.getController();
+            // UserViewInterface controller = loader.getController();
             personalEventsListController.user = user;
             GlobalEventsListController globalEventsListController = loader.getController();
             //controller = loader.getController();
             globalEventsListController.user = user;
+            SettingsController settingsController = loader.getController();
+            settingsController.user = user;
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();

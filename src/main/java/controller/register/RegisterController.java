@@ -144,7 +144,6 @@ public class RegisterController implements Initializable {
         Register register = new Register();
         if (register.registerUser(user)) {
 
-
             try {
                 //insert fields needs no special treatment
                 String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
@@ -167,8 +166,10 @@ public class RegisterController implements Initializable {
                 e.printStackTrace();
                 e.getCause();
             }
-        }
-        ReturnToLoginStage();
+            ReturnToLoginStage();
+        } else
+            registrationMessageLabel.setText("Invalid credentials! Email or username already exist!");
+
 
     }
 

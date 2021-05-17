@@ -30,18 +30,18 @@ domain/Register.java
  domain.Register
 exceptions/InvalidCredentialsRegistration.java
  exceptions.InvalidCredentialsRegistration
+controller/user/GlobalEventsListController.java
+ controller.user.GlobalEventsListController
 controller/register/RegisterController.java
  controller.register.RegisterController
-controller/user/UserViewController.java
- controller.user.UserViewController
- controller.user.UserViewController$1
 domain/DatabaseCredentials.java
  domain.DatabaseCredentials
 domain/User.java
  domain.User
 controller/user/AddEventController.java
  controller.user.AddEventController
-controller/user/GlobalEventsListController.java
- controller.user.GlobalEventsListController
+controller/user/UserViewController.java
+ controller.user.UserViewController
+ controller.user.UserViewController$1
 controller/user/FxmlLoader.java
  controller.user.FxmlLoader
