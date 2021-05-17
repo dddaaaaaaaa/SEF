@@ -4,6 +4,7 @@ import domain.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,14 +22,16 @@ public class SettingsController extends UserViewInterface implements Initializab
     private DatePicker BirthDate;
     private User currentUser;
     @FXML
-    private Label MandatoryLabel;
+    private Label MandatoryLabel, UserTypeLabel;
     private EventOrganizerUser eventUser;
     private BasicUser basicUser;
+    @FXML
+    private Button UpgradeButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentUser = UserHolder.getInstance().getUser();
-        System.out.println("This is settings user " + currentUser.getUsername());
+        //System.out.println("This is settings user " + currentUser.getUsername());
         InitializeSettingsFields();
 
 
@@ -38,10 +41,15 @@ public class SettingsController extends UserViewInterface implements Initializab
         FirstNameTextField.setText(currentUser.getFirstName());
         LastNameTextField.setText(currentUser.getLastName());
         EmailTextField.setText(currentUser.getEmail());
+        UserTypeLabel.setText(currentUser.getUser());
+
         if (currentUser.getUser().equals("Event Organizer User")) {
             eventUser = (EventOrganizerUser) currentUser;
-            if (AddressTextField.getText().isBlank() || PhoneTextField.getText().isBlank() || BirthDate.getValue() == null || OccupationTextField.getText().isBlank())
+            if (AddressTextField.getText().isBlank() || PhoneTextField.getText().isBlank() || BirthDate.getValue() == null || OccupationTextField.getText().isBlank()) {
                 MandatoryLabel.setText("Mandatory fields!");
+                UpgradeButton.setVisible(false);
+            }
+
             else {
                 //set fields from database
                 /*AddressTextField.setText(eventUser.getAddress());
@@ -49,9 +57,13 @@ public class SettingsController extends UserViewInterface implements Initializab
                 //BirthDate.setValue(eventUser.getBirth());
                 OccupationTextField.setText(eventUser.getOccupation());
                 PhoneTextField.setText(eventUser.getPhone());
-                
+
                  */
             }
+        }
+        if(currentUser.getUser().equals("Basic User")){
+            MandatoryLabel.setText("");
+            UpgradeButton.setVisible(true);
         }
 
     }
@@ -71,5 +83,9 @@ public class SettingsController extends UserViewInterface implements Initializab
             eventUser.setPhone(phone);
 
         }
+    }
+
+    public void UpgradeButtonOnAction(ActionEvent actionEvent) {
+
     }
 }

@@ -46,7 +46,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
     @FXML
     private BorderPane mainUserPane;
     @FXML
-    private Label dateTimeLabel;
+    private Label dateTimeLabel, UsernameLabel;
     @FXML
     private ImageView siglaImageView, clockImageView, logoutImageView;
     @FXML
@@ -54,11 +54,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
     ObservableList<String> List = FXCollections.observableArrayList();
 
-    User userObject;
-
-    public void getUserObject(User user) {
-        this.userObject = user;
-    }
+   private User currentUser;
 
     @Override
 
@@ -75,7 +71,10 @@ public class UserViewController extends FxmlLoader implements Initializable {
         image = new Image(file.toURI().toString());
         logoutImageView.setImage(image);
         //showSettingsStage();
-
+        UserHolder userHolder;
+        userHolder = UserHolder.getInstance();
+        currentUser = userHolder.getUser();
+        UsernameLabel.setText(currentUser.getUsername());
 
         try {
             LoadIntoUserList();

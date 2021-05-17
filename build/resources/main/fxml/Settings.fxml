@@ -41,5 +41,11 @@
          </image>
       </ImageView>
       <Button fx:id="updateCredentialsButton" layoutX="232.0" layoutY="447.0" mnemonicParsing="false" onAction="#updateCredentialsButtonOnAction" prefHeight="25.0" prefWidth="264.0" text="Update Credentials" />
+      <Button fx:id="UpgradeButton" layoutX="232.0" layoutY="499.0" mnemonicParsing="false" onAction="#UpgradeButtonOnAction" prefHeight="25.0" prefWidth="264.0" text="Upgrade " />
+      <Label fx:id="UserTypeLabel" layoutX="142.0" layoutY="43.0" prefHeight="17.0" prefWidth="128.0" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

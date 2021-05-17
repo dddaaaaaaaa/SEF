@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -98,9 +99,16 @@ public class PersonalEventsListController extends UserViewInterface implements I
         this.events = events;
     }
 
+
+    public void ImportGlobalEvents() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/GlobalListEvents.fxml"));
+        Parent root = loader.load();
+
+        GlobalEventsListController globalEventsListController = loader.getController();
+        globalEventsListController.setTableEvents(TableView.getItems());
+    }
     public void createAddEventStage() {
 
-        System.out.println(currentUser.getFirstName()+"\n");
         try {
             Stage AddEventStage = new Stage();
             /*Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));

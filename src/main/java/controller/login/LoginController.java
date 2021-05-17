@@ -190,7 +190,7 @@ public class LoginController implements Initializable {
 
     public void createUserViewStage() {
         try {
-
+            User user = retrieveUserFromDatabase(usernameTextField.getText());
             Stage UserViewStage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
             //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
@@ -200,7 +200,7 @@ public class LoginController implements Initializable {
             Scene scene = new Scene(root, 800, 650);
 
             // UserViewController userViewController = loader.getController();
-             User user = retrieveUserFromDatabase(usernameTextField.getText());
+            // User user = retrieveUserFromDatabase(usernameTextField.getText());
 
             UserViewStage.setScene(scene);
             //UserViewStage.showAndWait();

@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -39,7 +40,7 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
     @FXML
     private javafx.scene.control.TableView<PersonalEvent> TableView;
     @FXML
-    private Button AddButton, DeleteButton;
+    private Button AddButton, DeleteButton, AttendButton;
     protected static ObservableList<PersonalEvent> events;
     private User currentUser;
 
@@ -64,6 +65,10 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
             AddButton.setVisible(false);
             DeleteButton.setVisible(false);
         }
+        if(currentUser.getUser().equals("Event Organizer User"))
+        {
+            AttendButton.setVisible(false);
+        }
        // TableView.setEditable(true);
 
 
@@ -74,8 +79,6 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
     }
 
     public void createAddEventStage() {
-        System.out.println(currentUser.getFirstName() + "\n");
-        // currentUser.getFirstName();
         try {
             Stage AddEventStage = new Stage();
 
@@ -112,5 +115,14 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
         eventSelected = TableView.getSelectionModel().getSelectedItems();
         eventSelected.forEach(allEvents::remove);
 
+    }
+
+    public void AttendButtonOnAction(ActionEvent actionEvent) throws IOException {
+        ObservableList<PersonalEvent> eventSelected;
+        eventSelected = TableView.getSelectionModel().getSelectedItems();
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/PersonalEventsList.fxml"));
+        ObservableList<PersonalEvent> event = eventSelected;
+
+        //events.add((PersonalEvent) event);
     }
 }

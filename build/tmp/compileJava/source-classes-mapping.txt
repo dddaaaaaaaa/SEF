@@ -1,7 +1,7 @@
-controller/user/GlobalEventsListController.java
- controller.user.GlobalEventsListController
-controller/user/AddEventController.java
- controller.user.AddEventController
+controller/user/SettingsController.java
+ controller.user.SettingsController
+domain/EventOrganizerUser.java
+ domain.EventOrganizerUser
 domain/Event.java
  domain.Event
 crypto/sha256manager.java
@@ -32,18 +32,18 @@ domain/Register.java
  domain.Register
 exceptions/InvalidCredentialsRegistration.java
  exceptions.InvalidCredentialsRegistration
-controller/user/UserViewController.java
- controller.user.UserViewController
- controller.user.UserViewController$1
 controller/user/PersonalEventsListController.java
  controller.user.PersonalEventsListController
+controller/user/GlobalEventsListController.java
+ controller.user.GlobalEventsListController
 domain/DatabaseCredentials.java
  domain.DatabaseCredentials
 controller/register/RegisterController.java
  controller.register.RegisterController
+controller/user/AddEventController.java
+ controller.user.AddEventController
+controller/user/UserViewController.java
+ controller.user.UserViewController
+ controller.user.UserViewController$1
 controller/login/LoginController.java
  controller.login.LoginController
-domain/EventOrganizerUser.java
- domain.EventOrganizerUser
-controller/user/SettingsController.java
- controller.user.SettingsController
