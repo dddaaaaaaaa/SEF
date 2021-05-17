@@ -85,7 +85,7 @@ public class LoginController implements Initializable {
 
     public User retrieveUserFromDatabase(String username) throws SQLException {
         String queryString = "SELECT * FROM \"user\" WHERE username = '" + username + "'";
-        User currentUser=null;
+        User currentUser = null;
         try {
 
             Connection connectDB = new DatabaseConnection().getConnection();
@@ -205,7 +205,8 @@ public class LoginController implements Initializable {
             UserViewController userViewController = loader.getController();
             User user = retrieveUserFromDatabase(usernameTextField.getText());
             if (user != null) {
-                userViewController.getUserObject(user);
+                //userViewController.getUserObject(user);
+                userViewController.setUserObject(user);
                 UserViewStage.setScene(scene);
                 //UserViewStage.showAndWait();
                 UserViewStage.show();
