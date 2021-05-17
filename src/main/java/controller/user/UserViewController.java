@@ -88,7 +88,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
                 Pane view = new Pane();
                 System.out.println("This is " + newValue + "\n");
                 switch (newValue) {
-                    case "Personal Events":
+                    case "Personal Events": 
                         view = object.getPage("PersonalEventsList");
                         break;
                     case "Settings":
