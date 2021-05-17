@@ -2,6 +2,8 @@ package controller.user;
 
 import domain.DatabaseConnection;
 import domain.PersonalEvent;
+import domain.User;
+import domain.UserHolder;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -139,8 +141,9 @@ public class AddRelativeEventController {
         System.out.println("That is " + (epochTime + timeOffset) + " unix time, or " + Instant.ofEpochSecond(epochTime + timeOffset));
 
         //database
+        User currentUser = UserHolder.getInstance().getUser();
         String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES ('";
-        String insertValues = "testname','" + nameTextField.getText() + "','" + (epochTime + timeOffset) + "','" + extraTextField.getText() + "','" + locationTextField.getText() + "')";
+        String insertValues = currentUser.getUsername() + "','" + nameTextField.getText() + "','" + (epochTime + timeOffset) + "','" + extraTextField.getText() + "','" + locationTextField.getText() + "')";
         String insertToEvents = insertFields + insertValues;
 
         try {

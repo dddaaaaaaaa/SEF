@@ -63,7 +63,11 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
        // System.out.println(user.username);
         //query database
-        String queryString = "SELECT * FROM \"personalEvents\"";    //TODO query only my events
+
+        //cant reference user as it is null during initialization
+        //String myusername = user.getUsername();
+        String myusername = currentUser.getUsername();
+        String queryString = "SELECT * FROM \"personalEvents\" WHERE username = '" + myusername + "';";
 
         try {
             Connection connectDB = new DatabaseConnection().getConnection();
@@ -82,7 +86,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
                 Date date = new Date();
                 date.setTime(duedate * 1000);
 
-                System.out.println("Adding event " + eventname + " happening at " + duedate);
+                //System.out.println("Adding event " + eventname + " happening at " + duedate);
                 PersonalEvent ev = new PersonalEvent(date, eventname, extra, username, eventloc);
                 TableView.getItems().add(ev);
             }
@@ -155,6 +159,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
             AddRelativeEventController addRelativeEventController = loader.getController();
             addRelativeEventController.setTableEvents(TableView.getItems());
+            //addRelativeEventController.setCurrentUser(user);
 
             addEventStage.setResizable(false);
             addEventStage.initStyle(StageStyle.DECORATED);
