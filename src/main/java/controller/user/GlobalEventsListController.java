@@ -1,9 +1,6 @@
 package controller.user;
 
-import domain.PersonalEvent;
-import domain.User;
-import domain.UserHolder;
-import domain.UserViewInterface;
+import domain.*;
 import javafx.beans.binding.When;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,9 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,6 +20,7 @@ import javafx.stage.StageStyle;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -61,17 +57,43 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
         userHolder = UserHolder.getInstance();
         currentUser = userHolder.getUser();
 
-        if (currentUser.getUser().equals("Basic User")) {
-            AddButton.setVisible(false);
-            DeleteButton.setVisible(false);
-        }
-        if(currentUser.getUser().equals("Event Organizer User"))
+        if(currentUser instanceof EventOrganizerUser)
         {
-            AttendButton.setVisible(false);
+            AddButton.setDisable(false);
+            DeleteButton.setDisable(false);
         }
-       // TableView.setEditable(true);
 
+        //query database
 
+        try {
+            Connection connectDB = new DatabaseConnection().getConnection();
+            PreparedStatement ps = connectDB.prepareStatement("SELECT * FROM \"globalEvents\";");
+
+            ResultSet queryResult = ps.executeQuery();
+
+            //data available here
+            while (queryResult.next())
+            {
+                String username = queryResult.getString(2);
+                String eventname = queryResult.getString(3);
+                long duedate = queryResult.getLong(4);
+                String extra = queryResult.getString(5);
+                String eventloc = queryResult.getString(6);
+
+                Date date = new Date();
+                date.setTime(duedate * 1000);
+
+                System.out.println("Adding event " + eventname + " happening at " + duedate);
+                PersonalEvent ev = new PersonalEvent(date, eventname, extra, username, eventloc);
+                TableView.getItems().add(ev);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            new Alert(Alert.AlertType.ERROR, "Querying global events failed - database error!", ButtonType.OK).showAndWait();
+        }
     }
 
     public void setTableEvents(ObservableList<PersonalEvent> events) {
@@ -82,22 +104,22 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
         try {
             Stage AddEventStage = new Stage();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/AddGlobalEvent.fxml"));
             Parent root = loader.load();
 
-            AddEventController addEventController = loader.getController();
+            AddGlobalEventController addEventController = loader.getController();
             addEventController.setTableEvents(TableView.getItems());
 
 
             AddEventStage.initStyle(StageStyle.DECORATED);
-            Scene scene = new Scene(root, 400, 400);
+            Scene scene = new Scene(root, 400, 420);
             AddEventStage.setScene(scene);
             AddEventStage.showAndWait();
-            AddButton.setOnAction(e -> AddButton.setVisible(!AddButton.isVisible()));
+            //AddButton.setOnAction(e -> AddButton.setVisible(!AddButton.isVisible()));
 
 
 
-            AddButton.managedProperty().bind(AddButton.visibleProperty());
+            //AddButton.managedProperty().bind(AddButton.visibleProperty());
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
@@ -108,21 +130,72 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
         createAddEventStage();
     }
 
-    public void DeleteButtonOnAction(ActionEvent actionEvent) {
-        //deletion from database also needed
+    public void DeleteButtonOnAction(ActionEvent actionEvent)
+    {
         ObservableList<PersonalEvent> eventSelected, allEvents;
         allEvents = TableView.getItems();
         eventSelected = TableView.getSelectionModel().getSelectedItems();
-        eventSelected.forEach(allEvents::remove);
+
+        if(eventSelected.isEmpty())
+        {
+            new Alert(Alert.AlertType.ERROR, "Please select events to delete!", ButtonType.OK).showAndWait();
+            return;
+        }
+
+        //delete from the database
+        try {
+
+            Connection connectDB = new DatabaseConnection().getConnection();
+            PreparedStatement ps = connectDB.prepareStatement("DELETE from \"globalEvents\" WHERE username = ? " +
+                    "AND eventname = ? AND duedate = ? AND extra = ? AND location = ?;");
+            for(PersonalEvent ev : eventSelected)
+            {
+                ps.setString(1, currentUser.getUsername());
+                ps.setString(2, ev.getEventName());
+                ps.setLong(3, ev.getDate().getTime() / 1000);
+                ps.setString(4, ev.getObservations());
+                ps.setString(5, ev.getLocation());
+
+                ps.executeUpdate();
+            }
+
+            //all deletions succeeded, remove from local
+            eventSelected.forEach(allEvents::remove);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            new Alert(Alert.AlertType.ERROR, "Delete failed - database error!", ButtonType.OK).showAndWait();
+        }
 
     }
 
-    public void AttendButtonOnAction(ActionEvent actionEvent) throws IOException {
-        ObservableList<PersonalEvent> eventSelected;
-        eventSelected = TableView.getSelectionModel().getSelectedItems();
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/PersonalEventsList.fxml"));
-        ObservableList<PersonalEvent> event = eventSelected;
+    public void AttendButtonOnAction(ActionEvent actionEvent)
+    {
+        ObservableList<PersonalEvent> eventSelected = TableView.getSelectionModel().getSelectedItems();
 
-        //events.add((PersonalEvent) event);
+        try
+        {
+            Connection connectDB = new DatabaseConnection().getConnection();
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?, ?, ?, ?, ?);");
+
+            for (PersonalEvent pe : eventSelected)
+            {
+                ps.setString(1, currentUser.getUsername());
+                ps.setString(2, pe.getEventName());
+                ps.setLong(3, pe.getDate().getTime() / 1000);
+                ps.setString(4, pe.getObservations());
+                ps.setString(5, pe.getLocation());
+
+                ps.executeUpdate();
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            new Alert(Alert.AlertType.ERROR, "Import to local list failed - database error!", ButtonType.OK).showAndWait();
+        }
     }
 }

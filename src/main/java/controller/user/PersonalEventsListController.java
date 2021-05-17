@@ -155,11 +155,9 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
             AddRelativeEventController addRelativeEventController = loader.getController();
             addRelativeEventController.setTableEvents(TableView.getItems());
-            //addRelativeEventController.setCurrentUser(user);
 
             addEventStage.setResizable(false);
             addEventStage.initStyle(StageStyle.DECORATED);
-            //addEventStage.setScene(new Scene(root, 500, 400));
             addEventStage.setScene(new Scene(root));
             addEventStage.showAndWait();
         } catch (Exception e) {
