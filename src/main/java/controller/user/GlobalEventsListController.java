@@ -83,7 +83,6 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
                 Date date = new Date();
                 date.setTime(duedate * 1000);
 
-                System.out.println("Adding event " + eventname + " happening at " + duedate);
                 PersonalEvent ev = new PersonalEvent(date, eventname, extra, username, eventloc);
                 TableView.getItems().add(ev);
             }
@@ -150,6 +149,12 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
                     "AND eventname = ? AND duedate = ? AND extra = ? AND location = ?;");
             for(PersonalEvent ev : eventSelected)
             {
+                if(!ev.getHost().equals(currentUser.getUsername()))
+                {
+                    new Alert(Alert.AlertType.ERROR, "Can't delete others' events!", ButtonType.OK).showAndWait();
+                    return;
+                }
+
                 ps.setString(1, currentUser.getUsername());
                 ps.setString(2, ev.getEventName());
                 ps.setLong(3, ev.getDate().getTime() / 1000);
@@ -178,7 +183,7 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
         try
         {
             Connection connectDB = new DatabaseConnection().getConnection();
-            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?, ?, ?, ?, ?);");
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\", \"host\") VALUES (?, ?, ?, ?, ?, ?);");
 
             for (PersonalEvent pe : eventSelected)
             {
@@ -187,6 +192,7 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
                 ps.setLong(3, pe.getDate().getTime() / 1000);
                 ps.setString(4, pe.getObservations());
                 ps.setString(5, pe.getLocation());
+                ps.setString(6, pe.getHost());
 
                 ps.executeUpdate();
             }

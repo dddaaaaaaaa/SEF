@@ -67,8 +67,10 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
         try {
             Connection connectDB = new DatabaseConnection().getConnection();
-            Statement statement = connectDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(queryString);
+            PreparedStatement ps = connectDB.prepareStatement("SELECT * FROM \"personalEvents\" WHERE username = ?;");
+            ps.setString(1, currentUser.getUsername());
+
+            ResultSet queryResult = ps.executeQuery();
 
             //data available here
             while (queryResult.next())
@@ -78,12 +80,17 @@ public class PersonalEventsListController extends UserViewInterface implements I
                 long duedate = queryResult.getLong(4);
                 String extra = queryResult.getString(5);
                 String eventloc = queryResult.getString(6);
+                String hostname = queryResult.getString(7);
 
+                if(username.equals(hostname))
+                {
+                    hostname += " (Myself)";
+                }
                 Date date = new Date();
                 date.setTime(duedate * 1000);
 
                 //System.out.println("Adding event " + eventname + " happening at " + duedate);
-                PersonalEvent ev = new PersonalEvent(date, eventname, extra, username, eventloc);
+                PersonalEvent ev = new PersonalEvent(date, eventname, extra, hostname, eventloc);
                 TableView.getItems().add(ev);
             }
         }
@@ -95,25 +102,16 @@ public class PersonalEventsListController extends UserViewInterface implements I
         }
     }
 
-    public void setTableEvents(ObservableList<PersonalEvent> events) {
+    public void setTableEvents(ObservableList<PersonalEvent> events)
+    {
         this.events = events;
     }
 
-
-    public void ImportGlobalEvents() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/GlobalListEvents.fxml"));
-        Parent root = loader.load();
-
-        GlobalEventsListController globalEventsListController = loader.getController();
-        globalEventsListController.setTableEvents(TableView.getItems());
-    }
     public void createAddEventStage() {
 
         try {
             Stage AddEventStage = new Stage();
-            /*Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
-            AddEventStage.setResizable(false);
-            */
+
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
             Parent root = loader.load();
 
@@ -129,13 +127,6 @@ public class PersonalEventsListController extends UserViewInterface implements I
             e.printStackTrace();
             e.getCause();
         }
-    }
-
-    public void addTreeTableItem(ObservableList<PersonalEvent> events) {
-        //Some loading from the database needed here in order to keep the events
-        //events = TableView.getItems();
-        TableView.setItems(events);
-
     }
 
     //create button on action
@@ -219,7 +210,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
             for (PersonalEvent pe : eventSelected)
             {
-                ps.setString(1, pe.getHost());
+                ps.setString(1, currentUser.getUsername());
                 ps.setString(2, pe.getEventName());
                 ps.setLong(3, pe.getDate().getTime() / 1000);
                 ps.setString(4, pe.getObservations());

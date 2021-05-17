@@ -3,6 +3,7 @@ package controller.user;
 import domain.DatabaseConnection;
 import domain.PersonalEvent;
 import domain.UserHolder;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -22,7 +23,7 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.color;
 
-public class AddEventController extends PersonalEventsListController implements Initializable {
+public class AddEventController implements Initializable {
 
     @FXML
     private ImageView imageView;
@@ -34,6 +35,14 @@ public class AddEventController extends PersonalEventsListController implements 
     private Label MandatoryLabelField;
     @FXML
     private Button AddEventButton, CancelEventAdditionButton;
+
+    //event list
+    private ObservableList<PersonalEvent> events;
+
+    public void setTableEvents(ObservableList<PersonalEvent> events)
+    {
+        this.events = events;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -148,12 +157,13 @@ public class AddEventController extends PersonalEventsListController implements 
         try
         {
             Connection connectDB = new DatabaseConnection().getConnection();
-            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?,?,?,?,?);");
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\", \"host\") VALUES (?,?,?,?,?,?);");
             ps.setString(1, UserHolder.getInstance().getUser().getUsername());
             ps.setString(2, p.getEventName());
             ps.setLong(3, p.getDate().getTime() / 1000);
             ps.setString(4, p.getObservations());
             ps.setString(5, p.getLocation());
+            ps.setString(6, UserHolder.getInstance().getUser().getUsername());
 
             ps.executeUpdate();
 
