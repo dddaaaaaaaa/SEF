@@ -2,6 +2,7 @@ package controller.user;
 
 import domain.DatabaseConnection;
 import domain.PersonalEvent;
+import domain.UserHolder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -139,7 +140,7 @@ public class AddEventController extends PersonalEventsListController implements 
             return;
         }
 
-        String username = p.getHost();  //TODO get actual username
+        String username = UserHolder.getInstance().getUser().getUsername();
         String eventname = p.getEventName();
         long duedate = (p.getDate().getTime() / 1000);
         String extra = p.getObservations();
