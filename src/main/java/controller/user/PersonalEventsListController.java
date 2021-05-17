@@ -1,8 +1,6 @@
 package controller.user;
 
-import domain.DatabaseConnection;
-import domain.PersonalEvent;
-import domain.UserViewInterface;
+import domain.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -43,6 +42,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
     @FXML
     private Button AddButton, AddRelativeButton, DeleteButton;
     protected static ObservableList<PersonalEvent> events;
+    private User currentUser;
 
 
     @Override
@@ -56,7 +56,10 @@ public class PersonalEventsListController extends UserViewInterface implements I
         HostColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("host"));
         LocationColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("location"));
 
-        TableView.setEditable(true);
+       // TableView.setEditable(true);
+        UserHolder userHolder;
+        userHolder = UserHolder.getInstance();
+        currentUser = userHolder.getUser();
 
        // System.out.println(user.username);
         //query database
@@ -96,8 +99,16 @@ public class PersonalEventsListController extends UserViewInterface implements I
         this.events = events;
     }
 
+
+    public void ImportGlobalEvents() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/GlobalListEvents.fxml"));
+        Parent root = loader.load();
+
+        GlobalEventsListController globalEventsListController = loader.getController();
+        globalEventsListController.setTableEvents(TableView.getItems());
+    }
     public void createAddEventStage() {
-        System.out.println(user.username);
+
         try {
             Stage AddEventStage = new Stage();
             /*Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));

@@ -12,7 +12,7 @@ public class FxmlLoader {
     FXMLLoader loader = new FXMLLoader();
     public Pane view = new Pane();
 
-    public Pane getPage(String fileName, User user) {
+    public Pane getPage(String fileName) {
         try {
             System.out.println(fileName + "\n");
             URL fileURL = getClass().getClassLoader().getResource("fxml/" + fileName + ".fxml");
@@ -24,14 +24,14 @@ public class FxmlLoader {
 
             //view = FXMLLoader(fileURL).load();
             view = loader.load();
-            PersonalEventsListController personalEventsListController = loader.getController();
+         //   PersonalEventsListController personalEventsListController = loader.getController();
             // UserViewInterface controller = loader.getController();
-            personalEventsListController.user = user;
-            GlobalEventsListController globalEventsListController = loader.getController();
+          //  personalEventsListController.user = user;
+          //  GlobalEventsListController globalEventsListController = loader.getController();
             //controller = loader.getController();
-            globalEventsListController.user = user;
-            SettingsController settingsController = loader.getController();
-            settingsController.user = user;
+          //  globalEventsListController.user = user;
+          //  SettingsController settingsController = loader.getController();
+           // settingsController.user = user;
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
