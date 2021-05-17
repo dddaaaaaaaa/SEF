@@ -210,6 +210,7 @@ public class LoginController implements Initializable {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
 
+
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
