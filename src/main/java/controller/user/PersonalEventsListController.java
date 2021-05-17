@@ -67,8 +67,10 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
         try {
             Connection connectDB = new DatabaseConnection().getConnection();
-            Statement statement = connectDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(queryString);
+            PreparedStatement ps = connectDB.prepareStatement("SELECT * FROM \"personalEvents\" WHERE username = ?;");
+            ps.setString(1, currentUser.getUsername());
+
+            ResultSet queryResult = ps.executeQuery();
 
             //data available here
             while (queryResult.next())
