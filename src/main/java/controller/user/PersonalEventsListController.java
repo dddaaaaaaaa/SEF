@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -132,7 +131,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
         }
     }
 
-    public void addTreeTableItem(ObservableList<PersonalEvent> events) throws ParseException {
+    public void addTreeTableItem(ObservableList<PersonalEvent> events) {
         //Some loading from the database needed here in order to keep the events
         //events = TableView.getItems();
         TableView.setItems(events);
@@ -170,12 +169,11 @@ public class PersonalEventsListController extends UserViewInterface implements I
     }
 
     //Delete button on Action
-    public void DeleteButtonOnAction(javafx.event.ActionEvent actionEvent) {
-        //deletion from database also needed
+    public void DeleteButtonOnAction(javafx.event.ActionEvent actionEvent)
+    {
         ObservableList<PersonalEvent> eventSelected, allEvents;
         allEvents = TableView.getItems();
         eventSelected = TableView.getSelectionModel().getSelectedItems();
-        eventSelected.forEach(allEvents::remove);
 
         if(eventSelected.isEmpty())
         {
@@ -183,19 +181,25 @@ public class PersonalEventsListController extends UserViewInterface implements I
             return;
         }
 
-        //delete from the database also
+        //delete from the database
         try {
 
             Connection connectDB = new DatabaseConnection().getConnection();
-            for(PersonalEvent ev : eventSelected) {
-                String dbStatement = "DELETE from \"personalEvents\" WHERE username = '" + currentUser.getUsername() +
-                        "' AND eventname = '" + ev.getEventName() + "' AND duedate = '" + ev.getDate().getTime() / 1000 +
-                        "' AND extra = '" + ev.getObservations() + "' AND location = '" + ev.getLocation() + "';";
+            PreparedStatement ps = connectDB.prepareStatement("DELETE from \"personalEvents\" WHERE username = ? " +
+                    "AND eventname = ? AND duedate = ? AND extra = ? AND location = ?;");
+            for(PersonalEvent ev : eventSelected)
+            {
+                ps.setString(1, currentUser.getUsername());
+                ps.setString(2, ev.getEventName());
+                ps.setLong(3, ev.getDate().getTime() / 1000);
+                ps.setString(4, ev.getObservations());
+                ps.setString(5, ev.getLocation());
 
-
-                Statement statement = connectDB.createStatement();
-                statement.executeUpdate(dbStatement);
+                ps.executeUpdate();
             }
+
+            //all deletions succeeded, remove from local
+            eventSelected.forEach(allEvents::remove);
         }
         catch (SQLException e)
         {
@@ -213,7 +217,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
         try
         {
             Connection connectDB = new DatabaseConnection().getConnection();
-            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"globalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"globalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?, ?, ?, ?, ?);");
 
             for (PersonalEvent pe : eventSelected)
             {

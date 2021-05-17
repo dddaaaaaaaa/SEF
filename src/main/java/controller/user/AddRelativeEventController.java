@@ -14,8 +14,8 @@ import javafx.scene.control.TextField;
 import static javafx.scene.paint.Color.color;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.*;
 import java.util.Date;
 
@@ -61,8 +61,6 @@ public class AddRelativeEventController {
 
     public void createButtonOnAction(ActionEvent actionEvent)
     {
-        System.out.println("Add event button clicked!");
-
         boolean isSuccess = createNewRelativeEvent();
 
         if(isSuccess)
@@ -74,7 +72,6 @@ public class AddRelativeEventController {
         else
         {
             statusLabel.setTextFill(color(1, 0, 0));
-            statusLabel.setText("Failed to create event. Check input and try again.");
         }
     }
 
@@ -87,7 +84,10 @@ public class AddRelativeEventController {
 
         //check name
         if(nameTextField.getText().isEmpty() || nameTextField.getText().length() > 100)
+        {
+            statusLabel.setText("Failed to create event. Check name input and try again.");
             return false;
+        }
 
         //process year
         try {
@@ -133,28 +133,41 @@ public class AddRelativeEventController {
 
         System.out.println("Time offset: " + timeOffset);
         if(timeOffset < 5) //too short failsafe
+        {
+            statusLabel.setText("Failed to create event. Time difference too low.");
             return false;
+        }
 
         long epochTime = Instant.now().getEpochSecond();
 
-        System.out.println("Target time is " + timeOffset + " seconds from now.");
-        System.out.println("That is " + (epochTime + timeOffset) + " unix time, or " + Instant.ofEpochSecond(epochTime + timeOffset));
+        //System.out.println("Target time is " + timeOffset + " seconds from now.");
+        //System.out.println("That is " + (epochTime + timeOffset) + " unix time, or " + Instant.ofEpochSecond(epochTime + timeOffset));
 
         //database
         User currentUser = UserHolder.getInstance().getUser();
-        String insertFields = "INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES ('";
-        String insertValues = currentUser.getUsername() + "','" + nameTextField.getText() + "','" + (epochTime + timeOffset) + "','" + extraTextField.getText() + "','" + locationTextField.getText() + "')";
-        String insertToEvents = insertFields + insertValues;
+        if(currentUser == null)
+        {
+            statusLabel.setText("Fatal error! Undefined reference to logged in user!.");
+            return false;
+        }
 
-        try {
+        try
+        {
             Connection connectDB = new DatabaseConnection().getConnection();
-            Statement statement = connectDB.createStatement();
-            statement.executeUpdate(insertToEvents);
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"personalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?,?,?,?,?);");
+            ps.setString(1, currentUser.getUsername());
+            ps.setString(2, nameTextField.getText());
+            ps.setLong(3, epochTime + timeOffset);
+            ps.setString(4, extraTextField.getText());
+            ps.setString(5, locationTextField.getText());
+
+            ps.executeUpdate();
         }
         catch (SQLException e)
         {
             e.printStackTrace();
             e.getCause();
+            statusLabel.setText("SQL Error! Unable to create event!");
             return false;
         }
 
