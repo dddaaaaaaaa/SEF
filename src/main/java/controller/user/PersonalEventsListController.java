@@ -1,6 +1,8 @@
 package controller.user;
 
+import domain.DatabaseConnection;
 import domain.PersonalEvent;
+import domain.UserViewInterface;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,12 +20,16 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 
-public class PersonalEventsListController implements Initializable {
+public class PersonalEventsListController extends UserViewInterface implements Initializable {
     @FXML
     private ImageView eventImageView;
     @FXML
@@ -35,7 +41,7 @@ public class PersonalEventsListController implements Initializable {
     @FXML
     private TableView<PersonalEvent> TableView;
     @FXML
-    private Button AddButton, DeleteButton;
+    private Button AddButton, AddRelativeButton, DeleteButton;
     protected static ObservableList<PersonalEvent> events;
 
 
@@ -44,7 +50,6 @@ public class PersonalEventsListController implements Initializable {
         File eventFile = new File("src\\main\\resources\\images\\calendar.png");
         Image eventImage = new Image(eventFile.toURI().toString());
         eventImageView.setImage(eventImage);
-
         EventColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("eventName"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, Date>("date"));
         ObservationsColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("observations"));
@@ -52,6 +57,39 @@ public class PersonalEventsListController implements Initializable {
         LocationColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("location"));
 
         TableView.setEditable(true);
+
+       // System.out.println(user.username);
+        //query database
+        String queryString = "SELECT * FROM \"personalEvents\"";    //TODO query only my events
+
+        try {
+            Connection connectDB = new DatabaseConnection().getConnection();
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(queryString);
+
+            //data available here
+            while (queryResult.next())
+            {
+                String username = queryResult.getString(2);
+                String eventname = queryResult.getString(3);
+                long duedate = queryResult.getLong(4);
+                String extra = queryResult.getString(5);
+                String eventloc = queryResult.getString(6);
+
+                Date date = new Date();
+                date.setTime(duedate * 1000);
+
+                System.out.println("Adding event " + eventname + " happening at " + duedate);
+                PersonalEvent ev = new PersonalEvent(date, eventname, extra, username, eventloc);
+                TableView.getItems().add(ev);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            System.out.println("Querying user events failed!");
+        }
     }
 
     public void setTableEvents(ObservableList<PersonalEvent> events) {
@@ -59,6 +97,7 @@ public class PersonalEventsListController implements Initializable {
     }
 
     public void createAddEventStage() {
+        System.out.println(user.username);
         try {
             Stage AddEventStage = new Stage();
             /*Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
@@ -88,8 +127,33 @@ public class PersonalEventsListController implements Initializable {
 
     }
 
-    public void AddButtonOnAction(javafx.event.ActionEvent actionEvent) {
+    //create button on action
+    public void AddButtonOnAction(javafx.event.ActionEvent actionEvent)
+    {
         createAddEventStage();
+    }
+
+
+    //create relative button on action
+    public void AddRelativeButtonOnAction(javafx.event.ActionEvent actionEvent)
+    {
+        try {
+            Stage addEventStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/AddRelativeEvent.fxml"));
+            Parent root = loader.load();
+
+            AddRelativeEventController addRelativeEventController = loader.getController();
+            addRelativeEventController.setTableEvents(TableView.getItems());
+
+            addEventStage.setResizable(false);
+            addEventStage.initStyle(StageStyle.DECORATED);
+            //addEventStage.setScene(new Scene(root, 500, 400));
+            addEventStage.setScene(new Scene(root));
+            addEventStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     //Delete button on Action

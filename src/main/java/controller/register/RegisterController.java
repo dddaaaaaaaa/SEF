@@ -2,6 +2,7 @@ package controller.register;
 
 import crypto.sha256manager;
 import domain.*;
+import exceptions.InvalidCredentialsRegistration;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -69,7 +70,7 @@ public class RegisterController implements Initializable {
     String userType = "";
     boolean userTypeSelected;
 
-    public void registerButtonOnAction(ActionEvent actionEvent) {
+    public void registerButtonOnAction(ActionEvent actionEvent) throws InvalidCredentialsRegistration {
         if (setPasswordField.getText().isBlank()) {
             registrationMessageLabel.setText("");
             confirmPasswordLabel.setText("Password required!");
@@ -80,8 +81,8 @@ public class RegisterController implements Initializable {
         }
         if (setPasswordField.getText().equals(confirmPasswordField.getText()) && setPasswordField.getText().isBlank() == false) {
             if (userTypeSelected) {
-               // Register registration = new Register();
-              //  registration.registerUser();
+                // Register registration = new Register();
+                //  registration.registerUser();
                 User user = CreateUser();
                 if (user != null) {
                     Connection connectDB = InitializeDatabaseConnection();
@@ -127,45 +128,48 @@ public class RegisterController implements Initializable {
         switch (userType) {
             case "Basic User":
                 return new BasicUser(usernameTextField.getText(), setPasswordField.getText(),
-                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText());
+                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText(), userType);
             case "Event Organizer User":
                 return new EventOrganizerUser(usernameTextField.getText(), setPasswordField.getText(),
-                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText());
+                        firstNameTextField.getText(), lastNameTextField.getText(), emailTextField.getText(), userType);
             default:
                 registrationMessageLabel.setText(userType + "is not recognized!");
                 return null;
         }
     }
 
-    public void InsertNewRecord(Connection connection, User user) {
+    public void InsertNewRecord(Connection connection, User user) throws InvalidCredentialsRegistration {
 
         //System.out.println("user type : " + user.getClass().getTypeName());
+        Register register = new Register();
+        if (register.registerUser(user)) {
 
-        try {
-            //insert fields needs no special treatment
-            String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
+            try {
+                //insert fields needs no special treatment
+                String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
 
-            //hash the password
-            String hashedPassword = sha256manager.SHA256(user.password);
-            System.out.println("Pass is : " + user.password + ",SHA256 of password is: " + hashedPassword);
+                //hash the password
+                String hashedPassword = sha256manager.SHA256(user.password);
+                System.out.println("Pass is : " + user.password + ",SHA256 of password is: " + hashedPassword);
 
-            //generate queries
-            String insertValues = user.firstName + "','" + user.lastName + "','" + user.email + "','" + user.username + "','" + hashedPassword + "','" + userType + "')";
-            String insertToRegister = insertFields + insertValues;
+                //generate queries
+                String insertValues = user.firstName + "','" + user.lastName + "','" + user.email + "','" + user.username + "','" + hashedPassword + "','" + userType + "')";
+                String insertToRegister = insertFields + insertValues;
 
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(insertToRegister);
-            registrationMessageLabel.setText("                        User registered successfully!");
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-            e.printStackTrace();
-            registrationMessageLabel.setText("                        Internal error! Unable to hash password!");
-        }catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
-        }
-        ReturnToLoginStage();
+                Statement statement = connection.createStatement();
+                statement.executeUpdate(insertToRegister);
+                registrationMessageLabel.setText("                        User registered successfully!");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                registrationMessageLabel.setText("                        Internal error! Unable to hash password!");
+            } catch (Exception e) {
+                e.printStackTrace();
+                e.getCause();
+            }
+            ReturnToLoginStage();
+        } else
+            registrationMessageLabel.setText("Invalid credentials! Email or username already exist!");
+
 
     }
 
@@ -176,6 +180,7 @@ public class RegisterController implements Initializable {
         return connectDB;
 
     }
+
     public void ReturnToLoginStage() {
         closeButtonOnAction();
         try {

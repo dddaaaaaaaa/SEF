@@ -1,5 +1,7 @@
 package controller.user;
 
+import domain.User;
+import domain.UserViewInterface;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -34,7 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 
-
 public class UserViewController extends FxmlLoader implements Initializable {
     @FXML
     private ListView<String> UserListView;
@@ -47,33 +48,16 @@ public class UserViewController extends FxmlLoader implements Initializable {
     @FXML
     private Button logoutButton;
 
-    @FXML
-    private Button createNewButton;
-
-    public void createNewButtonOnAction(ActionEvent actionEvent)
-    {
-        //quick debug print
-        System.out.println("DEBUG (uview controller line 31) - button press, adding new event");
-
-        //spawn new scene
-        try {
-            Stage addEventStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/AddEvent.fxml"));
-            addEventStage.setResizable(false);
-            addEventStage.initStyle(StageStyle.DECORATED);
-            //addEventStage.setScene(new Scene(root, 500, 400));
-            addEventStage.setScene(new Scene(root));
-            addEventStage.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
-        }
-    }
-
     ObservableList<String> List = FXCollections.observableArrayList();
 
+    User userObject;
+
+    public void getUserObject(User user) {
+        this.userObject = user;
+    }
 
     @Override
+
     public void initialize(URL location, ResourceBundle resources) {
         File file = new File("src\\main\\resources\\images\\sigla.png");
         Image image = new Image(file.toURI().toString());
@@ -86,7 +70,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
         file = new File("src\\main\\resources\\images\\logout.png");
         image = new Image(file.toURI().toString());
         logoutImageView.setImage(image);
-        showSettingsStage();
+        //showSettingsStage();
 
 
         try {
@@ -103,13 +87,13 @@ public class UserViewController extends FxmlLoader implements Initializable {
                 System.out.println("This is " + newValue + "\n");
                 switch (newValue) {
                     case "Personal Events":
-                        view = object.getPage("PersonalEventsList");
+                        view = object.getPage("PersonalEventsList", userObject);
                         break;
                     case "Settings":
-                        view = object.getPage("Settings");
+                        view = object.getPage("Settings", userObject);
                         break;
                     case "Global Events":
-                        view = object.getPage("GlobalEventsList");
+                        view = object.getPage("GlobalEventsList", userObject);
                         break;
                     default:
                         System.out.println("Fxml loader cannot find file!");
@@ -117,6 +101,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
                 mainUserPane.setPrefSize(620, 650);
                 mainUserPane.setCenter(view);
+
                 //mainUserPane.
             }
         });
@@ -134,15 +119,16 @@ public class UserViewController extends FxmlLoader implements Initializable {
     }
 
     public void LoadIntoUserList() throws InterruptedException {
-        List.add("Global Events");
-        List.add("Personal Events");
         List.add("Settings");
+        List.add("Personal Events");
+        List.add("Global Events");
+
         UserListView.getItems().addAll(List);
     }
 
     public void showSettingsStage() {
         FxmlLoader object = new FxmlLoader();
-        Pane view = object.getPage("Settings");
+        Pane view = object.getPage("Settings", userObject);
         try {
             view = loader.load(getClass().getClassLoader().getResource("fxml/Settings.fxml"));
             ;
