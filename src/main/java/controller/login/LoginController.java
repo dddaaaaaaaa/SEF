@@ -2,10 +2,7 @@ package controller.login;
 
 import controller.user.UserViewController;
 import crypto.sha256manager;
-import domain.BasicUser;
-import domain.DatabaseConnection;
-import domain.EventOrganizerUser;
-import domain.User;
+import domain.*;
 import exceptions.InvalidCredentialsRegistration;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -67,13 +65,7 @@ public class LoginController implements Initializable {
     }
 
     public void loginButtonOnAction(ActionEvent actionEvent) {
-        //System.out.println("Login Button On Action!");
-        //loginMessageLabel.setText("You tried to login!");
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
-            // loginMessageLabel.setText("Username or password does not exist!");
-            /*if (registrationRequired == true)
-                createRegistrationStage();*/
-            //else
             if (validateLogin())
                 createUserViewStage();
         } else {
@@ -85,7 +77,7 @@ public class LoginController implements Initializable {
 
     public User retrieveUserFromDatabase(String username) throws SQLException {
         String queryString = "SELECT * FROM \"user\" WHERE username = '" + username + "'";
-        User currentUser=null;
+        User currentUser = null;
         try {
 
             Connection connectDB = new DatabaseConnection().getConnection();
@@ -103,15 +95,17 @@ public class LoginController implements Initializable {
 
 
                 switch (queryResult.getString(7)) {
-                    case "Event Organizer":
+                    case "Event Organizer User":
                         // public BasicUser(String username, String password, String firstName, String lastName, String email, String user)
-                        currentUser = new EventOrganizerUser(queryResult.getString("username"), queryResult.getString("password"),
-                                queryResult.getString("firstName"), queryResult.getString("lastName"), queryResult.getString("email"),
-                                queryResult.getString("type"));
+                        currentUser = new EventOrganizerUser(Username, Password,
+                                FirstName, LastName, Email,
+                                Type);
+                        break;
                     case "Basic User":
                         currentUser = new BasicUser(Username, Password,
                                 FirstName, LastName, Email,
                                 Type);
+                        break;
 
                 }
             }
@@ -120,8 +114,11 @@ public class LoginController implements Initializable {
             e.getCause();
             System.out.println("Querying user events failed!");
         }
+         UserHolder.getInstance().setUser(currentUser);
+
         return currentUser;
     }
+
 
     public void cancelButtonOnAction(ActionEvent actionEvent) {
         System.out.println("Cancel Button On Action!");
@@ -133,7 +130,7 @@ public class LoginController implements Initializable {
     public void registerHyperlinkOnAction(ActionEvent actionEvent) {
         if (registerHyperlink.isVisited())
             registrationRequired = true;
-        if (registrationRequired == true)
+        if (registrationRequired)
             createRegistrationStage();
 
     }
@@ -156,9 +153,9 @@ public class LoginController implements Initializable {
             ResultSet queryResult = statement.executeQuery(verifyLogin);
 
             while (queryResult.next()) {
-                System.out.println(queryResult.getInt(1));
+                // System.out.println(queryResult.getInt(1));
                 if (queryResult.getInt(1) == 1) {
-                    loginMessageLabel.setText("You logged in successfully!");
+                    //loginMessageLabel.setText("You logged in successfully!");
                     isSuccess = true;
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
@@ -202,18 +199,16 @@ public class LoginController implements Initializable {
             UserViewStage.initStyle(StageStyle.DECORATED);
             Scene scene = new Scene(root, 800, 650);
 
-            UserViewController userViewController = loader.getController();
-            User user = retrieveUserFromDatabase(usernameTextField.getText());
-            if (user != null) {
-                userViewController.getUserObject(user);
-                UserViewStage.setScene(scene);
-                //UserViewStage.showAndWait();
-                UserViewStage.show();
+            // UserViewController userViewController = loader.getController();
+             User user = retrieveUserFromDatabase(usernameTextField.getText());
 
-                //now logged in, close login window
-                Stage stage = (Stage) cancelButton.getScene().getWindow();
-                stage.close();
-            }
+            UserViewStage.setScene(scene);
+            //UserViewStage.showAndWait();
+            UserViewStage.show();
+
+            //now logged in, close login window
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
 
         } catch (Exception e) {
             e.printStackTrace();
