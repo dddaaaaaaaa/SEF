@@ -17,10 +17,7 @@ import javafx.stage.StageStyle;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -211,6 +208,29 @@ public class PersonalEventsListController extends UserViewInterface implements I
     //push button on action - only for event organizers!
     public void PushButtonOnAction(javafx.event.ActionEvent actionEvent)
     {
+        ObservableList<PersonalEvent> eventSelected = TableView.getSelectionModel().getSelectedItems();
 
+        try
+        {
+            Connection connectDB = new DatabaseConnection().getConnection();
+            PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"globalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?, ?, ?, ?, ?)");
+
+            for (PersonalEvent pe : eventSelected)
+            {
+                ps.setString(1, pe.getHost());
+                ps.setString(2, pe.getEventName());
+                ps.setLong(3, pe.getDate().getTime() / 1000);
+                ps.setString(4, pe.getObservations());
+                ps.setString(5, pe.getLocation());
+
+                ps.executeUpdate();
+            }
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            new Alert(Alert.AlertType.ERROR, "Push to global list failed - database error!", ButtonType.OK).showAndWait();
+        }
     }
 }
