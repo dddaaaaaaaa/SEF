@@ -1,41 +1,49 @@
-controller/user/UserViewController.java
- controller.user.UserViewController
- controller.user.UserViewController$1
-crypto/sha256manager.java
- crypto.sha256manager
-controller/user/FxmlLoader.java
- controller.user.FxmlLoader
-domain/User.java
- domain.User
-domain/DatabaseConnection.java
- domain.DatabaseConnection
+controller/user/SettingsController.java
+ controller.user.SettingsController
 domain/EventOrganizerUser.java
  domain.EventOrganizerUser
-domain/DatabaseCredentials.java
- domain.DatabaseCredentials
+domain/Event.java
+ domain.Event
+crypto/sha256manager.java
+ crypto.sha256manager
+domain/DatabaseConnection.java
+ domain.DatabaseConnection
+controller/user/FxmlLoader.java
+ controller.user.FxmlLoader
+domain/PersonalEvent.java
+ domain.PersonalEvent
 domain/ID.java
  domain.ID
 domain/BasicUser.java
  domain.BasicUser
-domain/Event.java
- domain.Event
-Main.java
- Main
+domain/UserHolder.java
+ domain.UserHolder
 domain/GlobalEvent.java
  domain.GlobalEvent
+Main.java
+ Main
+domain/User.java
+ domain.User
+controller/user/AddRelativeEventController.java
+ controller.user.AddRelativeEventController
+domain/UserViewInterface.java
+ domain.UserViewInterface
 domain/Register.java
  domain.Register
-controller/register/RegisterController.java
- controller.register.RegisterController
+exceptions/InvalidCredentialsRegistration.java
+ exceptions.InvalidCredentialsRegistration
 controller/user/PersonalEventsListController.java
  controller.user.PersonalEventsListController
-domain/PersonalEvent.java
- domain.PersonalEvent
-controller/user/SettingsController.java
- controller.user.SettingsController
 controller/user/GlobalEventsListController.java
  controller.user.GlobalEventsListController
+domain/DatabaseCredentials.java
+ domain.DatabaseCredentials
+controller/register/RegisterController.java
+ controller.register.RegisterController
 controller/user/AddEventController.java
  controller.user.AddEventController
+controller/user/UserViewController.java
+ controller.user.UserViewController
+ controller.user.UserViewController$1
 controller/login/LoginController.java
  controller.login.LoginController

@@ -28,7 +28,7 @@
          <top>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="67.0" prefWidth="677.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="siglaImageView" fitHeight="74.0" fitWidth="80.0" layoutX="32.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="siglaImageView" fitHeight="74.0" fitWidth="80.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/sigla.png" />
                      </image>
@@ -53,6 +53,12 @@
                         <Image url="@../images/clock.png" />
                      </image>
                   </ImageView>
+                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="74.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/person.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="UsernameLabel" layoutX="104.0" layoutY="28.0" prefHeight="17.0" prefWidth="92.0" />
                </children>
             </AnchorPane>
          </top>

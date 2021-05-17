@@ -1,5 +1,8 @@
 package domain;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 public class EventOrganizerUser extends User{
     @Override
     public String getEmail() {
@@ -51,7 +54,42 @@ public class EventOrganizerUser extends User{
         super.setLastName(lastName);
     }
 
-    public EventOrganizerUser(String username, String password, String firstName, String lastName, String email) {
-        super(username, password, firstName, lastName, email);
+    private String address, phone, occupation;
+
+    private LocalDate birth;
+    public EventOrganizerUser(String username, String password, String firstName, String lastName, String email,String user) {
+        super(username, password, firstName, lastName, email,user);
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setBirth(LocalDate birth) {
+        this.birth = birth;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public LocalDate getBirth() {
+        return birth;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
     }
 }

@@ -1,7 +1,9 @@
 package controller.login;
 
+import controller.user.UserViewController;
 import crypto.sha256manager;
-import domain.DatabaseConnection;
+import domain.*;
+import exceptions.InvalidCredentialsRegistration;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -20,6 +23,7 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
@@ -61,21 +65,60 @@ public class LoginController implements Initializable {
     }
 
     public void loginButtonOnAction(ActionEvent actionEvent) {
-        //System.out.println("Login Button On Action!");
-        //loginMessageLabel.setText("You tried to login!");
         if (usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
-            // loginMessageLabel.setText("Username or password does not exist!");
-            /*if (registrationRequired == true)
-                createRegistrationStage();*/
-            //else
-                if(validateLogin())
-                    createUserViewStage();
+            if (validateLogin())
+                createUserViewStage();
         } else {
             loginMessageLabel.setText("Please enter username and password.");
         }
 
 
     }
+
+    public User retrieveUserFromDatabase(String username) throws SQLException {
+        String queryString = "SELECT * FROM \"user\" WHERE username = '" + username + "'";
+        User currentUser = null;
+        try {
+
+            Connection connectDB = new DatabaseConnection().getConnection();
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(queryString);
+
+            //data available here
+            while (queryResult.next()) {
+                String FirstName = queryResult.getString(2);
+                String LastName = queryResult.getString(3);
+                String Email = queryResult.getString(4);
+                String Username = queryResult.getString(5);
+                String Type = queryResult.getString(7);
+                String Password = queryResult.getString(6);
+
+
+                switch (queryResult.getString(7)) {
+                    case "Event Organizer User":
+                        // public BasicUser(String username, String password, String firstName, String lastName, String email, String user)
+                        currentUser = new EventOrganizerUser(Username, Password,
+                                FirstName, LastName, Email,
+                                Type);
+                        break;
+                    case "Basic User":
+                        currentUser = new BasicUser(Username, Password,
+                                FirstName, LastName, Email,
+                                Type);
+                        break;
+
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            e.getCause();
+            System.out.println("Querying user events failed!");
+        }
+         UserHolder.getInstance().setUser(currentUser);
+
+        return currentUser;
+    }
+
 
     public void cancelButtonOnAction(ActionEvent actionEvent) {
         System.out.println("Cancel Button On Action!");
@@ -87,7 +130,7 @@ public class LoginController implements Initializable {
     public void registerHyperlinkOnAction(ActionEvent actionEvent) {
         if (registerHyperlink.isVisited())
             registrationRequired = true;
-        if (registrationRequired == true)
+        if (registrationRequired)
             createRegistrationStage();
 
     }
@@ -98,8 +141,7 @@ public class LoginController implements Initializable {
         // Connection connectDB = connectNow.getConnection();
         Connection connectDB = connectNow.getConnection();
 
-        try
-        {
+        try {
             //hash password
             String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
             System.out.println("Pass is : " + enterPasswordField.getText() + ", SHA256 of password is: " + hashedPassword);
@@ -111,9 +153,9 @@ public class LoginController implements Initializable {
             ResultSet queryResult = statement.executeQuery(verifyLogin);
 
             while (queryResult.next()) {
-                System.out.println(queryResult.getInt(1));
+                // System.out.println(queryResult.getInt(1));
                 if (queryResult.getInt(1) == 1) {
-                    loginMessageLabel.setText("You logged in successfully!");
+                    //loginMessageLabel.setText("You logged in successfully!");
                     isSuccess = true;
                 } else {
                     loginMessageLabel.setText("Invalid login. Try again!");
@@ -121,13 +163,10 @@ public class LoginController implements Initializable {
             }
 
 
-        }
-        catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             loginMessageLabel.setText("Internal error! Unable to hash password!");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
@@ -148,14 +187,21 @@ public class LoginController implements Initializable {
             e.getCause();
         }
     }
+
     public void createUserViewStage() {
         try {
+            User user = retrieveUserFromDatabase(usernameTextField.getText());
             Stage UserViewStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
+            //Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/UserView.fxml"));
             //UserViewStage.setResizable(false);
-
+            Parent root = loader.load();
             UserViewStage.initStyle(StageStyle.DECORATED);
             Scene scene = new Scene(root, 800, 650);
+
+            // UserViewController userViewController = loader.getController();
+            // User user = retrieveUserFromDatabase(usernameTextField.getText());
+
             UserViewStage.setScene(scene);
             //UserViewStage.showAndWait();
             UserViewStage.show();
@@ -163,6 +209,7 @@ public class LoginController implements Initializable {
             //now logged in, close login window
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
+
 
         } catch (Exception e) {
             e.printStackTrace();

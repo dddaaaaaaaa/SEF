@@ -1,5 +1,9 @@
 package controller.user;
 
+import domain.BasicUser;
+import domain.User;
+import domain.UserHolder;
+import domain.UserViewInterface;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,6 +31,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -34,20 +40,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 
-
 public class UserViewController extends FxmlLoader implements Initializable {
     @FXML
     private ListView<String> UserListView;
     @FXML
     private BorderPane mainUserPane;
     @FXML
-    private Label dateTimeLabel;
+    private Label dateTimeLabel, UsernameLabel;
     @FXML
     private ImageView siglaImageView, clockImageView, logoutImageView;
     @FXML
     private Button logoutButton;
 
     ObservableList<String> List = FXCollections.observableArrayList();
+    private User currentUser;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,8 +69,11 @@ public class UserViewController extends FxmlLoader implements Initializable {
         file = new File("src\\main\\resources\\images\\logout.png");
         image = new Image(file.toURI().toString());
         logoutImageView.setImage(image);
-        showSettingsStage();
-
+        //showSettingsStage();
+        UserHolder userHolder;
+        userHolder = UserHolder.getInstance();
+        currentUser = userHolder.getUser();
+        UsernameLabel.setText(currentUser.getUsername());
 
         try {
             LoadIntoUserList();
@@ -93,11 +103,33 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
                 mainUserPane.setPrefSize(620, 650);
                 mainUserPane.setCenter(view);
+
                 //mainUserPane.
             }
         });
         initClock();
     }
+    /*@FXML
+    public void sendData(MouseEvent event)
+    {
+        User u = userObject;
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
+        try {
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/PersonalEventsList.fxml"));
+            // Step 2
+            UserHolder holder = UserHolder.getInstance();
+            // Step 3
+            holder.setUser(u);
+            // Step 4
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.err.println(String.format("Error: %s", e.getMessage()));
+        }
+    }*/
 
     private void initClock() {
 
