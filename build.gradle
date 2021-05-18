@@ -4,9 +4,14 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+}
 
 group 'org.example'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 repositories {
     mavenCentral()
