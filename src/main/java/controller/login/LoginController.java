@@ -21,10 +21,7 @@ import javafx.stage.StageStyle;
 import java.io.File;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 //import java.sql.SQLOutput;
@@ -76,13 +73,13 @@ public class LoginController implements Initializable {
     }
 
     public User retrieveUserFromDatabase(String username) throws SQLException {
-        String queryString = "SELECT * FROM \"user\" WHERE username = '" + username + "'";
         User currentUser = null;
         try {
 
             Connection connectDB = new DatabaseConnection().getConnection();
-            Statement statement = connectDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(queryString);
+            PreparedStatement ps = connectDB.prepareStatement("SELECT * FROM \"user\" WHERE username = ?;");
+            ps.setString(1, username);
+            ResultSet queryResult = ps.executeQuery();
 
             //data available here
             while (queryResult.next()) {
@@ -144,13 +141,13 @@ public class LoginController implements Initializable {
         try {
             //hash password
             String hashedPassword = sha256manager.SHA256(enterPasswordField.getText());
-            System.out.println("Pass is : " + enterPasswordField.getText() + ", SHA256 of password is: " + hashedPassword);
+            //System.out.println("Pass is : " + enterPasswordField.getText() + ", SHA256 of password is: " + hashedPassword);
 
             //do query
-            String verifyLogin = "SELECT count(1) FROM \"user\" WHERE username = '" + usernameTextField.getText() + "' AND password = '" + hashedPassword + "';";
-
-            Statement statement = connectDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(verifyLogin);
+            PreparedStatement ps = connectDB.prepareStatement("SELECT count (1) FROM \"user\" WHERE username = ? AND password = ?;");
+            ps.setString(1, usernameTextField.getText());
+            ps.setString(2, hashedPassword);
+            ResultSet queryResult = ps.executeQuery();
 
             while (queryResult.next()) {
                 // System.out.println(queryResult.getInt(1));
