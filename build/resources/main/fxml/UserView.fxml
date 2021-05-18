@@ -13,7 +13,7 @@
    <children>
       <BorderPane fx:id="mainUserPane" prefHeight="596.0" prefWidth="676.0">
          <center>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="363.0" style="-fx-background-color: #8fd700;" BorderPane.alignment="BOTTOM_CENTER" />
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="363.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="BOTTOM_CENTER" />
          </center>
          <left>
             <AnchorPane maxHeight="504.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="201.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">

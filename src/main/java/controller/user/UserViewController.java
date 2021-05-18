@@ -62,6 +62,7 @@ public class UserViewController extends FxmlLoader implements Initializable {
         Image image = new Image(file.toURI().toString());
         siglaImageView.setImage(image);
 
+
         File clockFile = new File("src\\main\\resources\\images\\clock.png");
         image = new Image(clockFile.toURI().toString());
         clockImageView.setImage(image);

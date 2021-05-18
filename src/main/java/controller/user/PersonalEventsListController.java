@@ -1,10 +1,14 @@
 package controller.user;
 
 import domain.*;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,18 +17,31 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
+import org.controlsfx.control.PropertySheet;
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
+import javax.management.Notification;
+import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class PersonalEventsListController extends UserViewInterface implements Initializable {
     @FXML
-    private ImageView eventImageView;
+    private ImageView eventImageView, NotificationImageView;
     @FXML
     private TableColumn<PersonalEvent, String> EventColumn;
     @FXML
@@ -34,7 +51,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
     @FXML
     private TableView<PersonalEvent> TableView;
     @FXML
-    private Button AddButton, AddRelativeButton, DeleteButton, PushButton;
+    private Button AddButton, AddRelativeButton, DeleteButton, PushButton, SetNotificationButton;
     protected static ObservableList<PersonalEvent> events;
     private User currentUser;
 
@@ -43,6 +60,13 @@ public class PersonalEventsListController extends UserViewInterface implements I
     public void initialize(URL location, ResourceBundle resources) {
         File eventFile = new File("src\\main\\resources\\images\\calendar.png");
         Image eventImage = new Image(eventFile.toURI().toString());
+        eventImageView.setImage(eventImage);
+
+        File file = new File("src\\main\\resources\\images\\notification.png");
+        Image image = new Image(file.toURI().toString());
+        NotificationImageView.setImage(image);
+        SetNotificationButton.setGraphic(NotificationImageView);
+
         eventImageView.setImage(eventImage);
         EventColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("eventName"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, Date>("date"));
@@ -55,8 +79,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
         userHolder = UserHolder.getInstance();
         currentUser = userHolder.getUser();
 
-        if(currentUser instanceof EventOrganizerUser)
-        {
+        if (currentUser instanceof EventOrganizerUser) {
             System.out.println("User is event organizer!");
             PushButton.setDisable(false);
         }
@@ -73,8 +96,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
             ResultSet queryResult = ps.executeQuery();
 
             //data available here
-            while (queryResult.next())
-            {
+            while (queryResult.next()) {
                 String username = queryResult.getString(2);
                 String eventname = queryResult.getString(3);
                 long duedate = queryResult.getLong(4);
@@ -82,8 +104,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
                 String eventloc = queryResult.getString(6);
                 String hostname = queryResult.getString(7);
 
-                if(username.equals(hostname))
-                {
+                if (username.equals(hostname)) {
                     hostname += " (Myself)";
                 }
                 Date date = new Date();
@@ -93,17 +114,14 @@ public class PersonalEventsListController extends UserViewInterface implements I
                 PersonalEvent ev = new PersonalEvent(date, eventname, extra, hostname, eventloc);
                 TableView.getItems().add(ev);
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
             System.out.println("Querying user events failed!");
         }
     }
 
-    public void setTableEvents(ObservableList<PersonalEvent> events)
-    {
+    public void setTableEvents(ObservableList<PersonalEvent> events) {
         this.events = events;
     }
 
@@ -130,15 +148,13 @@ public class PersonalEventsListController extends UserViewInterface implements I
     }
 
     //create button on action
-    public void AddButtonOnAction(javafx.event.ActionEvent actionEvent)
-    {
+    public void AddButtonOnAction(javafx.event.ActionEvent actionEvent) {
         createAddEventStage();
     }
 
 
     //create relative button on action
-    public void AddRelativeButtonOnAction(javafx.event.ActionEvent actionEvent)
-    {
+    public void AddRelativeButtonOnAction(javafx.event.ActionEvent actionEvent) {
         try {
             Stage addEventStage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/AddRelativeEvent.fxml"));
@@ -158,14 +174,12 @@ public class PersonalEventsListController extends UserViewInterface implements I
     }
 
     //Delete button on Action
-    public void DeleteButtonOnAction(javafx.event.ActionEvent actionEvent)
-    {
+    public void DeleteButtonOnAction(javafx.event.ActionEvent actionEvent) {
         ObservableList<PersonalEvent> eventSelected, allEvents;
         allEvents = TableView.getItems();
         eventSelected = TableView.getSelectionModel().getSelectedItems();
 
-        if(eventSelected.isEmpty())
-        {
+        if (eventSelected.isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Please select events to delete!", ButtonType.OK).showAndWait();
             return;
         }
@@ -176,8 +190,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
             Connection connectDB = new DatabaseConnection().getConnection();
             PreparedStatement ps = connectDB.prepareStatement("DELETE from \"personalEvents\" WHERE username = ? " +
                     "AND eventname = ? AND duedate = ? AND extra = ? AND location = ?;");
-            for(PersonalEvent ev : eventSelected)
-            {
+            for (PersonalEvent ev : eventSelected) {
                 ps.setString(1, currentUser.getUsername());
                 ps.setString(2, ev.getEventName());
                 ps.setLong(3, ev.getDate().getTime() / 1000);
@@ -189,9 +202,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
             //all deletions succeeded, remove from local
             eventSelected.forEach(allEvents::remove);
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
             new Alert(Alert.AlertType.ERROR, "Delete failed - database error!", ButtonType.OK).showAndWait();
@@ -199,17 +210,14 @@ public class PersonalEventsListController extends UserViewInterface implements I
     }
 
     //push button on action - only for event organizers!
-    public void PushButtonOnAction(javafx.event.ActionEvent actionEvent)
-    {
+    public void PushButtonOnAction(javafx.event.ActionEvent actionEvent) {
         ObservableList<PersonalEvent> eventSelected = TableView.getSelectionModel().getSelectedItems();
 
-        try
-        {
+        try {
             Connection connectDB = new DatabaseConnection().getConnection();
             PreparedStatement ps = connectDB.prepareStatement("INSERT INTO \"globalEvents\" ( \"username\", \"eventname\", \"duedate\", \"extra\", \"location\") VALUES (?, ?, ?, ?, ?);");
 
-            for (PersonalEvent pe : eventSelected)
-            {
+            for (PersonalEvent pe : eventSelected) {
                 ps.setString(1, currentUser.getUsername());
                 ps.setString(2, pe.getEventName());
                 ps.setLong(3, pe.getDate().getTime() / 1000);
@@ -218,12 +226,62 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
                 ps.executeUpdate();
             }
-        }
-        catch(SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
             new Alert(Alert.AlertType.ERROR, "Push to global list failed - database error!", ButtonType.OK).showAndWait();
         }
     }
+
+    public void SetNotificationButtonOnAction(ActionEvent actionEvent) {
+        ObservableList<PersonalEvent> eventSelected;
+        eventSelected = TableView.getSelectionModel().getSelectedItems();
+
+        TablePosition pos = TableView.getSelectionModel().getSelectedCells().get(0);
+        int row = pos.getRow();
+        PersonalEvent item = TableView.getItems().get(row);
+        java.util.Date currentDate = new java.util.Date();
+
+        TableColumn col = TableView.getColumns().get(1);
+        TableColumn col2 = TableView.getColumns().get(0);
+        Date selectedDate = (Date) col.getCellObservableValue(item).getValue();
+        String selectedEvent = (String) col2.getCellObservableValue(item).getValue();
+
+        long delay = selectedDate.getTime() - currentDate.getTime() - 900000;
+
+        Timer timer = new Timer();
+        if (delay > 0) {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    File file = new File("src\\main\\resources\\images\\notification.png");
+                    Image image = new Image(file.toURI().toString());
+
+
+                    Notifications notificationsBuilder = Notifications.create()
+                            .title("Remind me!")
+                            .text("Event " + selectedEvent + " \n" + selectedDate + "\n" + " is happening in 15 minutes!")
+                            .graphic(new ImageView(image))
+                            .hideAfter(Duration.minutes(1))
+                            .position(Pos.TOP_RIGHT)
+                            .onAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    System.out.println("Clicked on notification!");
+                                }
+                            });
+                    notificationsBuilder.darkStyle();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            notificationsBuilder.show();
+                        }
+                    });
+                    System.out.println("Executed at:" + (new Date()));
+                }
+            }, delay);
+        }
+    }
+
+
 }

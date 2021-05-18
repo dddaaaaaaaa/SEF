@@ -154,7 +154,6 @@ public class GlobalEventsListController extends UserViewInterface implements Ini
                     new Alert(Alert.AlertType.ERROR, "Can't delete others' events!", ButtonType.OK).showAndWait();
                     return;
                 }
-
                 ps.setString(1, currentUser.getUsername());
                 ps.setString(2, ev.getEventName());
                 ps.setLong(3, ev.getDate().getTime() / 1000);
