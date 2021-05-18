@@ -49,7 +49,7 @@ public class UserTest {
 
     @Test
     public void testIsString(){
-        User user = new BasicUser(TEST_USERNAME,TEST_PASSWORD,TEST_FIRSTNAME,TEST_LASTNAME,TEST_EMAIL,TEST_USERTYPEEVENT,TEST_ADDRESS,TEST_PHONE,TEST_DATE);
+        User user = new BasicUser(TEST_USERNAME,TEST_PASSWORD,TEST_FIRSTNAME,TEST_LASTNAME,TEST_EMAIL,TEST_USERTYPE);
         assertEquals(true,user.isString(user.getFirstName()));
         assertEquals(true,user.isString(user.getLastName()));
 
@@ -60,6 +60,13 @@ public class UserTest {
         assertEquals(false,user.isString(user.getFirstName()));
         assertEquals(true,user.isString(user.getLastName()));
 
+    }
+    @Test
+    public void UserHolderTest(){
+        User user = new BasicUser(TEST_USERNAME,TEST_PASSWORD,TEST_FIRSTNAME,TEST_LASTNAME,TEST_EMAIL,TEST_USERTYPE);
+
+        //UserHolder.getInstance().setUser(user);
+        assertEquals(null,UserHolder.getInstance().getUser());
     }
 
 
