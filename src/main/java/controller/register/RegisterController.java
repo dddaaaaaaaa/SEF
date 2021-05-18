@@ -53,16 +53,13 @@ public class RegisterController implements Initializable {
     private CheckBox basicUserCheckbox;
     @FXML
     private CheckBox eventOrganizerUserCheckbox;
-    @FXML
-    private ComboBox<String> comboBoxButton;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         File registerFile = new File("src\\main\\resources\\images\\register.png");
         Image registerImage = new Image(registerFile.toURI().toString());
         registerImageView.setImage(registerImage);
-        comboBoxButton.getItems().add("Basic User");
-        comboBoxButton.getItems().add("Event Organizer User");
 
 
     }
