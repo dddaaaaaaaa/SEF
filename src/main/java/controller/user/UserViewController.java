@@ -1,9 +1,8 @@
 package controller.user;
 
-import domain.BasicUser;
+
 import domain.User;
 import domain.UserHolder;
-import domain.UserViewInterface;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,15 +14,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -31,8 +26,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -47,8 +40,8 @@ public class UserViewController extends FxmlLoader implements Initializable {
     private BorderPane mainUserPane;
     @FXML
     private Label dateTimeLabel, UsernameLabel;
-    @FXML
-    private ImageView siglaImageView, clockImageView, logoutImageView;
+    //@FXML
+    //private ImageView siglaImageView, clockImageView, logoutImageView;
     @FXML
     private Button logoutButton;
 
@@ -58,18 +51,18 @@ public class UserViewController extends FxmlLoader implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        File file = new File("src\\main\\resources\\images\\sigla.png");
-        Image image = new Image(file.toURI().toString());
-        siglaImageView.setImage(image);
+        //File file = new File("src\\main\\resources\\images\\sigla.png");
+        //Image image = new Image(file.toURI().toString());
+        //siglaImageView.setImage(image);
 
 
-        File clockFile = new File("src\\main\\resources\\images\\clock.png");
-        image = new Image(clockFile.toURI().toString());
-        clockImageView.setImage(image);
+        //File clockFile = new File("src\\main\\resources\\images\\clock.png");
+        //image = new Image(clockFile.toURI().toString());
+        //clockImageView.setImage(image);
 
-        file = new File("src\\main\\resources\\images\\logout.png");
-        image = new Image(file.toURI().toString());
-        logoutImageView.setImage(image);
+        //file = new File("src\\main\\resources\\images\\logout.png");
+        //image = new Image(file.toURI().toString());
+        //logoutImageView.setImage(image);
 
         UserHolder userHolder;
         userHolder = UserHolder.getInstance();

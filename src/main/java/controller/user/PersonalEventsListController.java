@@ -19,29 +19,20 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.control.PropertySheet;
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
-import javax.management.Notification;
-import javax.sound.midi.Soundbank;
+
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 public class PersonalEventsListController extends UserViewInterface implements Initializable {
-    @FXML
-    private ImageView eventImageView, NotificationImageView;
+    //@FXML
+    //private ImageView eventImageView, NotificationImageView;
     @FXML
     private TableColumn<PersonalEvent, String> EventColumn;
     @FXML
@@ -58,16 +49,16 @@ public class PersonalEventsListController extends UserViewInterface implements I
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        File eventFile = new File("src\\main\\resources\\images\\calendar.png");
-        Image eventImage = new Image(eventFile.toURI().toString());
-        eventImageView.setImage(eventImage);
+        //File eventFile = new File("src\\main\\resources\\images\\calendar.png");
+        //Image eventImage = new Image(eventFile.toURI().toString());
+        //eventImageView.setImage(eventImage);
 
-        File file = new File("src\\main\\resources\\images\\notification.png");
-        Image image = new Image(file.toURI().toString());
-        NotificationImageView.setImage(image);
-        SetNotificationButton.setGraphic(NotificationImageView);
+        //File file = new File("src\\main\\resources\\images\\notification.png");
+        //Image image = new Image(file.toURI().toString());
+       // NotificationImageView.setImage(image);
+        //SetNotificationButton.setGraphic(NotificationImageView);
 
-        eventImageView.setImage(eventImage);
+        //eventImageView.setImage(eventImage);
         EventColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("eventName"));
         DateColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, Date>("date"));
         ObservationsColumn.setCellValueFactory(new PropertyValueFactory<PersonalEvent, String>("observations"));
