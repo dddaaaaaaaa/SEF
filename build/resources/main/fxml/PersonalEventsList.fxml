@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.user.PersonalEventsListController">
+   <children>
+      <TextField layoutX="234.0" layoutY="7.0" prefHeight="39.0" prefWidth="171.0" style="-fx-background-color: #ffffff;" text="Personal Events">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </TextField>
+      <ImageView fx:id="eventImageView" fitHeight="50.0" fitWidth="65.0" layoutX="184.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/calendar.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="TableView" layoutX="13.0" layoutY="55.0" maxHeight="-Infinity" prefHeight="477.0" prefWidth="570.0">
+         <columns>
+            <TableColumn fx:id="EventColumn" prefWidth="130.66665172576904" text="Event" />
+            <TableColumn fx:id="DateColumn" prefWidth="94.00003051757812" text="Date" />
+            <TableColumn fx:id="HostColumn" prefWidth="107.33332824707031" text="Host" />
+            <TableColumn fx:id="LocationColumn" prefWidth="99.3333740234375" text="Location" />
+            <TableColumn fx:id="ObservationsColumn" prefWidth="133.99990844726562" text="Observations" />
+         </columns>
+      </TableView>
+      <Button fx:id="AddButton" defaultButton="true" layoutX="63.0" layoutY="546.0" mnemonicParsing="false" onAction="#AddButtonOnAction" prefHeight="25.0" prefWidth="105.0" text="Add">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="DeleteButton" layoutX="351.0" layoutY="546.0" mnemonicParsing="false" onAction="#DeleteButtonOnAction" prefHeight="25.0" prefWidth="87.0" text="Delete">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="AddRelativeButton" layoutX="214.0" layoutY="546.0" mnemonicParsing="false" onAction="#AddRelativeButtonOnAction" text="Add relative">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="PushButton" disable="true" layoutX="481.0" layoutY="546.0" mnemonicParsing="false" onAction="#PushButtonOnAction" text="Push">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

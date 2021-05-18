@@ -1,18 +1,20 @@
 package domain;
 
-public class User {
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    public boolean attendEvent;
-    public boolean createEvent;
+public abstract class User {
+    public String username;
+    public String password;
+    public String firstName;
+    public String lastName;
+    public String email;
+    public String user;
 
-    public User(String username, String password, String firstName, String lastName) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
@@ -47,19 +49,21 @@ public class User {
         this.lastName = lastName;
     }
 
-    public boolean isAttendEvent() {
-        return attendEvent;
+    public String getUser() {
+        return user;
     }
 
-    public void setAttendEvent(boolean attendEvent) {
-        this.attendEvent = attendEvent;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public boolean isCreateEvent() {
-        return createEvent;
-    }
+    public User(String username, String password, String firstName, String lastName, String email, String user) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.user = user;
 
-    public void setCreateEvent(boolean createEvent) {
-        this.createEvent = createEvent;
     }
 }
