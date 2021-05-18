@@ -10,6 +10,10 @@ public class Register {
 
     public boolean registerUser(User user) throws InvalidCredentialsRegistration {
         try {
+            if(user.isNumber(user.getPhone()))
+            {
+                System.out.println("Phone number correct!");
+            }
             Connection connectDB = new DatabaseConnection().getConnection();
             PreparedStatement ps = connectDB.prepareStatement("SELECT count(1) FROM \"user\" WHERE username = ?;");
             ps.setString(1, user.getUsername());
@@ -29,6 +33,8 @@ public class Register {
             e.getCause();
             return false;
         }
+        System.out.println("User created succesfully!");
         return true;
+
     }
 }

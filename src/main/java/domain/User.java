@@ -62,33 +62,27 @@ public abstract class User {
         this.user = user;
     }
 
-    public void setAddress(String address)
-    {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public String getAddress()
-    {
+    public String getAddress() {
         return this.address;
     }
 
-    public void setPhone(String phone)
-    {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getPhone()
-    {
+    public String getPhone() {
         return this.phone;
     }
 
-    public void setBirth(LocalDate birth)
-    {
+    public void setBirth(LocalDate birth) {
         this.birth = birth;
     }
 
-    public LocalDate getBirth()
-    {
+    public LocalDate getBirth() {
         return this.birth;
     }
 
@@ -120,6 +114,34 @@ public abstract class User {
         this.address = address;
         this.phone = phone;
         this.birth = birth;
+    }
+
+    public boolean isNumber(String phone) {
+        if (phone == null)
+            return false;
+        else
+            try {
+                int n = Integer.parseInt(phone);
+            } catch (NumberFormatException nfe) {
+                return false;
+            }
+        return true;
+    }
+
+    public boolean isString(String string)
+    {
+        if(string==null)
+            return false;
+        int len = string.length();
+        for (int i = 0; i < len; i++) {
+            // checks whether the character is not a letter
+            // if it is not a letter ,it will return false
+
+            if ((Character.isLetter(string.charAt(i)) == false)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

@@ -27,31 +27,31 @@ public class RegisterController implements Initializable {
     @FXML
     private Button closeButton;
     @FXML
-    private Button registerButton;
+    public Button registerButton;
     @FXML
-    private PasswordField setPasswordField;
+    public PasswordField setPasswordField;
     @FXML
-    private PasswordField confirmPasswordField;
+    public PasswordField confirmPasswordField;
     @FXML
-    private Label confirmPasswordLabel;
+    public Label confirmPasswordLabel;
     @FXML
-    private TextField firstNameTextField;
+    public TextField firstNameTextField;
     @FXML
-    private TextField lastNameTextField;
+    public TextField lastNameTextField;
     @FXML
-    private TextField emailTextField;
+    public TextField emailTextField;
     @FXML
-    private TextField usernameTextField;
+    public TextField usernameTextField;
     @FXML
-    private TextField addressTextField;
+    public TextField addressTextField;
     @FXML
-    private TextField phoneTextField;
+    public TextField phoneTextField;
     @FXML
-    private DatePicker dateField;
+    public DatePicker dateField;
     @FXML
-    private CheckBox basicUserCheckbox;
+    public CheckBox basicUserCheckbox;
     @FXML
-    private CheckBox eventOrganizerUserCheckbox;
+    public CheckBox eventOrganizerUserCheckbox;
 
 
     @Override
@@ -64,7 +64,7 @@ public class RegisterController implements Initializable {
     String userType = "";
     boolean userTypeSelected;
 
-    public void registerButtonOnAction(ActionEvent actionEvent) throws InvalidCredentialsRegistration {
+    public void registerButtonOnAction() throws InvalidCredentialsRegistration {
         if (usernameTextField.getText().isBlank() || setPasswordField.getText().isBlank() || emailTextField.getText().isBlank())
         {
             confirmPasswordLabel.setText("Username, email and password are required!");
@@ -95,6 +95,7 @@ public class RegisterController implements Initializable {
 
                     if(phoneTextField.getText().length() > 12 || !phoneTextField.getText().matches("[0-9]*"))
                     {
+
                         confirmPasswordLabel.setText("Invalid phone input!");
                         return;
                     }
@@ -162,6 +163,11 @@ public class RegisterController implements Initializable {
         Register register = new Register();
         if (register.registerUser(user))
         {
+            if(!user.isString(user.getFirstName()) || !user.isString(user.getLastName()))
+            {
+                confirmPasswordLabel.setText("First name and Last Name must be real!");
+                System.out.println("First And Last Name must be letters composed!");
+            }
             //System.out.println("Starting registration");
             try {
                 //insert fields needs no special treatment
