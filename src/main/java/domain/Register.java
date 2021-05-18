@@ -2,43 +2,32 @@ package domain;
 
 import exceptions.InvalidCredentialsRegistration;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Date;
 
 public class Register {
-    public String firstName, lastName, email, username;
+    //public String firstName, lastName, email, username;
 
     public boolean registerUser(User user) throws InvalidCredentialsRegistration {
-    String queryString = "SELECT * FROM \"user\"";
         try {
             Connection connectDB = new DatabaseConnection().getConnection();
-            Statement statement = connectDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(queryString);
+            PreparedStatement ps = connectDB.prepareStatement("SELECT count(1) FROM \"user\" WHERE username = ?;");
+            ps.setString(1, user.getUsername());
+            ResultSet queryResult = ps.executeQuery();
 
-            //data available here
+            //System.out.println("Registering " + user.getUsername());
             while (queryResult.next()) {
-                //String FirstName = queryResult.getString(2);
-               // String LastName = queryResult.getString(3);
-                String Email = queryResult.getString(4);
-                String Username = queryResult.getString(5);
-              //  String Type = queryResult.getString(6);
-
-                if(user.email.equals(Email) || user.username.equals(Username))
-                {
-                    //throw  new InvalidCredentialsRegistration("User already exists");
-                    System.out.println("Invalid credentials!");
+                if (queryResult.getInt(1) == 1) {
+                    //user already exists
+                    System.out.println("User already exists!");
                     return false;
-
                 }
             }
-        } catch (
-                SQLException e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
-            System.out.println("Querying user events failed!");
+            return false;
         }
         return true;
     }
