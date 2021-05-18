@@ -22,6 +22,8 @@ import java.io.File;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 //import java.sql.SQLOutput;
@@ -89,19 +91,21 @@ public class LoginController implements Initializable {
                 String Username = queryResult.getString(5);
                 String Type = queryResult.getString(7);
                 String Password = queryResult.getString(6);
+                String address = queryResult.getString(8);
+                String phone = queryResult.getString(9);
+                String dateStr = queryResult.getString(10);
+                LocalDate birthdate = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
 
                 switch (queryResult.getString(7)) {
                     case "Event Organizer User":
                         // public BasicUser(String username, String password, String firstName, String lastName, String email, String user)
-                        currentUser = new EventOrganizerUser(Username, Password,
-                                FirstName, LastName, Email,
-                                Type);
+                        currentUser = new EventOrganizerUser(Username, Password, FirstName, LastName, Email,
+                                Type, address, phone, birthdate);
                         break;
                     case "Basic User":
-                        currentUser = new BasicUser(Username, Password,
-                                FirstName, LastName, Email,
-                                Type);
+                        currentUser = new BasicUser(Username, Password, FirstName, LastName, Email,
+                                Type, address, phone, birthdate);
                         break;
 
                 }
@@ -163,9 +167,10 @@ public class LoginController implements Initializable {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             loginMessageLabel.setText("Internal error! Unable to hash password!");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             e.getCause();
+            loginMessageLabel.setText("Database error!");
         }
 
         return isSuccess;
