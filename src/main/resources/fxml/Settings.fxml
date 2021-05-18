@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -39,10 +40,10 @@
       <TextField fx:id="PhoneTextField" layoutX="230.0" layoutY="288.0" prefHeight="25.0" prefWidth="264.0" />
       <Label layoutX="142.0" layoutY="332.0" prefHeight="17.0" prefWidth="86.0" text="Birth date" textFill="#fc0606" />
       <DatePicker fx:id="BirthDate" layoutX="229.0" layoutY="328.0" prefHeight="25.0" prefWidth="264.0" />
-      <CheckBox fx:id="NewPasswordCheckbox" layoutX="118.0" layoutY="381.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" text="New password" />
-      <TextField fx:id="NewPassTextField" disable="true" layoutX="229.0" layoutY="377.0" prefHeight="25.0" prefWidth="264.0" />
-      <Label disable="true" layoutX="95.0" layoutY="418.0" text="Confirm new password" />
-      <TextField fx:id="ConfirmNewPassTextField" disable="true" layoutX="229.0" layoutY="414.0" prefHeight="25.0" prefWidth="264.0" />
+      <CheckBox fx:id="NewPasswordCheckbox" layoutX="118.0" layoutY="381.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#setPasswordCheckboxOnAction" text="New password" />
+      <PasswordField fx:id="NewPassTextField" disable="true" layoutX="229.0" layoutY="377.0" prefHeight="25.0" prefWidth="264.0" />
+      <Label fx:id="NewPassLabel" disable="true" layoutX="95.0" layoutY="418.0" text="Confirm new password" />
+      <PasswordField fx:id="ConfirmNewPassTextField" disable="true" layoutX="229.0" layoutY="414.0" prefHeight="25.0" prefWidth="264.0" />
       <Label fx:id="MandatoryLabel" layoutX="230.0" layoutY="446.0" prefHeight="20.0" prefWidth="264.0" textAlignment="CENTER" textFill="RED">
          <font>
             <Font size="14.0" />

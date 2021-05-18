@@ -1,15 +1,14 @@
 package controller.user;
 
+import crypto.sha256manager;
 import domain.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -22,7 +21,13 @@ import static javafx.scene.paint.Color.color;
 public class SettingsController extends UserViewInterface implements Initializable {
 
     @FXML
-    private TextField FirstNameTextField, LastNameTextField, EmailTextField, AddressTextField, PhoneTextField, OccupationTextField;
+    private TextField FirstNameTextField, LastNameTextField, EmailTextField, AddressTextField, PhoneTextField;
+    @FXML
+    private PasswordField NewPassTextField, ConfirmNewPassTextField;
+    @FXML
+    private CheckBox NewPasswordCheckbox;
+    @FXML
+    private Label NewPassLabel;
     @FXML
     private DatePicker BirthDate;
     private User currentUser;
@@ -55,7 +60,7 @@ public class SettingsController extends UserViewInterface implements Initializab
     public void updateCredentialsButtonOnAction(ActionEvent actionEvent) {
         String phone = PhoneTextField.getText();
 
-        if(phone.length() > 12 || !phone.matches("[0-9]*"))
+        if(phone != null && (phone.length() > 12 || !phone.matches("[0-9]*")))
         {
             MandatoryLabel.setText("Invalid phone input!");
             return;
@@ -90,6 +95,11 @@ public class SettingsController extends UserViewInterface implements Initializab
             ps.setString(7, currentUser.getUsername());
 
             ps.executeUpdate();
+
+            if(NewPasswordCheckbox.isSelected())
+                if(!updatePassword(connectDB))
+                    return;
+
 
             MandatoryLabel.setTextFill(color(0, 1, 0));
             MandatoryLabel.setText("Credential update successful!");
@@ -142,9 +152,14 @@ public class SettingsController extends UserViewInterface implements Initializab
 
                 ps.executeUpdate();
 
+                UpgradeButton.setDisable(true);
+
+                if(NewPasswordCheckbox.isSelected())
+                    if(!updatePassword(connectDB))
+                        return;
+
                 MandatoryLabel.setTextFill(color(0, 1, 0));
                 MandatoryLabel.setText("Upgrade successful! Relog to see changes!");
-                UpgradeButton.setDisable(true);
             }
             catch (SQLException e)
             {
@@ -153,5 +168,58 @@ public class SettingsController extends UserViewInterface implements Initializab
                 MandatoryLabel.setText("SQL Error! Unable to update credentials!");
             }
         }
+    }
+
+    public void setPasswordCheckboxOnAction(ActionEvent actionEvent)
+    {
+        if(NewPasswordCheckbox.isSelected())
+        {
+            NewPassTextField.setDisable(false);
+            ConfirmNewPassTextField.setDisable(false);
+            NewPassLabel.setDisable(false);
+        }
+
+        else
+        {
+            NewPassTextField.setDisable(true);
+            ConfirmNewPassTextField.setDisable(true);
+            NewPassLabel.setDisable(true);
+        }
+    }
+
+    public boolean updatePassword(Connection connectDB) throws SQLException
+    {
+        if(NewPassTextField.getText().isBlank())
+        {
+            MandatoryLabel.setText("Password field is blank!");
+            return false;
+        }
+
+        if(!NewPassTextField.getText().equals(ConfirmNewPassTextField.getText()))
+        {
+            MandatoryLabel.setText("Passwords do not match!");
+            return false;
+        }
+
+        try
+        {
+            String hashedPassword = sha256manager.SHA256(NewPassTextField.getText());
+
+            PreparedStatement ps = connectDB.prepareStatement("UPDATE \"user\" SET \"password\" = ? " +
+                    "WHERE username = ?;");
+            ps.setString(1, hashedPassword);
+            ps.setString(2, currentUser.getUsername());
+
+            ps.executeUpdate();
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+            e.getCause();
+            MandatoryLabel.setText("Internal error! Unable to hash new password!");
+            return false;
+        }
+
+        return true;
     }
 }
