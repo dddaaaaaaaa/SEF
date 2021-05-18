@@ -17,13 +17,10 @@ controller/user/AddRelativeEventController.java
  controller.user.AddRelativeEventController
 domain/Register.java
  domain.Register
+controller/register/RegisterController.java
+ controller.register.RegisterController
 crypto/sha256manager.java
  crypto.sha256manager
-controller/user/PersonalEventsListController.java
- controller.user.PersonalEventsListController
- controller.user.PersonalEventsListController$1
- controller.user.PersonalEventsListController$1$1
- controller.user.PersonalEventsListController$1$2
 controller/user/GlobalEventsListController.java
  controller.user.GlobalEventsListController
 domain/Event.java
@@ -50,5 +47,9 @@ domain/GlobalEvent.java
  domain.GlobalEvent
 controller/user/FxmlLoader.java
  controller.user.FxmlLoader
-controller/register/RegisterController.java
- controller.register.RegisterController
+controller/user/PersonalEventsListController.java
+ controller.user.PersonalEventsListController
+ controller.user.PersonalEventsListController$1
+ controller.user.PersonalEventsListController$2
+ controller.user.PersonalEventsListController$2$1
+ controller.user.PersonalEventsListController$2$2

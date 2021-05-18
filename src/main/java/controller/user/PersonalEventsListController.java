@@ -234,6 +234,7 @@ public class PersonalEventsListController extends UserViewInterface implements I
     }
 
     public void SetNotificationButtonOnAction(ActionEvent actionEvent) {
+
         ObservableList<PersonalEvent> eventSelected;
         eventSelected = TableView.getSelectionModel().getSelectedItems();
 
@@ -246,6 +247,25 @@ public class PersonalEventsListController extends UserViewInterface implements I
         TableColumn col2 = TableView.getColumns().get(0);
         Date selectedDate = (Date) col.getCellObservableValue(item).getValue();
         String selectedEvent = (String) col2.getCellObservableValue(item).getValue();
+        File file = new File("src\\main\\resources\\images\\notification.png");
+        Image image = new Image(file.toURI().toString());
+
+
+        Notifications notificationsBuilder = Notifications.create()
+                .title("Remind me!")
+                .text("Event " + selectedEvent + " \n" + selectedDate + "\n" + "15 minutes prior reminder ON!")
+                .graphic(new ImageView(image))
+                .hideAfter(Duration.minutes(1))
+                .position(Pos.TOP_RIGHT)
+                .onAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        System.out.println("Clicked on notification!");
+                    }
+                });
+        notificationsBuilder.darkStyle();
+        notificationsBuilder.show();
+
 
         long delay = selectedDate.getTime() - currentDate.getTime() - 900000;
 
