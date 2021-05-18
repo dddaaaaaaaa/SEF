@@ -1,51 +1,54 @@
+controller/user/AddEventController.java
+ controller.user.AddEventController
+domain/DatabaseConnection.java
+ domain.DatabaseConnection
+controller/user/AddGlobalEventController.java
+ controller.user.AddGlobalEventController
+domain/BasicUser.java
+ domain.BasicUser
+controller/user/UserViewController.java
+ controller.user.UserViewController
+ controller.user.UserViewController$1
+domain/EventHolder.java
+ domain.EventHolder
+Main.java
+ Main
+controller/user/AddRelativeEventController.java
+ controller.user.AddRelativeEventController
+domain/Register.java
+ domain.Register
 crypto/sha256manager.java
  crypto.sha256manager
-controller/user/FxmlLoader.java
- controller.user.FxmlLoader
+controller/user/PersonalEventsListController.java
+ controller.user.PersonalEventsListController
+ controller.user.PersonalEventsListController$1
+ controller.user.PersonalEventsListController$1$1
+ controller.user.PersonalEventsListController$1$2
+controller/user/GlobalEventsListController.java
+ controller.user.GlobalEventsListController
 domain/Event.java
  domain.Event
 controller/login/LoginController.java
  controller.login.LoginController
-domain/DatabaseConnection.java
- domain.DatabaseConnection
 domain/EventOrganizerUser.java
  domain.EventOrganizerUser
 domain/PersonalEvent.java
  domain.PersonalEvent
-domain/ID.java
- domain.ID
-domain/BasicUser.java
- domain.BasicUser
 domain/UserHolder.java
  domain.UserHolder
-controller/user/PersonalEventsListController.java
- controller.user.PersonalEventsListController
-Main.java
- Main
-domain/GlobalEvent.java
- domain.GlobalEvent
-domain/User.java
- domain.User
-domain/DatabaseCredentials.java
- domain.DatabaseCredentials
-domain/Register.java
- domain.Register
-exceptions/InvalidCredentialsRegistration.java
- exceptions.InvalidCredentialsRegistration
-controller/register/RegisterController.java
- controller.register.RegisterController
-controller/user/GlobalEventsListController.java
- controller.user.GlobalEventsListController
-controller/user/AddEventController.java
- controller.user.AddEventController
 controller/user/SettingsController.java
  controller.user.SettingsController
-controller/user/AddRelativeEventController.java
- controller.user.AddRelativeEventController
 domain/UserViewInterface.java
  domain.UserViewInterface
-controller/user/AddGlobalEventController.java
- controller.user.AddGlobalEventController
-controller/user/UserViewController.java
- controller.user.UserViewController
- controller.user.UserViewController$1
+exceptions/InvalidCredentialsRegistration.java
+ exceptions.InvalidCredentialsRegistration
+domain/DatabaseCredentials.java
+ domain.DatabaseCredentials
+domain/User.java
+ domain.User
+domain/GlobalEvent.java
+ domain.GlobalEvent
+controller/user/FxmlLoader.java
+ controller.user.FxmlLoader
+controller/register/RegisterController.java
+ controller.register.RegisterController

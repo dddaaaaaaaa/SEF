@@ -121,4 +121,5 @@ public abstract class User {
         this.phone = phone;
         this.birth = birth;
     }
+
 }

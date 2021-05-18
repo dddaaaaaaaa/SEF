@@ -1,8 +1,6 @@
 package controller.user;
 
-import domain.DatabaseConnection;
-import domain.PersonalEvent;
-import domain.UserHolder;
+import domain.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -116,6 +114,9 @@ public class AddEventController implements Initializable {
 
         PersonalEvent personalEvent = new PersonalEvent(date, EventNameTextField.getText(), ObservationsTextField.getText(), UserHolder.getInstance().getUser().getUsername(), LocationTextField.getText());
 
+
+
+
         if (!(EventNameTextField.getText().isBlank()) && !(DateField.getValue() == null)) {
             try {
                 getPersonalEvent(personalEvent);
@@ -128,6 +129,8 @@ public class AddEventController implements Initializable {
     }
 
     public void getPersonalEvent(PersonalEvent personalEvent) throws ParseException {
+
+        //EventHolder.getInstance().setEvent(personalEvent);
 
         //this line adds the event to the GUI list
         events.add(personalEvent);
