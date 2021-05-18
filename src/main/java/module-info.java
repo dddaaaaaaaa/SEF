@@ -2,8 +2,7 @@
     requires javafx.graphics;
     requires javafx.fxml;
     requires javafx.controls;
-   // requires java.sql;
-  //  requires mysql.connector.java;
-
-    opens controller;
+    requires java.sql;
+    requires org.controlsfx.controls;
+    requires java.desktop;
 }*/

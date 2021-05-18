@@ -5,11 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,9 +42,9 @@ public class AddEventController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        File file = new File("src\\main\\resources\\images\\sigla\\event.png");
-        Image image = new Image(file.toURI().toString());
-        imageView.setImage(image);
+        //File file = new File("src\\main\\resources\\images\\sigla\\event.png");
+        //Image image = new Image(file.toURI().toString());
+        //imageView.setImage(image);
     }
 
     public void addEventButtonOnAction(javafx.event.ActionEvent actionEvent) {

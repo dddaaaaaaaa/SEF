@@ -6,11 +6,14 @@ plugins {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'Main'
+        attributes 'Main-Class': 'JarMain'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
-group 'org.example'
+group 'SEF'
 version '1.0'
 
 repositories {
@@ -24,6 +27,13 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.19'
     implementation 'org.controlsfx:controlsfx:11.1.0'
+
+    compile 'org.openjfx:javafx-base:16:win'
+    compile 'org.openjfx:javafx-controls:16:win'
+    compile 'org.openjfx:javafx-graphics:16:win'
+    compile 'org.openjfx:javafx-fxml:16:win'
+    compile 'org.postgresql:postgresql:42.2.19'
+    compile 'org.controlsfx:controlsfx:11.1.0'
 }
 
 test {
@@ -37,4 +47,4 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = 'Main'
+mainClassName = 'JarMain'
