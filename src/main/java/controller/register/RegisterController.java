@@ -3,9 +3,6 @@ package controller.register;
 import crypto.sha256manager;
 import domain.*;
 import exceptions.InvalidCredentialsRegistration;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import javafx.fxml.FXML;
@@ -168,7 +165,6 @@ public class RegisterController implements Initializable {
             //System.out.println("Starting registration");
             try {
                 //insert fields needs no special treatment
-                String insertFields = "INSERT INTO \"user\" ( \"firstName\", \"lastName\", \"email\", \"username\", \"password\", \"type\") VALUES ('";
                 PreparedStatement ps = connection.prepareStatement("INSERT INTO \"user\" ( \"firstName\", \"lastName\"," +
                         " \"email\", \"username\", \"password\", \"type\", \"address\", \"phone\", \"birth\") VALUES (?,?,?,?,?,?,?,?,?);");
                 //hash the password
